@@ -10,4 +10,7 @@ public class Board {
     //needs to either load the defaultBoard (see txt file already provided)
     //or needs to load a user-made board from a txt file
 
+    //method to iterate through board and store letter squares and letter words in hash map?
+    //would need to store index and bonus value
+
 }
