@@ -25,3 +25,4 @@ hs_err_pid*
 # IntelliJ files (do not submit)
 *.xml
 *.iml
+*.DS_Store
