@@ -131,7 +131,7 @@ However, the move entered above is possible - the human player has the necessary
 As a result, both the scores and the board are updated and displayed:
 
 ~~~
-The move is:    main.Word: GIT at position f8, direction: right
+The move is:    Word: GIT at position f8, direction: right
 
 Human player score:    8
 Computer player score: 0
@@ -160,7 +160,7 @@ The human player also receives new tiles from the tile bag.
 Now it is the computer player's turn. The computer player's tiles are not visible to the human player. The computer player responds with its own move, which again leads to a valid word from the word list on the board (`STAR`).
 
 ~~~
-The move is:    main.Word: SAR at position h7, direction: down
+The move is:    Word: SAR at position h7, direction: down
 ~~~
 
 The result is:
@@ -203,7 +203,7 @@ as their next move. However, doing so would lead to *two* words appearing on the
 In ScraBBKle, a move may never lead to more than one word of 2 or more letters being created on the board. (This is different from Scrabble.) The created word must always be in the same direction as the player's move and use all tiles of the move.
 
 
-## main.Board files
+## Board files
 
 We need to define a file format for ScraBBKle boards that a user may write with a text editor. We use a plain-text format.
 
