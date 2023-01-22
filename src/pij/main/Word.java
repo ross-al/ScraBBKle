@@ -33,6 +33,8 @@ public class Word {
 
     //this is too slow
     //so maybe we need to create string array first?
+    //will need a quick algo
+
     public boolean isWord() {
         boolean legitWord = false;
         try {

@@ -13,7 +13,10 @@ public class Main {
         Tile myTile2 = new Tile('d', 2);
         System.out.println(myTile2.toString());
         Word myWord = new Word("aa");
-        System.out.println(myWord.isWord());
+        //System.out.println(myWord.isWord());
+        WordList myWordList = new WordList();
+        //wordList is null??
+        }
 
         //gameplay code here
     }
