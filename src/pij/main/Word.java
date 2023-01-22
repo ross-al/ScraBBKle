@@ -1,9 +1,9 @@
 package pij.main;
 
-import java.io.File;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Scanner;
-import java.io.FileNotFoundException;
-
 
 public class Word {
     //private Tile myTile;
@@ -31,11 +31,26 @@ public class Word {
         return word;
     }
 
-    public boolean isWord(){
-        return true;
+    //this is too slow
+    //so maybe we need to create string array first?
+    public boolean isWord() {
+        boolean legitWord = false;
+        try {
+            Scanner myScanner = new Scanner(new FileReader("resources/wordlist.txt"));
+            String line = myScanner.nextLine();
+            while (myScanner.hasNextLine()) {
+                if (line.equalsIgnoreCase(this.getWord())) {
+                    legitWord = true;
+                } else {
+                    legitWord = false;
+                }
+            }
+            //reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return legitWord;
     }
-
-        
 
    // public String toString() {
         // String word =
