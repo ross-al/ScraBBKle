@@ -21,9 +21,12 @@ public class Main {
         System.out.println(myWordList.isWord("fhwoifhvwvhwv"));
         System.out.println(myWordList.isWord("qi"));
         System.out.println(myWordList.isWord("QI"));
-        //wordList is null??
-        }
+        System.out.println(myWordList.isWord("defloration"));
 
         //gameplay code here
+
+        }
+
+
 
 }

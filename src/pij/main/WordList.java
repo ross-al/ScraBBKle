@@ -7,14 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WordList {
-    protected List<String> wordList;
+    final List<String> wordList;
 
     public WordList() {
         this.wordList = convertToList();
     }
 
-    public List<String> convertToList(){
-        List<String> wordList = new ArrayList<>();
+    public List<String> convertToList(){ //update to take type Word
+        List<String> wordList = new ArrayList<>(); //update to take type Word
         try {
             BufferedReader reader = new BufferedReader(new FileReader("resources/wordlist.txt"));
             String str;
@@ -29,7 +29,7 @@ public class WordList {
         return wordList;
     }
 
-    public boolean isWord(String word){
+    public boolean isWord(String word){ //update to take type Word
         return wordList.contains(word);
     }
 }
