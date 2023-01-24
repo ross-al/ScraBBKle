@@ -30,11 +30,6 @@ public class WordList {
     }
 
     public boolean isWord(String word){
-        if(wordList.contains(word)){ //only looks for if contains lower case (exact match)
-            return true;
-        }
-        else{
-            return false;
-        }
+        return wordList.contains(word);
     }
 }
