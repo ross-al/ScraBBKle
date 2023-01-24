@@ -1,10 +1,5 @@
 package pij.main;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.Scanner;
-
 public class Word {
     //private Tile myTile;
     //takes type Tile
@@ -31,28 +26,6 @@ public class Word {
         return word;
     }
 
-    //this is too slow
-    //so maybe we need to create string array first?
-    //will need a quick algo
-
-    public boolean isWord() {
-        boolean legitWord = false;
-        try {
-            Scanner myScanner = new Scanner(new FileReader("resources/wordlist.txt"));
-            String line = myScanner.nextLine();
-            while (myScanner.hasNextLine()) {
-                if (line.equalsIgnoreCase(this.getWord())) {
-                    legitWord = true;
-                } else {
-                    legitWord = false;
-                }
-            }
-            //reader.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return legitWord;
-    }
 
    // public String toString() {
         // String word =
