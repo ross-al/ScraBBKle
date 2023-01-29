@@ -7,10 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WordList {
-    private final List<String> wordList; //should be final or static?
+    private final List<String> WORD_LIST;
 
     public WordList() {
-        this.wordList = convertToList();
+        this.WORD_LIST = convertToList();
     }
 
     /**
@@ -35,6 +35,6 @@ public class WordList {
     }
 
     public boolean isWord(String word){ //update to take type Word
-        return wordList.contains(word);
+        return WORD_LIST.contains(word);
     }
 }
