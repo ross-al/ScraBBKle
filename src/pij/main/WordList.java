@@ -15,21 +15,23 @@ public class WordList {
 
     /**
      * @return an ArrayList of input txt file
-     * @throws IndexOutOfBoundsException if the input file does not exist in given directory
+     * @throws RuntimeException if the input file does not exist in given directory
      */
 
     public List<String> convertToList(){ //update to take type Word
         List<String> wordList = new ArrayList<>(); //update to take type Word
         try {
-            BufferedReader reader = new BufferedReader(new FileReader("resources/wordlist.txt"));
+            BufferedReader reader = new BufferedReader(new FileReader("./resources/wordlist.txt"));
             String str;
             while ((str = reader.readLine()) != null) {
                 wordList.add(str);
             }
             reader.close();
         }
-        catch (IOException e) {
-            e.printStackTrace();
+        catch (IOException e) { //need a throw here to say file doesn't exist (see week 11 reading)?
+            //update the catch exception type?
+            e.printStackTrace(); //DO NOT WRITE EMPTY CATCH BLOCKS!
+            throw new RuntimeException(e);
         }
         return wordList;
     }
