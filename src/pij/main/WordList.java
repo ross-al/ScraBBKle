@@ -1,6 +1,7 @@
 package pij.main;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,10 +19,13 @@ public class WordList {
      * @throws RuntimeException if the input file does not exist in given directory
      */
 
+    //should use an exist() method to see if file exists first?
+
     public List<String> convertToList(){ //update to take type Word
         List<String> wordList = new ArrayList<>(); //update to take type Word
         try {
-            BufferedReader reader = new BufferedReader(new FileReader("./resources/wordlist.txt"));
+            File file = new File("./resources/wordlist.txt");
+            BufferedReader reader = new BufferedReader(new FileReader(file));
             String str;
             while ((str = reader.readLine()) != null) {
                 wordList.add(str);
