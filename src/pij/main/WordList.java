@@ -1,9 +1,6 @@
 package pij.main;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,26 +13,24 @@ public class WordList {
 
     /**
      * @return an ArrayList of input txt file
-     * @throws RuntimeException if the input file does not exist in given directory
+     * @throws FileNotFoundException if the input file does not exist in given directory
+     * @throws IOException if error when accessing file data
      */
 
     //should use an exist() method to see if file exists first?
 
     public List<String> convertToList(){ //update to take type Word
         List<String> wordList = new ArrayList<>(); //update to take type Word
-        try {
-            File file = new File("./resources/wordlist.txt");
-            BufferedReader reader = new BufferedReader(new FileReader(file));
+        File file = new File("./resources/wordlist.txt");
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String str;
             while ((str = reader.readLine()) != null) {
                 wordList.add(str);
             }
-            reader.close();
-        }
-        catch (IOException e) { //need a throw here to say file doesn't exist (see week 11 reading)?
-            //update the catch exception type?
-            e.printStackTrace(); //DO NOT WRITE EMPTY CATCH BLOCKS!
-            throw new RuntimeException(e);
+        } catch (FileNotFoundException ex) {
+            System.out.println("File " + file + " does not exist.");
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
         return wordList;
     }
