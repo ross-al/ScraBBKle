@@ -7,11 +7,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WordList {
-    final List<String> wordList;
+    private final List<String> wordList; //should be final or static?
 
     public WordList() {
         this.wordList = convertToList();
     }
+
+    /**
+     * @return an ArrayList of input txt file
+     * @throws IndexOutOfBoundsException if the input file does not exist in given directory
+     */
 
     public List<String> convertToList(){ //update to take type Word
         List<String> wordList = new ArrayList<>(); //update to take type Word
