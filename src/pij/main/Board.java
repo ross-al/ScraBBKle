@@ -1,25 +1,104 @@
 package pij.main;
 
-import java.io.File;
+import java.io.*;
+import java.util.Arrays;
+
+
+//get file input and put into array, must have row/col labels
+//check if file input is valid using method (i.e. size etc.)
+//create constructor for board using array
+//need a get file method for non-default boards
+
+//needs to either load the defaultBoard (see txt file already provided)
+//or needs to load a user-made board from a txt file
+
+//method to iterate through board and store letter squares and letter words in hash map?
+//would need to store index and bonus value
+
+//need to print board
+//need to update board with tiles (and print updated version)
 
 public class Board {
-    private File file;
+    private String[][] myBoard;
 
-    public Board(File file){ //need to import file
-        this.file = file;
+    public Board() {
+        this.myBoard = convertToBoard();//create constructor for board using array
+    }
+
+    public String[][] convertToBoard() {
+        getInputFile();
+        getBoardSize();
+        isValidSize(); //can we group some of these?
+
+        int columns = 1 + getBoardSize();
+        int rows = 1 + getBoardSize();
+        String[][] myArray = new String[columns][rows];
+
+        //getinput file
+        //check size is ok
+        //read second line onwards
+        //iterate through to create array
+        //columns must be represented by letter a-z
+        //rows by numbers 1-26
+        //left most column is a
+        //top row is 1
+
+        //need to group strings e.g. {1} . (2)
+        System.out.println(Arrays.deepToString(myArray));
+        return myArray;
+    }
+
+    public File getInputFile() {
+        String fileName = "./resources/defaultBoard.txt";
+        File inputFile = new File(fileName);
+        System.out.println("Would you like to _l_oad a board or use the _d_efault board?");
+        System.out.println("Please enter your choice (l/d):");
+        String boardInput = System.console().readLine();
+        String boardType = boardInput.toLowerCase();
+        while (!(boardType.equals("l") || boardType.equals("d"))) {
+            System.out.println("Choice not recognised. Please enter your choice (l/d):");
+            boardInput = System.console().readLine(); //repeated code. Optimise!
+            boardType = boardInput.toLowerCase();
+        }
+        if (!(boardType.equals("d"))) {
+            boolean legitFile = false;
+            while (!legitFile) {
+                System.out.println("Please enter the file name of the board: ");
+                fileName = System.console().readLine();
+                if (inputFile.exists()) {
+                    legitFile = true;
+                    System.out.println("Thank you. Your file is loading");
+                } else {
+                    System.out.println("The file you entered does not exist");
+                }
+            }
+        }
+        return inputFile;
     }
 
 
-    //SxS where S as an int between 12-26
-    //columns must be represented by letter a-z
-    //rows by numbers 1-26
-    //left most column is a
-    //top row is 1
+    public int getBoardSize() {
+        int boardSize = 0;
+        try (BufferedReader reader = new BufferedReader(new FileReader(getInputFile()))) {
+            String text = reader.readLine();
+            try {
+                int size = Integer.parseInt(text);
+                boardSize = size;
+            } catch (NumberFormatException e) {
+                throw new RuntimeException(e);
+                System.out.println("File not formatted correctly. First line must contain board size, e.g. "12"");
+            }
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return boardSize;
+    }
 
-    //needs to either load the defaultBoard (see txt file already provided)
-    //or needs to load a user-made board from a txt file
 
-    //method to iterate through board and store letter squares and letter words in hash map?
-    //would need to store index and bonus value
+    public boolean isValidSize() {
+        return 12 >= getBoardSize() && getBoardSize() <= 26;
+    }
 
 }
