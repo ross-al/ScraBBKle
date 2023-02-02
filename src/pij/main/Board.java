@@ -2,6 +2,7 @@ package pij.main;
 
 import java.io.*;
 import java.util.Arrays;
+import java.util.Scanner;
 
 
 //get file input and put into array, must have row/col labels
@@ -47,24 +48,29 @@ public class Board {
 
 
     public File getInputFile() {
+        Scanner input = new Scanner(System.in);
         String fileName = "./resources/defaultBoard.txt";
         File inputFile = new File(fileName);
         System.out.println("Would you like to _l_oad a board or use the _d_efault board?");
         System.out.println("Please enter your choice (l/d):");
-        String boardInput = System.console().readLine();
+        System.out.println();
+        String boardInput = input.nextLine();
         String boardType = boardInput.toLowerCase();
         while (!(boardType.equals("l") || boardType.equals("d"))) {
+            System.out.println();
             System.out.println("Choice not recognised. Please enter your choice (l/d):");
-            boardInput = System.console().readLine(); //repeated code. Optimise!
+            boardInput = input.nextLine(); //repeated code. Optimise!
             boardType = boardInput.toLowerCase();
         }
         if (!(boardType.equals("d"))) {
             boolean legitFile = false;
             while (!legitFile) {
+                System.out.println();
                 System.out.println("Please enter the file name of the board: ");
-                fileName = System.console().readLine();
+                fileName = input.nextLine();
                 if (inputFile.exists()) {
                     legitFile = true;
+                    System.out.println();
                     System.out.println("Thank you. Your file is loading");
                 } else {
                     System.out.println("The file you entered does not exist");
@@ -72,6 +78,7 @@ public class Board {
             }
         }
         if(!(isValidSize())){
+            System.out.println();
             System.out.println("Sorry, your board needs to be between 12-26 squares wide");
             getInputFile();
         }
