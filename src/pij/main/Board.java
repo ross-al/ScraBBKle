@@ -27,12 +27,12 @@ public class Board {
 
     public String[][] convertToBoard() {
         getInputFile();
-        getBoardSize();
-        isValidSize(); //can we group some of these?
-
         int columns = 1 + getBoardSize();
         int rows = 1 + getBoardSize();
         String[][] myArray = new String[columns][rows];
+        System.out.println(Arrays.deepToString(myArray));
+        return myArray;
+        }
 
         //getinput file
         //check size is ok
@@ -44,9 +44,7 @@ public class Board {
         //top row is 1
 
         //need to group strings e.g. {1} . (2)
-        System.out.println(Arrays.deepToString(myArray));
-        return myArray;
-    }
+
 
     public File getInputFile() {
         String fileName = "./resources/defaultBoard.txt";
@@ -73,6 +71,10 @@ public class Board {
                 }
             }
         }
+        if(!(isValidSize())){
+            System.out.println("Sorry, your board needs to be between 12-26 squares wide");
+            getInputFile();
+        }
         return inputFile;
     }
 
@@ -85,8 +87,8 @@ public class Board {
                 int size = Integer.parseInt(text);
                 boardSize = size;
             } catch (NumberFormatException e) {
+                System.out.println("File not formatted correctly. First line must contain board size, e.g.'12'");
                 throw new RuntimeException(e);
-                System.out.println("File not formatted correctly. First line must contain board size, e.g. "12"");
             }
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
