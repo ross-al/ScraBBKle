@@ -1,7 +1,6 @@
 package pij.main;
 
 import java.io.*;
-import java.util.Arrays;
 import java.util.Scanner;
 
 
@@ -20,7 +19,6 @@ import java.util.Scanner;
 //need to update board with tiles (and print updated version)
 
 public class Board {
-    private int[][] myBoard; //change array type to tile?
     private File inputFile;
     private int boardSize;
     private int columns;
@@ -29,26 +27,26 @@ public class Board {
     public Board() {
         this.inputFile = getInputFile();
         this.boardSize = getBoardSize();
+        //prefer to handle if clause in method outside constructor...
         if(!(isValidSize())){
             System.out.println();
             System.out.println("Sorry, your board needs to be between 12-26 squares wide");
             getInputFile();
         }
         else {
-            this.myBoard = convertToBoard();
+            //change array type to tile?
+            String[][] myBoard = convertToBoard();
             rows = 1 + boardSize;
             columns = rows;
         }
     }
 
     //change array type to generic?
-    public int[][] convertToBoard() {
-        //int columns = 1 + boardSize;
-        //int rows = 1 + boardSize;
-        int[][] myArray = new int[rows][columns];
+    public String[][] convertToBoard() {
+        String[][] myArray = new String[rows][columns];
         System.out.println("File name: " + inputFile);
-        System.out.println("Size: " + boardSize);
-        System.out.println("Valid size: " + isValidSize());
+        System.out.println("Board size: " + boardSize + "x" + boardSize);
+        System.out.println("Valid board size: " + isValidSize());
         return myArray;
         }
 
@@ -60,7 +58,6 @@ public class Board {
         //rows by numbers 1-26
         //left most column is a
         //top row is 1
-
         //need to group strings e.g. {1} . (2)
 
 
@@ -73,13 +70,11 @@ public class Board {
         System.out.println("Please enter your choice (l/d):");
         System.out.println();
         Scanner input = new Scanner(System.in);
-        String boardInput = input.nextLine();
-        String boardType = boardInput.toLowerCase();
+        String boardType = input.nextLine().toLowerCase();
         while (!(boardType.equals(defaultBoard) || boardType.equals(loadBoard))) {
             System.out.println();
             System.out.println("Choice not recognised. Please enter your choice (l/d):");
-            boardInput = input.nextLine(); //repeated code. Optimise!
-            boardType = boardInput.toLowerCase();
+            boardType = input.nextLine().toLowerCase();
         }
         if (boardType.equals(loadBoard)) {
             boolean legitFile = false;
@@ -87,10 +82,11 @@ public class Board {
                 System.out.println();
                 System.out.println("Please enter the file name of the board: ");
                 fileName = input.nextLine();
-                if (inputFile.exists()) { //this doesn't work
+                inputFile = new File(fileName);
+                if (inputFile.exists()) {
                     legitFile = true;
                     System.out.println();
-                    System.out.println("Thank you. Your file is loading");
+                    System.out.println("Thank you. Your file is loading...");
                 } else {
                     System.out.println("The file you entered does not exist");
                 }
@@ -102,12 +98,10 @@ public class Board {
 
     //need to test this method with diff file size
     public int getBoardSize() {
-        int boardSize = 0;
         try (BufferedReader reader = new BufferedReader(new FileReader(inputFile))) {
             String text = reader.readLine();
             try {
-                int size = Integer.parseInt(text);
-                boardSize = size;
+                boardSize = Integer.parseInt(text);
             } catch (NumberFormatException e) {
                 System.out.println("File not formatted correctly. First line must contain board size, e.g.'12'");
                 throw new RuntimeException(e);
