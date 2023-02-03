@@ -20,18 +20,35 @@ import java.util.Scanner;
 //need to update board with tiles (and print updated version)
 
 public class Board {
-    private String[][] myBoard;
+    private int[][] myBoard; //change array type to tile?
+    private File inputFile;
+    private int boardSize;
+    private int columns;
+    private int rows;
 
     public Board() {
-        this.myBoard = convertToBoard();//create constructor for board using array
+        this.inputFile = getInputFile();
+        this.boardSize = getBoardSize();
+        if(!(isValidSize())){
+            System.out.println();
+            System.out.println("Sorry, your board needs to be between 12-26 squares wide");
+            getInputFile();
+        }
+        else {
+            this.myBoard = convertToBoard();
+            rows = 1 + boardSize;
+            columns = rows;
+        }
     }
 
-    public String[][] convertToBoard() {
-        getInputFile();
-        int columns = 1 + getBoardSize();
-        int rows = 1 + getBoardSize();
-        String[][] myArray = new String[columns][rows];
-        System.out.println(Arrays.deepToString(myArray));
+    //change array type to generic?
+    public int[][] convertToBoard() {
+        //int columns = 1 + boardSize;
+        //int rows = 1 + boardSize;
+        int[][] myArray = new int[rows][columns];
+        System.out.println("File name: " + inputFile);
+        System.out.println("Size: " + boardSize);
+        System.out.println("Valid size: " + isValidSize());
         return myArray;
         }
 
@@ -48,27 +65,29 @@ public class Board {
 
 
     public File getInputFile() {
-        Scanner input = new Scanner(System.in);
         String fileName = "./resources/defaultBoard.txt";
         File inputFile = new File(fileName);
+        String defaultBoard = "d";
+        String loadBoard = "l";
         System.out.println("Would you like to _l_oad a board or use the _d_efault board?");
         System.out.println("Please enter your choice (l/d):");
         System.out.println();
+        Scanner input = new Scanner(System.in);
         String boardInput = input.nextLine();
         String boardType = boardInput.toLowerCase();
-        while (!(boardType.equals("l") || boardType.equals("d"))) {
+        while (!(boardType.equals(defaultBoard) || boardType.equals(loadBoard))) {
             System.out.println();
             System.out.println("Choice not recognised. Please enter your choice (l/d):");
             boardInput = input.nextLine(); //repeated code. Optimise!
             boardType = boardInput.toLowerCase();
         }
-        if (!(boardType.equals("d"))) {
+        if (boardType.equals(loadBoard)) {
             boolean legitFile = false;
             while (!legitFile) {
                 System.out.println();
                 System.out.println("Please enter the file name of the board: ");
                 fileName = input.nextLine();
-                if (inputFile.exists()) {
+                if (inputFile.exists()) { //this doesn't work
                     legitFile = true;
                     System.out.println();
                     System.out.println("Thank you. Your file is loading");
@@ -77,18 +96,14 @@ public class Board {
                 }
             }
         }
-        if(!(isValidSize())){
-            System.out.println();
-            System.out.println("Sorry, your board needs to be between 12-26 squares wide");
-            getInputFile();
-        }
         return inputFile;
     }
 
 
+    //need to test this method with diff file size
     public int getBoardSize() {
         int boardSize = 0;
-        try (BufferedReader reader = new BufferedReader(new FileReader(getInputFile()))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(inputFile))) {
             String text = reader.readLine();
             try {
                 int size = Integer.parseInt(text);
@@ -107,7 +122,19 @@ public class Board {
 
 
     public boolean isValidSize() {
-        return 12 >= getBoardSize() && getBoardSize() <= 26;
+        return boardSize >= 12 && boardSize <= 26;//this is doesn't work
     }
 
+/*    public void printBoard() {
+*//*        for (int i = 0; i < rows; i++)
+            for (int j = 0; j < columns; j++)
+                myBoard[i][j] = 0;*//*
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                System.out.print(myBoard[i][j]);
+            }
+            System.out.println();
+        }
+    }*/
 }
