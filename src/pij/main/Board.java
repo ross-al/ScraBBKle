@@ -23,6 +23,7 @@ public class Board {
     private int boardSize;
     private int columns;
     private int rows;
+    private String[][] myBoard;
 
     public Board() {
         this.inputFile = getInputFile();
@@ -33,21 +34,26 @@ public class Board {
             System.out.println("Sorry, your board needs to be between 12-26 squares wide");
             getInputFile();
         }
-        else {
-            //change array type to tile?
-            String[][] myBoard = convertToBoard();
-            rows = 1 + boardSize;
-            columns = rows;
-        }
+        rows = 1+ boardSize;
+        columns = rows;
+        this.myBoard = new String[rows][columns];
+        convertToBoard(myBoard);
     }
 
-    //change array type to generic?
-    public String[][] convertToBoard() {
-        String[][] myArray = new String[rows][columns];
+    //change array type to generic or Tile?
+    public String[][] convertToBoard(String[][] myBoard) {
+        for (int i = 0; i < myBoard.length; i++) {
+            for (int j = 0; j < myBoard.length; j++) {
+                myBoard[i][j] = "x";
+            }
+        }
         System.out.println("File name: " + inputFile);
         System.out.println("Board size: " + boardSize + "x" + boardSize);
         System.out.println("Valid board size: " + isValidSize());
-        return myArray;
+        System.out.println("Your board is ready! GAME ON!");
+        System.out.println();
+        //printBoard(myBoard);
+        return myBoard;
         }
 
         //getinput file
@@ -59,7 +65,6 @@ public class Board {
         //left most column is a
         //top row is 1
         //need to group strings e.g. {1} . (2)
-
 
     public File getInputFile() {
         String fileName = "./resources/defaultBoard.txt";
@@ -119,16 +124,17 @@ public class Board {
         return boardSize >= 12 && boardSize <= 26;//this is doesn't work
     }
 
-/*    public void printBoard() {
-*//*        for (int i = 0; i < rows; i++)
-            for (int j = 0; j < columns; j++)
-                myBoard[i][j] = 0;*//*
-
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < columns; j++) {
-                System.out.print(myBoard[i][j]);
+    public void printBoard(String[][] board) {
+        System.out.println("Your board: ");
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board.length; j++) {
+                System.out.print(board[i][j]);
             }
             System.out.println();
         }
-    }*/
+    }
+
+    public String[][] getMyBoard(){
+        return myBoard;
+    }
 }
