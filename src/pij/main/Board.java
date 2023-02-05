@@ -29,22 +29,36 @@ public class Board {
         this.inputFile = getInputFile();
         this.boardSize = getBoardSize();
         //prefer to handle if clause in method outside constructor...
-        if(!(isValidSize())){
+        if (!(isValidSize())) {
             System.out.println();
             System.out.println("Sorry, your board needs to be between 12-26 squares wide");
             getInputFile();
         }
-        rows = 1+ boardSize;
+        rows = 1 + boardSize; //need to add +1 when I add a-z and 1-26 labels
         columns = rows;
         this.myBoard = new String[rows][columns];
         convertToBoard(myBoard);
     }
 
     //change array type to generic or Tile?
+    //convert file into arraylist, and then array list into 2d array?
+    //ignore A[0][0] as this will have file size, so start from A[0][1]?
     public String[][] convertToBoard(String[][] myBoard) {
-        for (int i = 0; i < myBoard.length; i++) {
-            for (int j = 0; j < myBoard.length; j++) {
-                myBoard[i][j] = "x";
+        myBoard[0][0] = "\t";
+        //this labelling doesn't work
+        char c = 'a';
+        for (int a = 1; a < myBoard.length; a++){
+            String d = String.valueOf(c);
+            myBoard[0][a] = "\t" + d;
+            c++;
+            }
+        for (int b = 1; b < myBoard.length; b++) {
+                String q = Integer.toString(b);
+                myBoard[b][0] = "\t" +q;
+            }
+        for (int i = 1; i < myBoard.length; i++) {
+            for (int j = 1; j < myBoard.length; j++) {
+                myBoard[i][j] = "\t" + "x";
             }
         }
         System.out.println("File name: " + inputFile);
@@ -52,19 +66,18 @@ public class Board {
         System.out.println("Valid board size: " + isValidSize());
         System.out.println("Your board is ready! GAME ON!");
         System.out.println();
-        //printBoard(myBoard);
         return myBoard;
-        }
+    }
 
-        //getinput file
-        //check size is ok
-        //read second line onwards
-        //iterate through to create array
-        //columns must be represented by letter a-z
-        //rows by numbers 1-26
-        //left most column is a
-        //top row is 1
-        //need to group strings e.g. {1} . (2)
+    //getinput file
+    //check size is ok
+    //read second line onwards
+    //iterate through to create array
+    //columns must be represented by letter a-z
+    //rows by numbers 1-26
+    //left most column is a
+    //top row is 1
+    //need to group strings e.g. {1} . (2)
 
     public File getInputFile() {
         String fileName = "./resources/defaultBoard.txt";
@@ -100,7 +113,6 @@ public class Board {
         return inputFile;
     }
 
-
     //need to test this method with diff file size
     public int getBoardSize() {
         try (BufferedReader reader = new BufferedReader(new FileReader(inputFile))) {
@@ -121,20 +133,23 @@ public class Board {
 
 
     public boolean isValidSize() {
-        return boardSize >= 12 && boardSize <= 26;//this is doesn't work
+        return boardSize >= 12 && boardSize <= 26;
     }
 
+
     public void printBoard(String[][] board) {
-        System.out.println("Your board: ");
+        System.out.println("Your current board: ");
+        System.out.println();
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board.length; j++) {
-                System.out.print(board[i][j]);
+                System.out.print(board[i][j]); //can we right-justify row nums?
             }
             System.out.println();
         }
     }
 
-    public String[][] getMyBoard(){
+
+    public String[][] getMyBoard() {
         return myBoard;
     }
 }
