@@ -1,9 +1,14 @@
 package pij.main;
 
-public class Player {
+public interface Player {
 
-    //do we need two player class?
-    //one for human and one for computer?
+    int calculateScore();
 
-    //have move() methods in player?
+    int getCurrentScore();
+
+    Tile fetchTile();
+
+    Tile placeTile();
+
+    Tile playWord();
 }
