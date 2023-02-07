@@ -63,12 +63,12 @@ public class GameBoard implements Board{
             split[s] = String.valueOf(file.nextLine().split(regex)); //doesn't work
             }
         }*/
-        for (int i = 1; i < myBoard.length; i++) {
+        /*for (int i = 1; i < myBoard.length; i++) {
             for (int j = 1; j < myBoard.length; j++) {
                     myBoard[i][j] = split[i-1]; //do we need i-1 as we need first element in split??
                     //"\t" +  for formatting?
             }
-        }
+        }*/
         System.out.println("File name: " + inputFile);
         System.out.println("Board size: " + boardSize + "x" + boardSize);
         System.out.println("Valid board size: " + isValidSize());
