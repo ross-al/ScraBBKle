@@ -30,6 +30,7 @@ public class GameBoard implements Board {
         if (!(isValidSize())) {
             System.out.println();
             System.out.println("Sorry, your board needs to be between 12-26 squares wide");
+            //this doesn't update the inputFile and will load the failed board!
             getInputFile();
         }
         rows = 1 + boardSize;
@@ -39,8 +40,6 @@ public class GameBoard implements Board {
     }
 
     //change array type to generic or Tile?
-    //convert file into arraylist, and then array list into 2d array?
-    //ignore A[0][0] as this will have file size, so start from A[0][1]?
     public String[][] convertToBoard(String[][] myBoard) {
         myBoard[0][0] = "";
         char c = 'a';
@@ -57,18 +56,22 @@ public class GameBoard implements Board {
             reader.readLine(); //to skip the first line with board size
             String line;
             String sub = "x";
+
+            //needs to account for -9 and 99 premium square/words
+            //see notes for format {xy and (xy to see if already compliant
             for (int i = 1; i < myBoard.length; i++) {
                 int charCount = 0;
                 line = reader.readLine();
                 for (int j = 1; j < myBoard.length; j++) {
-
                     char ch = line.charAt(charCount);
                     switch (ch) {
                         case '{':
+                            //if statement for {xy e.g. -9 to 99
                             sub = line.substring(charCount, charCount + 3);
                             charCount = charCount + 3;
                             break;
                         case '(':
+                            //if statement for (xy e.g. -9 to 99
                             sub = line.substring(charCount, charCount + 3);
                             charCount = charCount + 3;
                             break;
@@ -78,17 +81,13 @@ public class GameBoard implements Board {
                             break;
                     }
                     myBoard[i][j] = sub;
-
                 }
             }
-
-
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
         System.out.println("File name: " + inputFile);
         System.out.println("Board size: " + boardSize + "x" + boardSize);
         System.out.println("Valid board size: " + isValidSize());
