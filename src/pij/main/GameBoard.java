@@ -1,6 +1,7 @@
 package pij.main;
 
 import java.io.*;
+import java.util.Arrays;
 import java.util.Scanner;
 
 
@@ -21,9 +22,11 @@ public class GameBoard implements Board{
     private String[][] myBoard;
 
     public GameBoard() {
-        this.inputFile = getInputFile();
-        this.boardSize = getBoardSize();
+        this.inputFile = getInputFile(); //move this to main
+        this.boardSize = getBoardSize(); //move this to main
         //prefer to handle if clause in method outside constructor...
+        //also clearer if we remove conditions and keep simple
+        //put most conditions in main?
         if (!(isValidSize())) {
             System.out.println();
             System.out.println("Sorry, your board needs to be between 12-26 squares wide");
@@ -39,36 +42,49 @@ public class GameBoard implements Board{
     //convert file into arraylist, and then array list into 2d array?
     //ignore A[0][0] as this will have file size, so start from A[0][1]?
     public String[][] convertToBoard(String[][] myBoard) {
-        myBoard[0][0] = "\t";
+        myBoard[0][0] = "";
         char c = 'a';
         for (int a = 1; a < myBoard.length; a++) {
             String d = String.valueOf(c);
-            myBoard[0][a] = "\t" + d;
+            myBoard[0][a] = d;
             c++;
         }
         for (int b = 1; b < myBoard.length; b++) {
             String q = Integer.toString(b);
-            myBoard[b][0] = "\t" + q;
+            myBoard[b][0] = q;
         }
-        Scanner file = null;
-        try {
-            file = new Scanner(inputFile);
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        String regex = "\\{\\d{1,2}\\}|\\.|\\(\\d{1,2}\\)"; //need to ignore first line?
-        //String[] split = new String[boardSize * boardSize];
-        /*for (int s = 0; s < split.length; s++){
-            while (file.hasNextLine()){
-            split[s] = String.valueOf(file.nextLine().split(regex)); //doesn't work
+            try (BufferedReader reader = new BufferedReader(new FileReader(inputFile))) {
+                reader.readLine(); //to skip the first line with board size?
+                String line;
+                while ((line = reader.readLine()) != null) {
+                        for (int i = 1; i < myBoard.length; i++) {
+                            for (int j = 1; j < myBoard.length; j++) {
+                                int charCount = 0;
+                                String sub = "x";
+                                if (line.charAt(charCount) == '{') {
+                                    sub = line.substring(charCount, charCount + 3);
+                                    charCount = charCount + 3;
+                                }
+                                else if (line.charAt(charCount) == '(') {
+                                    sub = line.substring(charCount, charCount + 3);
+                                    charCount = charCount + 3;
+                                }
+                              else if (line.charAt(charCount) == '.') {
+                                   sub = line.substring(charCount, charCount + 1);
+                                   charCount = charCount + 1;
+                               }
+                              myBoard[i][j] = sub;
+
+                            }
+                        }
+                }
+
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
-        }*/
-        /*for (int i = 1; i < myBoard.length; i++) {
-            for (int j = 1; j < myBoard.length; j++) {
-                    myBoard[i][j] = split[i-1]; //do we need i-1 as we need first element in split??
-                    //"\t" +  for formatting?
-            }
-        }*/
+
         System.out.println("File name: " + inputFile);
         System.out.println("Board size: " + boardSize + "x" + boardSize);
         System.out.println("Valid board size: " + isValidSize());
@@ -141,7 +157,7 @@ public class GameBoard implements Board{
         System.out.println();
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board.length; j++) {
-                System.out.print(board[i][j]); //can we right-justify row nums?
+                System.out.print(board[i][j] + "\t"); //can we right-justify row nums? + "\t"
             }
             System.out.println();
         }
