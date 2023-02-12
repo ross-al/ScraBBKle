@@ -14,7 +14,7 @@ import java.util.Scanner;
 
 //need to update board with tiles (and print updated version)
 
-public class GameBoard implements Board{
+public class GameBoard implements Board {
     private File inputFile;
     private int boardSize;
     private int columns;
@@ -53,37 +53,41 @@ public class GameBoard implements Board{
             String q = Integer.toString(b);
             myBoard[b][0] = q;
         }
-            try (BufferedReader reader = new BufferedReader(new FileReader(inputFile))) {
-                reader.readLine(); //to skip the first line with board size?
-                String line;
-                while ((line = reader.readLine()) != null) {
-                        for (int i = 1; i < myBoard.length; i++) {
-                            for (int j = 1; j < myBoard.length; j++) {
-                                int charCount = 0;
-                                String sub = "x";
-                                if (line.charAt(charCount) == '{') {
-                                    sub = line.substring(charCount, charCount + 3);
-                                    charCount = charCount + 3;
-                                }
-                                else if (line.charAt(charCount) == '(') {
-                                    sub = line.substring(charCount, charCount + 3);
-                                    charCount = charCount + 3;
-                                }
-                              else if (line.charAt(charCount) == '.') {
-                                   sub = line.substring(charCount, charCount + 1);
-                                   charCount = charCount + 1;
-                               }
-                              myBoard[i][j] = sub;
+        try (BufferedReader reader = new BufferedReader(new FileReader(inputFile))) {
+            reader.readLine(); //to skip the first line with board size
+            String line;
+            String sub = "x";
+            for (int i = 1; i < myBoard.length; i++) {
+                int charCount = 0;
+                line = reader.readLine();
+                for (int j = 1; j < myBoard.length; j++) {
 
-                            }
-                        }
+                    char ch = line.charAt(charCount);
+                    switch (ch) {
+                        case '{':
+                            sub = line.substring(charCount, charCount + 3);
+                            charCount = charCount + 3;
+                            break;
+                        case '(':
+                            sub = line.substring(charCount, charCount + 3);
+                            charCount = charCount + 3;
+                            break;
+                        case '.':
+                            sub = line.substring(charCount, charCount + 1);
+                            charCount = charCount + 1;
+                            break;
+                    }
+                    myBoard[i][j] = sub;
+
                 }
-
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException(e);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
             }
+
+
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         System.out.println("File name: " + inputFile);
         System.out.println("Board size: " + boardSize + "x" + boardSize);
