@@ -1,29 +1,22 @@
 package pij.main;
 
 import java.io.*;
-import java.util.Arrays;
 import java.util.Scanner;
 
 
-//read second line onwards
-//iterate through to create array
-//need to group strings e.g. {1} . (2)
-
-//method to iterate through board and store letter squares and letter words in hash map?
-//would need to store index and bonus value
+//convert to type Square? YES!
+//square should take: premiumWord, premiumLetter, defaultSquare, Tile
 
 //need to update board with tiles (and print updated version)
 
 public class GameBoard implements Board {
     private File inputFile;
     private int boardSize;
-    private int columns;
-    private int rows;
-    private String[][] myBoard;
+    private Square[][] myBoard;
 
     public GameBoard() {
-        this.inputFile = getInputFile(); //move this to main
-        this.boardSize = getBoardSize(); //move this to main
+        this.inputFile = getInputFile(); //move this to main?
+        this.boardSize = getBoardSize(); //move this to main?
         //prefer to handle if clause in method outside constructor...
         //also clearer if we remove conditions and keep simple
         //put most conditions in main?
@@ -33,32 +26,30 @@ public class GameBoard implements Board {
             //this doesn't update the inputFile and will load the failed board!
             getInputFile();
         }
-        rows = 1 + boardSize;
-        columns = rows;
-        this.myBoard = new String[rows][columns];
+        int rows = 1 + boardSize;
+        int columns = rows;
+        this.myBoard = new Square[rows][columns];
         convertToBoard(myBoard);
     }
 
     //change array type to generic or Tile?
-    public String[][] convertToBoard(String[][] myBoard) {
-        myBoard[0][0] = "";
+    public Square[][] convertToBoard(Square[][] myBoard) {
+        myBoard[0][0] = new Square(" ");
+        //myBoard[0][0].printLabel = " "; //square doesn't have this
         char c = 'a';
         for (int a = 1; a < myBoard.length; a++) {
             String d = String.valueOf(c);
-            myBoard[0][a] = d;
+            myBoard[0][a] = new Square(d);
             c++;
         }
         for (int b = 1; b < myBoard.length; b++) {
             String q = Integer.toString(b);
-            myBoard[b][0] = q;
+            myBoard[b][0] = new Square(q);
         }
         try (BufferedReader reader = new BufferedReader(new FileReader(inputFile))) {
             reader.readLine(); //to skip the first line with board size
             String line;
             String sub = "x";
-
-            //needs to account for -9 and 99 premium square/words
-            //see notes for format {xy and (xy to see if already compliant
             for (int i = 1; i < myBoard.length; i++) {
                 int charCount = 0;
                 line = reader.readLine();
@@ -66,12 +57,10 @@ public class GameBoard implements Board {
                     char ch = line.charAt(charCount);
                     switch (ch) {
                         case '{':
-                            //if statement for {xy e.g. -9 to 99
                             sub = line.substring(charCount, charCount + 3);
                             charCount = charCount + 3;
                             break;
                         case '(':
-                            //if statement for (xy e.g. -9 to 99
                             sub = line.substring(charCount, charCount + 3);
                             charCount = charCount + 3;
                             break;
@@ -80,7 +69,7 @@ public class GameBoard implements Board {
                             charCount = charCount + 1;
                             break;
                     }
-                    myBoard[i][j] = sub;
+                    myBoard[i][j] = new Square(sub);
                 }
             }
         } catch (FileNotFoundException e) {
@@ -131,7 +120,6 @@ public class GameBoard implements Board {
         return inputFile;
     }
 
-    //need to test this method with diff file size
     public int getBoardSize() {
         try (BufferedReader reader = new BufferedReader(new FileReader(inputFile))) {
             String text = reader.readLine();
@@ -154,20 +142,18 @@ public class GameBoard implements Board {
         return boardSize >= 12 && boardSize <= 26;
     }
 
-
-    public void printBoard(String[][] board) {
+    public void printBoard() {
         System.out.println("Your current board: ");
         System.out.println();
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board.length; j++) {
-                System.out.print(board[i][j] + "\t"); //can we right-justify row nums? + "\t"
+        for (int i = 0; i < myBoard.length; i++) {
+            for (int j = 0; j < myBoard.length; j++) {
+                System.out.print(myBoard[i][j].printLabel + "\t"); //can we right-justify row nums? + "\t"
             }
             System.out.println();
         }
     }
 
-
-    public String[][] getMyBoard() {
+    public Square[][] getMyBoard() {
         return myBoard;
     }
 }
