@@ -4,5 +4,6 @@ public class ScoreBoard {
 
     //keeps track of scores and prints
     //calculates winner, loser, draw
+    //could just use Player class?
 
 }
