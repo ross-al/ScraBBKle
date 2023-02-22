@@ -16,6 +16,7 @@ public class ScrabbkleBoard implements Board {
 
     public ScrabbkleBoard() {
         this.inputFile = getInputFile();
+        this.boardSize = getBoardSize();
         if (!(isValidSize())) {
             System.out.println();
             System.out.println("Sorry, your board needs to be between 12-26 squares wide");
