@@ -1,15 +1,6 @@
 package pij.main;
 
-
-
-public class HumanPlayer extends ScrabbklePlayer {
-    String playerName;
-    int score;
-    TileRack tileRack;
-
-    public HumanPlayer(String name){
-        this.playerName = name;
-    }
+abstract class ScrabbklePlayer implements Player{ //abstract class? need to be public?
 
     @Override
     public int calculateScore() {

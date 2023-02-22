@@ -1,14 +1,15 @@
 package pij.main;
 
+//NEED JAVADOC!
 public interface Player {
 
     int calculateScore();
 
     int getCurrentScore();
 
-    Tile fetchTile();
+    ScrabbkleTile fetchTile();
 
-    Tile placeTile();
+    ScrabbkleTile placeTile();
 
-    Tile playWord();
+    ScrabbkleTile playWord();
 }
