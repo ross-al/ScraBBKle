@@ -1,8 +1,9 @@
 package pij.main;
 
-public class TileBag {
-    //how many starting letters?
-    //need counter for how many letters left
+public interface TileBag {
 
-    //do we need to track used letters? e.g. usedLetters()
+    int getTileCounter();
+    boolean isEmtpy();
+    void fillTileBag();
+
 }
