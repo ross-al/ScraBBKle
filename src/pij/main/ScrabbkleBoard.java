@@ -9,17 +9,13 @@ import java.util.Scanner;
 
 //need to update board with tiles (and print updated version)
 
-public class GameBoard implements Board {
+public class ScrabbkleBoard implements Board {
     private File inputFile;
     private int boardSize;
-    private Square[][] myBoard;
+    private ScrabbkleSquare[][] myBoard;
 
-    public GameBoard() {
-        this.inputFile = getInputFile(); //move this to main?
-        this.boardSize = getBoardSize(); //move this to main?
-        //prefer to handle if clause in method outside constructor...
-        //also clearer if we remove conditions and keep simple
-        //put most conditions in main?
+    public ScrabbkleBoard() {
+        this.inputFile = getInputFile();
         if (!(isValidSize())) {
             System.out.println();
             System.out.println("Sorry, your board needs to be between 12-26 squares wide");
@@ -28,23 +24,22 @@ public class GameBoard implements Board {
         }
         int rows = 1 + boardSize;
         int columns = rows;
-        this.myBoard = new Square[rows][columns];
+        this.myBoard = new ScrabbkleSquare[rows][columns];
         convertToBoard(myBoard);
     }
 
-    //change array type to generic or Tile?
-    public Square[][] convertToBoard(Square[][] myBoard) {
-        myBoard[0][0] = new Square(" ");
-        //myBoard[0][0].printLabel = " "; //square doesn't have this
+
+    public ScrabbkleSquare[][] convertToBoard(ScrabbkleSquare[][] myBoard) {
+        myBoard[0][0] = new ScrabbkleSquare(" ");
         char c = 'a';
         for (int a = 1; a < myBoard.length; a++) {
             String d = String.valueOf(c);
-            myBoard[0][a] = new Square(d);
+            myBoard[0][a] = new ScrabbkleSquare(d);
             c++;
         }
         for (int b = 1; b < myBoard.length; b++) {
             String q = Integer.toString(b);
-            myBoard[b][0] = new Square(q);
+            myBoard[b][0] = new ScrabbkleSquare(q);
         }
         try (BufferedReader reader = new BufferedReader(new FileReader(inputFile))) {
             reader.readLine(); //to skip the first line with board size
@@ -69,7 +64,7 @@ public class GameBoard implements Board {
                             charCount = charCount + 1;
                             break;
                     }
-                    myBoard[i][j] = new Square(sub);
+                    myBoard[i][j] = new ScrabbkleSquare(sub);
                 }
             }
         } catch (FileNotFoundException e) {
@@ -147,13 +142,13 @@ public class GameBoard implements Board {
         System.out.println();
         for (int i = 0; i < myBoard.length; i++) {
             for (int j = 0; j < myBoard.length; j++) {
-                System.out.print(myBoard[i][j].printLabel + "\t"); //can we right-justify row nums? + "\t"
+                System.out.print(myBoard[i][j].getPrintLabel() + "\t"); //can we right-justify row nums? + "\t"
             }
             System.out.println();
         }
     }
 
-    public Square[][] getMyBoard() {
+    public ScrabbkleSquare[][] getMyBoard() {
         return myBoard;
     }
 }
