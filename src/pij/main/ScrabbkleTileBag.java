@@ -8,7 +8,7 @@ public class ScrabbkleTileBag implements TileBag{
     private int tileCounter;
 
     public ScrabbkleTileBag(){
-        scrabbkleTileBag = new ArrayList<ScrabbkleTile>();
+        scrabbkleTileBag = new ArrayList<>();
         tileCounter = 0;
     }
 
@@ -18,11 +18,11 @@ public class ScrabbkleTileBag implements TileBag{
     //do we need to track used letters? e.g. usedLetters()
 
     public int getTileCounter(){
-        return this.tileCounter;
+        return this.tileCounter; //can we get ArrayList size() instead?
     }
 
-    public boolean isEmtpy(){
-        return tileCounter > 0;
+    public boolean isEmpty(){
+        return (!(tileCounter > 0));
     }
 
     public void fillTileBag() {
