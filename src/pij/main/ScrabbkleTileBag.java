@@ -6,11 +6,9 @@ import java.util.Collections;
 
 public class ScrabbkleTileBag implements TileBag{
     private ArrayList<ScrabbkleTile> scrabbkleTileBag;
-    private int tileCounter;
 
     public ScrabbkleTileBag(){
         scrabbkleTileBag = new ArrayList<>();
-        tileCounter = 0;
     }
 
     //use a map for tile counter, map can sum all?
@@ -18,17 +16,13 @@ public class ScrabbkleTileBag implements TileBag{
     //need counter for how many letters left
     //do we need to track used letters? e.g. usedLetters()
 
-    public int getTileCounter(){
-        return this.tileCounter; //can we get ArrayList size() instead?
-    }
-
     @Override
     public int getSize() {
         return scrabbkleTileBag.size();
     }
 
     public boolean isEmpty(){
-        return (!(tileCounter > 0));
+        return (!(getSize() > 0));
     }
 
     public void shuffleBag(){
@@ -38,139 +32,113 @@ public class ScrabbkleTileBag implements TileBag{
     @Override
     public Tile getRandomTile() {
         shuffleBag();
-        return scrabbkleTileBag.remove(0);
+        return scrabbkleTileBag.remove(0); //need to consider IndexOutOfBounds
     }
 
     public void fillTileBag() {
         for (int i = 0; i < 12; i++) {
             ScrabbkleTile scrabbkleTile = new ScrabbkleTile('E');
             scrabbkleTileBag.add(scrabbkleTile);
-            tileCounter++;
         }
         for (int i = 0; i < 9; i++) {
             ScrabbkleTile scrabbkleTile = new ScrabbkleTile('A');
             scrabbkleTileBag.add(scrabbkleTile);
-            tileCounter++;
         }
         for (int i = 0; i < 9; i++) {
             ScrabbkleTile scrabbkleTile = new ScrabbkleTile('I');
             scrabbkleTileBag.add(scrabbkleTile);
-            tileCounter++;
         }
         for (int i = 0; i < 8; i++) {
             ScrabbkleTile scrabbkleTile = new ScrabbkleTile('O');
             scrabbkleTileBag.add(scrabbkleTile);
-            tileCounter++;
         }
         for (int i = 0; i < 6; i++) {
             ScrabbkleTile scrabbkleTile = new ScrabbkleTile('N');
             scrabbkleTileBag.add(scrabbkleTile);
-            tileCounter++;
         }
         for (int i = 0; i < 6; i++) {
             ScrabbkleTile scrabbkleTile = new ScrabbkleTile('R');
             scrabbkleTileBag.add(scrabbkleTile);
-            tileCounter++;
         }
         for (int i = 0; i < 6; i++) {
             ScrabbkleTile scrabbkleTile = new ScrabbkleTile('T');
             scrabbkleTileBag.add(scrabbkleTile);
-            tileCounter++;
         }
         for (int i = 0; i < 4; i++) {
             ScrabbkleTile scrabbkleTile = new ScrabbkleTile('L');
             scrabbkleTileBag.add(scrabbkleTile);
-            tileCounter++;
         }
         for (int i = 0; i < 4; i++) {
             ScrabbkleTile scrabbkleTile = new ScrabbkleTile('S');
             scrabbkleTileBag.add(scrabbkleTile);
-            tileCounter++;
         }
         for (int i = 0; i < 4; i++) {
             ScrabbkleTile scrabbkleTile = new ScrabbkleTile('U');
             scrabbkleTileBag.add(scrabbkleTile);
-            tileCounter++;
         }
         for (int i = 0; i < 4; i++) {
             ScrabbkleTile scrabbkleTile = new ScrabbkleTile('D');
             scrabbkleTileBag.add(scrabbkleTile);
-            tileCounter++;
         }
         for (int i = 0; i < 3; i++) {
             ScrabbkleTile scrabbkleTile = new ScrabbkleTile('G');
             scrabbkleTileBag.add(scrabbkleTile);
-            tileCounter++;
         }
         for (int i = 0; i < 2; i++) {
             ScrabbkleTile scrabbkleTile = new ScrabbkleTile('B');
             scrabbkleTileBag.add(scrabbkleTile);
-            tileCounter++;
         }
         for (int i = 0; i < 2; i++) {
             ScrabbkleTile scrabbkleTile = new ScrabbkleTile('C');
             scrabbkleTileBag.add(scrabbkleTile);
-            tileCounter++;
         }
         for (int i = 0; i < 2; i++) {
             ScrabbkleTile scrabbkleTile = new ScrabbkleTile('M');
             scrabbkleTileBag.add(scrabbkleTile);
-            tileCounter++;
         }
         for (int i = 0; i < 2; i++) {
             ScrabbkleTile scrabbkleTile = new ScrabbkleTile('P');
             scrabbkleTileBag.add(scrabbkleTile);
-            tileCounter++;
         }
         for (int i = 0; i < 2; i++) {
             ScrabbkleTile scrabbkleTile = new ScrabbkleTile('F');
             scrabbkleTileBag.add(scrabbkleTile);
-            tileCounter++;
         }
         for (int i = 0; i < 2; i++) {
             ScrabbkleTile scrabbkleTile = new ScrabbkleTile('H');
             scrabbkleTileBag.add(scrabbkleTile);
-            tileCounter++;
         }
         for (int i = 0; i < 2; i++) {
             ScrabbkleTile scrabbkleTile = new ScrabbkleTile('V');
             scrabbkleTileBag.add(scrabbkleTile);
-            tileCounter++;
         }
         for (int i = 0; i < 2; i++) {
             ScrabbkleTile scrabbkleTile = new ScrabbkleTile('W');
             scrabbkleTileBag.add(scrabbkleTile);
-            tileCounter++;
         }
         for (int i = 0; i < 2; i++) {
             ScrabbkleTile scrabbkleTile = new ScrabbkleTile('Y');
             scrabbkleTileBag.add(scrabbkleTile);
-            tileCounter++;
         }
         for (int i = 0; i < 1; i++) {
             ScrabbkleTile scrabbkleTile = new ScrabbkleTile('K');
             scrabbkleTileBag.add(scrabbkleTile);
-            tileCounter++;
         }
         for (int i = 0; i < 1; i++) {
             ScrabbkleTile scrabbkleTile = new ScrabbkleTile('J');
             scrabbkleTileBag.add(scrabbkleTile);
-            tileCounter++;
         }
         for (int i = 0; i < 1; i++) {
             ScrabbkleTile scrabbkleTile = new ScrabbkleTile('X');
             scrabbkleTileBag.add(scrabbkleTile);
-            tileCounter++;
         }
         for (int i = 0; i < 1; i++) {
             ScrabbkleTile scrabbkleTile = new ScrabbkleTile('Q');
             scrabbkleTileBag.add(scrabbkleTile);
-            tileCounter++;
         }
         for (int i = 0; i < 1; i++) {
             ScrabbkleTile scrabbkleTile = new ScrabbkleTile('Z');
             scrabbkleTileBag.add(scrabbkleTile);
-            tileCounter++;
         }
     }
 }
