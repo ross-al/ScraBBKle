@@ -3,7 +3,7 @@ package pij.main;
 public interface TileRack {
     void addTile(ScrabbkleTile myTile);
     int getSize();
-    void printRank();
+    void printRack();
 
 
     //contains up to 7 tiles

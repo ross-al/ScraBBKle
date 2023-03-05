@@ -2,6 +2,11 @@ package pij.main;
 
 import java.util.ArrayList;
 
+//MUST LIMIT NUMBER OF TILES
+//loop to draw x tiles to start
+//then method to draw one tile at a time as long as bag is not empty
+//and rack is not full
+
 public class ScrabbkleTileRack implements TileRack{
     private ArrayList<ScrabbkleTile> myTileRack;
 
@@ -19,7 +24,7 @@ public class ScrabbkleTileRack implements TileRack{
         return myTileRack.size();
     }
 
-    public void printRank(){
+    public void printRack(){
         for (int i =0; i<myTileRack.size(); i++ ){
             System.out.print(myTileRack.get(i).getPrintInTileRackFormat());
         }
