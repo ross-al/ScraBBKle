@@ -30,7 +30,7 @@ public class ScrabbkleTileBag implements TileBag{
     }
 
     @Override
-    public Tile getRandomTile() {
+    public ScrabbkleTile getRandomTile() {
         shuffleBag();
         return scrabbkleTileBag.remove(0); //need to consider IndexOutOfBounds
     }
