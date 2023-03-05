@@ -1,6 +1,7 @@
 package pij.main;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 
 public class ScrabbkleTileBag implements TileBag{
@@ -21,8 +22,23 @@ public class ScrabbkleTileBag implements TileBag{
         return this.tileCounter; //can we get ArrayList size() instead?
     }
 
+    @Override
+    public int getSize() {
+        return scrabbkleTileBag.size();
+    }
+
     public boolean isEmpty(){
         return (!(tileCounter > 0));
+    }
+
+    public void shuffleBag(){
+        Collections.shuffle(scrabbkleTileBag);
+    }
+
+    @Override
+    public Tile getRandomTile() {
+        shuffleBag();
+        return scrabbkleTileBag.remove(0);
     }
 
     public void fillTileBag() {
