@@ -13,4 +13,7 @@ public class HumanPlayer extends ScrabbklePlayer {
         return playerName;
     }
 
+    //use wildCard()
+    //get string input
+
 }

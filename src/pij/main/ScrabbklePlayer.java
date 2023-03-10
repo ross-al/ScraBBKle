@@ -2,9 +2,9 @@ package pij.main;
 
 import java.util.ArrayList;
 
-abstract class ScrabbklePlayer implements Player{ //abstract class? need to be public?
+abstract class ScrabbklePlayer implements Player{
     int score;
-    private ArrayList<ScrabbkleTile> myTileRack;
+    private ArrayList<ScrabbkleTile> myTileRack;//need to restrinct to 7 tiles
 
     public ScrabbklePlayer(){
         myTileRack = new ArrayList<>();
@@ -21,7 +21,7 @@ abstract class ScrabbklePlayer implements Player{ //abstract class? need to be p
     }
 
     public void printRack(){
-        for (int i =0; i<myTileRack.size(); i++ ){
+        for (int i =0; i < myTileRack.size(); i++ ){
             System.out.print(myTileRack.get(i).getPrintInTileRackFormat());
         }
     }
@@ -44,6 +44,8 @@ abstract class ScrabbklePlayer implements Player{ //abstract class? need to be p
 
     @Override
     public ScrabbkleTile playWord() {
+        //HumanPlayer first move MUST be in centre square
+        //if board is even, then top left square in centre is centre square
         return null;
     }
 }

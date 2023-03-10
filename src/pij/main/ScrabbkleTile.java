@@ -4,10 +4,18 @@ public class ScrabbkleTile implements Tile{
     private char letter;
     private int value;
 
+    //constructor for letters
     public ScrabbkleTile(char letter){
-        this.letter = Character.toUpperCase(letter);
-        this.value = calculateTileValue(this.letter); //need wildcard logic, needs small letter 'w' not 'W' when played
+        this.letter = letter;
+        this.value = calculateTileValue(this.letter);
     }
+
+    //constructor for wildcard
+    //public ScrabbkleTile(){
+       // this.letter = ' ';
+        //this.value = calculateTileValue(this.letter);
+    //}
+
 
     public char getLetter(){
         return this.letter;
@@ -18,17 +26,22 @@ public class ScrabbkleTile implements Tile{
     }
 
     public String getPrintInTileRackFormat(){
-        char upperCaseLetter = Character.toUpperCase(letter); //we don't want this for WildCard tiles
-        return "[" + upperCaseLetter + value + "]";
+        //char upperCaseLetter = Character.toUpperCase(letter); //we don't want this for WildCard tiles
+        return "[" + letter + value + "]";
     }
 
     public String getPrintOnBoardFormat(){
-        char upperCaseLetter = Character.toUpperCase(letter); //we don't want this for WildCard tiles
-        return upperCaseLetter + String.valueOf(value);
+        //char upperCaseLetter = Character.toUpperCase(letter); //we don't want this for WildCard tiles
+        return letter + String.valueOf(value);
+    }
+
+    public void assignWildCard(String str){
+        char wildCard = str.charAt(0);
+        this.letter = Character.toLowerCase(wildCard);
+
     }
 
     public int calculateTileValue(char letter){ //need wildcard logic too
-        //need to cast to UpperCase?
         int value;
         switch (letter){
             case 'A':

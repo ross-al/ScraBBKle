@@ -73,11 +73,11 @@ public class ScrabbkleBoard implements Board {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        System.out.println("File name: " + inputFile);
+/*        System.out.println("File name: " + inputFile);
         System.out.println("Board size: " + boardSize + "x" + boardSize);
         System.out.println("Valid board size: " + isValidSize());
         System.out.println("Your board is ready! GAME ON!");
-        System.out.println();
+        System.out.println();*/
         return myBoard;
     }
 

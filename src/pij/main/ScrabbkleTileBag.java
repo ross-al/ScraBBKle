@@ -140,6 +140,10 @@ public class ScrabbkleTileBag implements TileBag{
             ScrabbkleTile scrabbkleTile = new ScrabbkleTile('Z');
             scrabbkleTileBag.add(scrabbkleTile);
         }
+        for (int i = 0; i < 2; i++) {
+            ScrabbkleTile scrabbkleTile = new ScrabbkleTile(' '); //wildcards
+            scrabbkleTileBag.add(scrabbkleTile);
+        }
     }
 }
 
