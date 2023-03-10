@@ -6,6 +6,7 @@ import java.util.ArrayList;
 //loop to draw x tiles to start
 //then method to draw one tile at a time as long as bag is not empty
 //and rack is not full
+//manage in main?
 
 public class ScrabbkleTileRack implements TileRack{
     private ArrayList<ScrabbkleTile> myTileRack;

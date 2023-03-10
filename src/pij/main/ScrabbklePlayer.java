@@ -1,21 +1,41 @@
 package pij.main;
 
+import java.util.ArrayList;
+
 abstract class ScrabbklePlayer implements Player{ //abstract class? need to be public?
+    int score;
+    private ArrayList<ScrabbkleTile> myTileRack;
+
+    public ScrabbklePlayer(){
+        myTileRack = new ArrayList<>();
+    }
 
     @Override
-    public int calculateScore() {
+    public void addTileToRack(ScrabbkleTile myTile) {
+        myTileRack.add(myTile);
+    }
+
+    @Override
+    public int getRackSize() {
+        return myTileRack.size();
+    }
+
+    public void printRack(){
+        for (int i =0; i<myTileRack.size(); i++ ){
+            System.out.print(myTileRack.get(i).getPrintInTileRackFormat());
+        }
+    }
+
+    @Override
+    public int calculateWordScore() {
         return 0;
     }
 
     @Override
-    public int getCurrentScore() {
-        return 0;
+    public int getPlayerScore() {
+        return score;
     }
 
-    @Override
-    public ScrabbkleTile fetchTile() {
-        return null;
-    }
 
     @Override
     public ScrabbkleTile placeTile() {
