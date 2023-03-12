@@ -1,5 +1,7 @@
 package pij.main;
 
+import java.sql.SQLOutput;
+
 public class Main {
     public static void main(String[] args) {
         Main launcher = new Main();
@@ -7,11 +9,57 @@ public class Main {
     }
 
     public void launch() {
+        //create empty board based on default board or user provided board
+        ScrabbkleBoard board = new ScrabbkleBoard();
+
+        //create wordlist based on provided wordlist
         ScrabbkleWordList myWordList = new ScrabbkleWordList();
-        ScrabbkleWord myWord = new ScrabbkleWord("apple"); //only prints string. need Tile input?
+
+        //create tileBag and fill bag with tiles
+        ScrabbkleTileBag tileBag = new ScrabbkleTileBag();
+        tileBag.fillTileBag();
+
+        //create one human player and one computer player
+        HumanPlayer humanPlayer = new HumanPlayer(board, myWordList,tileBag);
+        ComputerPlayer computerPlayer = new ComputerPlayer(board, myWordList,tileBag);
+
+        //start game play
+        boolean gameEnded = false;
+        System.out.println();
+        while (!gameEnded){
+            humanPlayer.playMove();
+            computerPlayer.playMove();
+            gameEnded = true;
+        }
+        int humanFinalScore = humanPlayer.getPlayerScore();
+        int computerFinalScore = computerPlayer.getPlayerScore();
+        System.out.println("Game Over!");
+        System.out.println("The human player scored " + humanFinalScore +" points.");
+        System.out.println("The computer player scored " + computerFinalScore +" points.");
+        if (humanFinalScore > computerFinalScore){
+            System.out.println("The human player wins!");
+        } else if (computerFinalScore > humanFinalScore){
+            System.out.println("The computer player wins!");
+        } else {
+            System.out.println("It's a draw!");
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+ /*       ScrabbkleWord myWord = new ScrabbkleWord("apple"); //only prints string. need Tile input?
         System.out.println(myWord); //won't print type Word
         System.out.println(myWordList.isWord(myWord)); //won't print type Word
-        System.out.println(myWordList.isWord("aa"));
+        System.out.println(myWordList.isWord("aa"));*/
 
 
         //System.out.println(myTile.toString());
@@ -19,8 +67,8 @@ public class Main {
         //System.out.println(myTile2.toString());
 
 
-        ScrabbkleBoard board = new ScrabbkleBoard();
-        board.printBoard();
+
+    /*    board.printBoard();
         System.out.println("Square 00: ");
         System.out.println(board.getMyBoard()[0][0].getPremiumLetterValue());
         System.out.println("Should be 3: ");
@@ -43,16 +91,12 @@ public class Main {
         board.getMyBoard()[3][1].setTile(myScrabbkleTile3);
 
         board.printBoard();
-        ScrabbkleTileBag tileBag = new ScrabbkleTileBag();
-        System.out.println("bag is empty :" + tileBag.isEmtpy());
-        System.out.println("bag contains: " + tileBag.getTileCounter() + " tiles");
+
+        System.out.println("bag is empty: " + tileBag.isEmpty());
+        System.out.println("bag contains: " + tileBag.getSize() + " tiles");*/
 
 
-
-        //gameplay code here
 
         }
-
-
 
 }
