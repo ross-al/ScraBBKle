@@ -25,12 +25,36 @@ public class Main {
 
         //start game play
         boolean gameEnded = false;
+        //fill player tile racks to enter gameplay loop
+        humanPlayer.fillRack();
+        computerPlayer.fillRack();
+
         System.out.println();
+        //continue loop until game over
+        //game continues until tileBag is empty, and one of the player racks is empty
         while (!gameEnded){
-            humanPlayer.playMove();
-            computerPlayer.playMove();
-            gameEnded = true;
+            //check if player racks are empty
+            boolean isHumanRackEmpty = humanPlayer.getTileRack().isEmpty();
+            boolean isComputerRackEmpty = computerPlayer.getTileRack().isEmpty();
+            //human player plays first
+            humanPlayer.isPlayerTurn = true;
+            computerPlayer.isPlayerTurn = false;
+            while (humanPlayer.isPlayerTurn){
+                humanPlayer.playMove();
+                humanPlayer.isPlayerTurn = false;
+                computerPlayer.isPlayerTurn = true;
+            }
+            while(computerPlayer.isPlayerTurn) {
+                computerPlayer.playMove();
+                computerPlayer.isPlayerTurn = false;
+                humanPlayer.isPlayerTurn = true;
+            }
+            if ((tileBag.isEmpty()) && isHumanRackEmpty || isComputerRackEmpty) {
+                gameEnded = true;
+            }
         }
+
+        //calculate scores and declare winner
         int humanFinalScore = humanPlayer.getPlayerScore();
         int computerFinalScore = computerPlayer.getPlayerScore();
         System.out.println("Game Over!");

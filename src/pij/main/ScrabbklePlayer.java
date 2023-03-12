@@ -3,8 +3,9 @@ package pij.main;
 import java.util.ArrayList;
 
 public class ScrabbklePlayer implements Player{
+    protected boolean isPlayerTurn;
     private int score;
-    private ArrayList<ScrabbkleTile> myTileRack;//need to restrict to 7 tiles
+    private ArrayList<ScrabbkleTile> tileRack;//need to restrict to 7 tiles
     private ScrabbkleBoard board;
     private WordList wordList;
     private ScrabbkleTileBag tileBag;
@@ -13,12 +14,12 @@ public class ScrabbklePlayer implements Player{
         this.board = board;
         this.wordList = wordList;
         this.tileBag = tileBag;
-        myTileRack = new ArrayList<>();
+        tileRack = new ArrayList<>();
     }
 
     public void fillRack(){
         if (!tileBag.isEmpty()) {
-            while (myTileRack.size()<7){
+            while (tileRack.size()<7){
                 addTileToRack();
             }
         }
@@ -28,17 +29,17 @@ public class ScrabbklePlayer implements Player{
     public void addTileToRack() {
 
         ScrabbkleTile myTile = tileBag.getRandomTile();
-        myTileRack.add(myTile);
+        tileRack.add(myTile);
     }
 
 
     public void printRack(){
         System.out.println();
-        if (!(myTileRack.isEmpty())) {
+        if (!(tileRack.isEmpty())) {
             System.out.println("It's your turn! Your tiles: ");
-            System.out.print(myTileRack.get(0).getPrintInTileRackFormat());
-            for (int i = 1; i < myTileRack.size(); i++) {
-                System.out.print(", " + myTileRack.get(i).getPrintInTileRackFormat());
+            System.out.print(tileRack.get(0).getPrintInTileRackFormat());
+            for (int i = 1; i < tileRack.size(); i++) {
+                System.out.print(", " + tileRack.get(i).getPrintInTileRackFormat());
             }
         }
         else {
@@ -73,5 +74,9 @@ public class ScrabbklePlayer implements Player{
 
     public ScrabbkleBoard getBoard(){
         return board;
+    }
+
+    public ArrayList<ScrabbkleTile> getTileRack(){
+        return tileRack;
     }
 }
