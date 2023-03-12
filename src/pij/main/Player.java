@@ -3,9 +3,7 @@ package pij.main;
 //NEED JAVADOC!
 public interface Player {
 
-    void addTileToRack(ScrabbkleTile myTile);
-
-    int getRackSize();
+    void addTileToRack();
 
     int calculateWordScore();
 
