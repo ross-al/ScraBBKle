@@ -3,11 +3,10 @@ package pij.main;
 import java.io.*;
 import java.util.Scanner;
 
+//NEED TO FIX MESSAGING
+//WHILE FALSE LOOP:
+//"This is not a valid file. Please enter the file name of the board:"
 
-//convert to type Square? YES!
-//square should take: premiumWord, premiumLetter, defaultSquare, Tile
-
-//need to update board with tiles (and print updated version)
 
 public class ScrabbkleBoard implements Board {
     private File inputFile;
