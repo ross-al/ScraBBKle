@@ -6,9 +6,10 @@ import java.io.File;
 public interface Board {
 
     ScrabbkleSquare[][] convertToBoard(ScrabbkleSquare[][] board);
-    File getInputFile(); //
-    int getBoardSize(); //why is this not used?
+    File getInputFile();
+    int getBoardSize();
     boolean isValidSize();
     void printBoard();
-    ScrabbkleSquare[][] getMyBoard();
+    ScrabbkleSquare[][] getMyBoard(); //remove if redundant
+    int getStartSquare();
 }

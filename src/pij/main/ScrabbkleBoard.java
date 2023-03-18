@@ -151,4 +151,16 @@ public class ScrabbkleBoard implements Board {
     public ScrabbkleSquare[][] getMyBoard() {
         return myBoard;
     }
+
+    public int getStartSquare(){
+        int startSquare = 0;
+        if ((boardSize % 2) == 0) {
+            // board size is even
+            startSquare = boardSize/2;
+        } else {
+            // board size is odd
+            startSquare = (boardSize+1)/2;
+        }
+        return startSquare;
+    }
 }
