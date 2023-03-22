@@ -27,20 +27,21 @@ public class HumanPlayer extends ScrabbklePlayer {
             movePosition = instructions[1];
             moveDirection = instructions[2];
 
-            //check if word is valid (should be in super)??
+            //check if word is valid
             isValidWord(moveWord);
+            //check if position is valid
+            isValidPosition(movePosition);
+            //check if direction is valid
+            isValidDirection(moveDirection);
 
             //check if correct tiles in rack
             //check if correct tiles on board already
 
-            //check if position is valid
-            isValidPosition(movePosition);
-
-            //check if direction is valid
-
             //check if had wildcard (should be in super?, or limit wildcard to human)
-            //place word on board
 
+            //place word on board
+            //need to remove tile from rack?
+            //remove it during move and pass as parameter to placeTile(tile, col, row)
 
 
             //print word on  board //(should be in super)
@@ -78,29 +79,31 @@ public class HumanPlayer extends ScrabbklePlayer {
         return super.getWordList().isWord(str);
     }
 
-    public boolean isValidPosition(String movePosition){
+    public boolean isValidPosition(String movePosition) {
         //assume position is not valid at first
         boolean validPosition = false;
         //get col and row as int 
         int col = getPositionColumn(movePosition);
         int row = getPositionRow(movePosition);
         //check if this is humanPlayer's first move
-        if(!isFirstMove()){
-            //this should be in super as applies to both classes //CREATE METHOD IN SUPER
-            //check position is legal
-            //need to check if squares are empty?
-            //need to check if any adjacent squares?
+        if (!isFirstMove()) {
+            //check if legalPosition in super
+            if (super.isLegalPosition(col, row)) {
+                validPosition = true;
+            }
         } else {
             //if humanPlayer's first move:
             //check if first position matches startSquare in Board
             //return true if so
             int startSquare = getBoard().getStartSquare();
-            if((col == startSquare) && (row == startSquare)){
+            if ((col == startSquare) && (row == startSquare)) {
                 validPosition = true;
+                firstMove = false;
+                }
             }
-        }
         return validPosition;
-    }
+        }
+
 
     public boolean isFirstMove(){
         return (firstMove);

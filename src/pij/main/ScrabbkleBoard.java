@@ -72,11 +72,6 @@ public class ScrabbkleBoard implements Board {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-/*        System.out.println("File name: " + inputFile);
-        System.out.println("Board size: " + boardSize + "x" + boardSize);
-        System.out.println("Valid board size: " + isValidSize());
-        System.out.println("Your board is ready! GAME ON!");
-        System.out.println();*/
         return myBoard;
     }
 
@@ -142,13 +137,13 @@ public class ScrabbkleBoard implements Board {
         System.out.println();
         for (int i = 0; i < myBoard.length; i++) {
             for (int j = 0; j < myBoard.length; j++) {
-                System.out.print(myBoard[i][j].getPrintLabel() + "\t"); //can we right-justify row nums? + "\t"
+                System.out.print(myBoard[i][j].getPrintLabel() + "\t");
             }
             System.out.println();
         }
     }
 
-    public ScrabbkleSquare[][] getMyBoard() {
+    public ScrabbkleSquare[][] getBoard() {
         return myBoard;
     }
 

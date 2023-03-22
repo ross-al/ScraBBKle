@@ -9,7 +9,7 @@ public interface Player {
 
     int getPlayerScore();
 
-    ScrabbkleTile placeTile();
+    void placeTile(ScrabbkleTile tile, int col, int row);
 
-    ScrabbkleTile playWord();
+    ScrabbkleTile playWord(); //remove if redundant
 }
