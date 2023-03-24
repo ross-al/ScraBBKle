@@ -12,10 +12,12 @@ public class ScrabbkleBoard implements Board {
     private File inputFile;
     private int boardSize;
     private ScrabbkleSquare[][] myBoard;
+    private int startSquare;
 
     public ScrabbkleBoard() {
         this.inputFile = getInputFile();
         this.boardSize = getBoardSize();
+        this.startSquare = calculateStartSquare(boardSize);
         if (!(isValidSize())) {
             System.out.println();
             System.out.println("Sorry, your board needs to be between 12-26 squares wide");
@@ -147,15 +149,14 @@ public class ScrabbkleBoard implements Board {
         return myBoard;
     }
 
-    public int getStartSquare(){
-        int startSquare = 0;
-        if ((boardSize % 2) == 0) {
-            // board size is even
-            startSquare = boardSize/2;
-        } else {
-            // board size is odd
-            startSquare = (boardSize+1)/2;
-        }
+    public int calculateStartSquare(int boardSize){
+        int input = boardSize -1;
+        startSquare = input/2;
         return startSquare;
+    }
+
+    //used for testing
+    public int getStartSquare(){
+        return this.startSquare;
     }
 }
