@@ -3,36 +3,49 @@ package pij.main;
 import java.util.Scanner;
 
 public class HumanPlayer extends ScrabbklePlayer {
-    String moveWord;
-    String movePosition;
-    String moveDirection;
-    boolean firstMove = true;
+    private String moveWord;
+    private String movePosition;
+    private String moveDirection;
+    private boolean firstMove = true;
 
     public HumanPlayer(ScrabbkleBoard board, ScrabbkleWordList wordList, ScrabbkleTileBag tileBag) {
         super(board, wordList, tileBag);
     }
 
     public void playMove() {
-        getBoard().printBoard();
-        fillRack();
-        printRack();
-        String move = getPlayerMove();
-        if(!isSkip(move)){
-            //need while loop to check if valid move and print
-            //"This is not a valid move." if not
+        boolean validMove = false;
+        while (!validMove) {
+            String move = getPlayerMove();
+            if (!isSkip(move)) {
+                //split player instructions into string array
+                String[] instructions = interpretPlayerMove(move);
+                moveWord = instructions[0];
+                movePosition = instructions[1];
+                moveDirection = instructions[2];
+                //check if valid word, position and direction
+                //if (isValidMove()) {
+                   validMove = true;
+                    //rest of code here?????
 
-            //split player instructions into string array
-            String[] instructions =  interpretPlayerMove(move);
-            moveWord = instructions[0];
-            movePosition = instructions[1];
-            moveDirection = instructions[2];
 
-            //check if word is valid
-            isValidWord(moveWord);
-            //check if position is valid
-            isValidPosition(movePosition);
-            //check if direction is valid
-            isValidDirection(moveDirection);
+                    //print move summary, scores and updated board
+                   System.out.print("The move is: " + moveWord);
+                   System.out.print(" at position " + movePosition + ",");
+                   System.out.print(" direction: "+ getMoveDirection());
+                //} else {
+                    //System.out.println("This is not a valid move");
+               // }
+            } else {
+                //skip move
+               // validMove = true;
+                return;
+            }
+        }
+   }
+
+
+
+
 
             //check if correct tiles in rack
             //check if correct tiles on board already
@@ -51,11 +64,8 @@ public class HumanPlayer extends ScrabbklePlayer {
             //return to end move
 
 
-        } else {
-            //skip move
-            return;
-        }
-    }
+
+
 
     public String getPlayerMove(){
         System.out.println("Please enter your move with letter sequence, position, and");
@@ -75,9 +85,15 @@ public class HumanPlayer extends ScrabbklePlayer {
         return word.split(",");
     }
 
+
+    public boolean isValidMove(){
+        return (isValidWord(moveWord) && isValidPosition(movePosition) && isValidDirection(moveDirection));
+    }
+
     public boolean isValidWord(String str){
         return super.getWordList().isWord(str);
     }
+
 
     public boolean isValidPosition(String movePosition) {
         //assume position is not valid at first
@@ -88,6 +104,7 @@ public class HumanPlayer extends ScrabbklePlayer {
         //check if this is humanPlayer's first move
         if (!isFirstMove()) {
             //check if legalPosition in super
+            //PLACEHOLDER SUPER METHOD DOESN'T WORK YET!!!!!!!!!
             if (super.isLegalPosition(col, row)) {
                 validPosition = true;
             }
@@ -123,27 +140,27 @@ public class HumanPlayer extends ScrabbklePlayer {
         }
     }
 
+   //REMOVE IF REDUNDANT ??????????
     public String getMoveWord(){
         return moveWord;
     }
 
+    //used for testing
     public String getMovePosition(){
         return movePosition;
     }
 
     public int getPositionColumn(String movePosition){
         char position = movePosition.charAt(0);
-        char c = 'a';
         int col = 0;
-        for (int i = 1; i < getBoard().getBoardSize(); i++) {
+        for (char c = 'a'; c <= 'z'; c++) {
             if (position == c) {
-                col = i;
-            } else {
-                c++;
+                col = c - 'a' + 1;
             }
         }
         return col;
     }
+
 
     public int getPositionRow(String movePosition){
         String str = movePosition.substring(1);
@@ -151,6 +168,12 @@ public class HumanPlayer extends ScrabbklePlayer {
     }
 
 
+
+    public boolean isValidDirection(String moveDirection){
+        //PLACEHOLDER !!!!!!!!!!!!!!
+        //need to create logic here to get direciton is valid!!!!
+        return true;
+    }
 }
 
 
