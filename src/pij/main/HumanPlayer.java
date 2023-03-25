@@ -1,7 +1,6 @@
 package pij.main;
 
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.*;
 
 public class HumanPlayer extends ScrabbklePlayer {
     private String moveWord;
@@ -33,16 +32,20 @@ public class HumanPlayer extends ScrabbklePlayer {
                 if (isValidMove()) {
                    validMove = true;
                     //rest of code here?????
+                    //place tiles on board
 
                     //print move summary, scores and updated board
                    System.out.print("The move is: " + moveWord);
                    System.out.print(" at position " + movePosition + ",");
                    System.out.print(" direction: "+ getMoveDirection());
+
+                   // testing tiles in rack:
+                    System.out.println();
+                    System.out.println("tiles available: " + hasAllTilesAvailable(charsInWord));
+                    System.out.println();
+
                    //remove all chars in list after each move
                    charsInWord.clear();
-
-                   //NEED TO CLEAR MOVESQUARES 2D ARRAY TOO???
-                    //OR GETS OVERRIDDEN EACH TIME METHOD IS CALLED?
 
                 } else {
                     System.out.println("This is not a valid move");
@@ -96,8 +99,8 @@ public class HumanPlayer extends ScrabbklePlayer {
     public boolean isValidMove(){
         return (isValidWord(moveWord)
                 && isValidPosition(movePosition)
-                && isValidDirection(moveDirection));
-                //&& hasAllTilesAvailable(charsInWord);
+                && isValidDirection(moveDirection)
+                && hasAllTilesAvailable(charsInWord));
     }
 
     public boolean isValidWord(String str){
@@ -143,61 +146,43 @@ public class HumanPlayer extends ScrabbklePlayer {
             charsInWord.add(c);
         }
     }
-    //check if tiles are available in rack to make desired word
 
-/*    public boolean hasAllTilesAvailable(ArrayList<Character> charsInWord){
-        //boolean allTilesAvailable= false; //MIGHT NOT NEED
-        ArrayList<ScrabbkleTile> tileRack = getTileRack(); //gets tileRack from super
-        //first check if characters exist in tile rack
-        for (Character character : charsInWord) {
-            for (ScrabbkleTile scrabbkleTile : tileRack) {
-                if (character == scrabbkleTile.getLetter()) {
-                    return true;
-                    //if not, check if characters already exist on board
-                } else {
-                    for(int i = 0; i < moveSquares.length; i++){
-                        for(int j = 0; j < moveSquares.length; j++){
-                            int col = moveSquares[i][j];
-
-                            //will give error if null???? try catch?
-                            //getTile, if no tile, then false
-                            //if tile present, get letter
-                            char letter = super.getBoard().getBoard()[col][row].getTile().getLetter();
-                            int row =
-                            if(character == letter)
-                                    //do stuff
-                                return true;
-                            }
-                        }
-
-                    for (int i = 1; i < wordLength; i++) {
-                        moveSquares[i][0] = startCol + i;
-                    }
-                    for (int j = 0; j < wordLength; j++){
-                        moveSquares[j][1] = startCol;
-                    }
-                    //check if on board
-
-                       //check if squares in moveSquares have tiles
-                    }
-                    //need to get word start position
-                    //need word length
-                    //need word direction
-                    //then calculate index
-
+    public boolean hasAllTilesAvailable(ArrayList<Character> charsInWord) {
+        ArrayList<ScrabbkleTile> tileRack = getTileRack();
+        Map<Character, Integer> charCounts = new HashMap<>();
+        // Count the number of times each character appears in the word
+        for (char c : charsInWord) {
+            charCounts.put(c, charCounts.getOrDefault(c, 0) + 1);
+        }
+        // Check if there are enough tiles for each character
+        for (char c : charCounts.keySet()) {
+            int requiredCount = charCounts.get(c);
+            int tileRackCount = 0;
+            int boardCount = 0;
+            // Count the number of tiles in the tile rack and on the board
+            for (ScrabbkleTile tile : tileRack) {
+                if (tile.getLetter() == c) {
+                    tileRackCount++;
                 }
             }
-            //check if char in charsInWord list matches tile letter in player tileRack
-
-            //check if char in tile in rack
-            //else check if on board, in direction of move (need indexes)
-            //return true
+            for (int[] positions : moveSquares) {
+                int col = positions[0];
+                int row = positions[1];
+                if (super.getBoard().getBoard()[col][row].getTile() != null) {
+                    char letter = super.getBoard().getBoard()[col][row].getTile().getLetter();
+                    if (letter == c) {
+                        boardCount++;
+                    }
+                }
+            }
+            // Check if there are enough tiles to satisfy the count
+            //NEED TO UPDATE FOR WILDCARDS
+            if (tileRackCount + boardCount != requiredCount) {
+                return false;
+            }
         }
-        //wildcard, if char lowercase, then if char is empty in rack, or lowercase on board
-        //check if tiles with char are on board already
-        //if not check if tiles are in rack
-        return allTilesAvailable;
-    }*/
+        return true;
+    }
 
     //methods used to print move summary in console
     public String getMoveDirection(){
@@ -228,7 +213,6 @@ public class HumanPlayer extends ScrabbklePlayer {
         }
         return col;
     }
-
 
     public int getPositionRow(String movePosition){
         String str = movePosition.substring(1);
@@ -265,8 +249,11 @@ public class HumanPlayer extends ScrabbklePlayer {
     public ArrayList<int[]> getMoveSquares(){
         return moveSquares;
     }
-}
 
+    public ArrayList<Character> getCharsInWord() {
+        return charsInWord;
+    }
+}
 
     //use wildCard()
     //get string input
