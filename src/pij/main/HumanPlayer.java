@@ -8,7 +8,7 @@ public class HumanPlayer extends ScrabbklePlayer {
     private String movePosition;
     private String moveDirection;
     private ArrayList<Character> charsInWord;
-    private int[][] moveSquares;
+    private ArrayList<int[]> moveSquares;
     private boolean firstMove = true;
 
     public HumanPlayer(ScrabbkleBoard board, ScrabbkleWordList wordList, ScrabbkleTileBag tileBag) {
@@ -145,7 +145,7 @@ public class HumanPlayer extends ScrabbklePlayer {
     }
     //check if tiles are available in rack to make desired word
 
-    public boolean hasAllTilesAvailable(ArrayList<Character> charsInWord){
+/*    public boolean hasAllTilesAvailable(ArrayList<Character> charsInWord){
         //boolean allTilesAvailable= false; //MIGHT NOT NEED
         ArrayList<ScrabbkleTile> tileRack = getTileRack(); //gets tileRack from super
         //first check if characters exist in tile rack
@@ -197,7 +197,7 @@ public class HumanPlayer extends ScrabbklePlayer {
         //check if tiles with char are on board already
         //if not check if tiles are in rack
         return allTilesAvailable;
-    }
+    }*/
 
     //methods used to print move summary in console
     public String getMoveDirection(){
@@ -236,37 +236,23 @@ public class HumanPlayer extends ScrabbklePlayer {
     }
 
     public void calculateMoveSquares(String moveWord, String movePosition, String moveDirection){
-        //create int[][] to store row and column positions for each tile on board
+        //create ArrayList of int[] to store row and column positions for each tile on board
         int wordLength = moveWord.length();
-        moveSquares = new int[wordLength][2];
+        moveSquares = new ArrayList<int[]>();
         //add movePosition in first 2 elements
         int startCol = getPositionColumn(movePosition);
         int startRow = getPositionRow(movePosition);
-        moveSquares[0][0] = startCol;
-        moveSquares[0][1] = startRow;
-        //if word direction is down then column stays the same and row increments
         if(moveDirection.equals("d")) {
-            for (int i = 1; i < wordLength; i++) {
-                moveSquares[i][0] = startCol;
+            for(int i = 0; i < wordLength; i++){
+                int[] positions = {startCol, startRow + i};
+                moveSquares.add(positions);
             }
-            for (int j = 0; j < wordLength; j++){
-                moveSquares[j][1] = startRow + j;
-            }
-            //if word direction is right then row stays the same and col increments
         } else {
-            for (int i = 1; i < wordLength; i++) {
-                moveSquares[i][0] = startCol + i;
+            for(int i = 0; i < wordLength; i++){
+                int[] positions = {startCol + i, startRow};
+                moveSquares.add(positions);
+                }
             }
-            for (int j = 0; j < wordLength; j++){
-                moveSquares[j][1] = startCol;
-            }
-
-            //reminder of 2d array index
-              /*  a[0][0] a[0][1]
-                  a[1][0] a[1][1]
-                  a[2][0] a[2][1]
-                  a[3][0] a[3][1] */
-        }
     }
 
 
@@ -276,7 +262,7 @@ public class HumanPlayer extends ScrabbklePlayer {
         return true;
     }
 
-    public int[][] getMoveSquares(){
+    public ArrayList<int[]> getMoveSquares(){
         return moveSquares;
     }
 }
