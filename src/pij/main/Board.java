@@ -10,6 +10,6 @@ public interface Board {
     int calculateBoardSize();
     boolean isValidSize();
     void printBoard();
-    ScrabbkleSquare[][] getBoard(); //remove if redundant
+    ScrabbkleSquare[][] getBoard();
     int getStartSquare();
 }

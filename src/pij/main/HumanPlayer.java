@@ -93,41 +93,48 @@ public class HumanPlayer extends ScrabbklePlayer {
     }
 
 
-    public boolean isValidMove() {
-        return (isValidWord(moveWord)
-                && isValidPosition(movePosition)
-                && isValidDirection(moveSquares)
-                && hasAllTilesAvailable(charsInWord));
-    }
-
     public boolean isValidWord(String str) {
         return super.getWordList().isWord(str);
     }
 
 
-    public boolean isValidPosition(String movePosition) {
-        boolean validPosition = false;
+ /*   //MOVE THIS INTO isValidPosition, and rename isValidPosition to isValidMove
+    public boolean isValidMove() {
+        return (isValidWord(moveWord)
+                && isValidMove(movePosition)
+                && isValidDirection(moveSquares, moveDirection)
+                && hasAllTilesAvailable(charsInWord));
+    }*/
+
+    public boolean isValidMove() {
+        boolean validMove = false;
         // Get col and row of start position as int
         int col = getPositionColumn(movePosition);
         int row = getPositionRow(movePosition);
         // Check if this is humanPlayer's first move
         if (!isFirstMove()) {
-            //check if legalPosition in super
-            //PLACEHOLDER SUPER METHOD DOESN'T WORK YET!!!!!!!!!
-            if (super.isLegalPosition(col, row)) {
-                validPosition = true;
-            }
+            // Check if all inputs are valid
+            if(isValidWord(moveWord)
+                    && isValidDirection(moveSquares, moveDirection)
+                    && hasAllTilesAvailable(charsInWord)
+                    //&& intersectsWord(moveSquares))
+                //word must intersect at least 1 other word on second move
+                {
+                validMove = true;
+             }
         } else {
             // If humanPlayer's first move:
             // check if first position matches startSquare in Board
             // return true if so
             int startSquare = getBoard().getStartSquare();
-            if ((col == startSquare) && (row == startSquare)) {
-                validPosition = true;
-                firstMove = false;
+            if ((col == startSquare) && (row == startSquare)){
+                if(isValidWord(moveWord) && hasAllTilesAvailable(charsInWord)){
+                    validMove = true;
+                    firstMove = false;
+                }
             }
         }
-        return validPosition;
+        return validMove;
     }
 
 
@@ -235,23 +242,10 @@ public class HumanPlayer extends ScrabbklePlayer {
         }
     }
 
-    //Check if given move is possible on the existing board
+    //Check if given move direction is possible on the existing board
     //Move is possible if word is in bounds of board, and has no adjacent words
-    public boolean isValidDirection(ArrayList<int[]> moveSquares) {
-        return (moveIsInBounds(moveSquares)) && !(super.hasAdjacentWords(moveSquares));
-    }
-
-    //Check if the given move is within the bounds of the board
-    public boolean moveIsInBounds(ArrayList<int[]> moveSquares) {
-        int boardSize = super.getBoard().getBoardSize();
-        for (int[] moveSquare : moveSquares) {
-            int col = moveSquare[0];
-            int row = moveSquare[1];
-            if (row < 0 || row > boardSize || col < 0 || col > boardSize) {
-                return false;
-            }
-        }
-        return true;
+    public boolean isValidDirection(ArrayList<int[]> moveSquares, String moveDirection) {
+        return (super.moveIsInBounds(moveSquares)) && !(super.hasAdjacentWords(moveSquares, moveDirection));
     }
 
     public ArrayList<int[]> getMoveSquares(){
