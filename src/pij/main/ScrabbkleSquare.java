@@ -3,13 +3,17 @@ package pij.main;
 public class ScrabbkleSquare implements Square{
 
     private ScrabbkleTile scrabbkleTile;
+    private ScrabbkleTile nextTile;
     private String printLabel; //must override printLabel with Tile if tile != null
     private int premiumLetterValue;
     private int premiumWordValue;
+    private boolean premiumLetterUsed;
+    private boolean premiumWordUsed;
 
 
     public ScrabbkleSquare(String printLabel){
         scrabbkleTile = null;
+        nextTile = null;
         this.printLabel = printLabel; //String from input file
         premiumLetterValue = convertPremiumLetter(printLabel);
         premiumWordValue = convertPremiumWord(printLabel);
@@ -66,6 +70,14 @@ public class ScrabbkleSquare implements Square{
 
     public ScrabbkleTile getTile(){
         return scrabbkleTile;
+    }
+
+    public ScrabbkleTile getNextTile(){
+        return nextTile;
+    }
+
+    public void setNextTile(ScrabbkleTile nextTile){
+        this.nextTile = nextTile;
     }
 
 }

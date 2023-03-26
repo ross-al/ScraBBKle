@@ -18,6 +18,9 @@ public class HumanPlayer extends ScrabbklePlayer {
     public void playMove() {
         boolean validMove = false;
         while (!validMove) {
+            // Remove all chars in list after each move
+            charsInWord.clear();
+            // Get player move input
             String move = getPlayerMove();
             if (!isSkip(move)) {
                 //Split player instructions into string array
@@ -31,6 +34,7 @@ public class HumanPlayer extends ScrabbklePlayer {
                 //Check if valid word, position and direction
                 if (isValidMove()) {
                     validMove = true;
+
                     //rest of code here?????
                     //place tiles on board
 
@@ -44,8 +48,6 @@ public class HumanPlayer extends ScrabbklePlayer {
                     System.out.println("tiles available: " + hasAllTilesAvailable(charsInWord));
                     System.out.println();
 
-                    //Remove all chars in list after each move
-                    charsInWord.clear();
 
                 } else {
                     System.out.println("This is not a valid move");
@@ -117,15 +119,12 @@ public class HumanPlayer extends ScrabbklePlayer {
             if(isValidWord(moveWord)
                     && isValidDirection(moveSquares, moveDirection)
                     && hasAllTilesAvailable(charsInWord)
-                    //&& intersectsWord(moveSquares))
-                //word must intersect at least 1 other word on second move
+                    && super.intersectsWord(moveSquares))
                 {
                 validMove = true;
              }
         } else {
-            // If humanPlayer's first move:
-            // check if first position matches startSquare in Board
-            // return true if so
+            // If humanPlayer's first move, start position must equal startSquare
             int startSquare = getBoard().getStartSquare();
             if ((col == startSquare) && (row == startSquare)){
                 if(isValidWord(moveWord) && hasAllTilesAvailable(charsInWord)){
@@ -187,7 +186,7 @@ public class HumanPlayer extends ScrabbklePlayer {
         return true;
     }
 
-    //Method used to print move summary in console after move
+    // Get print format for move direction for move summary in console
     public String getMoveDirection() {
         if (moveDirection.equals("d")) {
             return "down";
