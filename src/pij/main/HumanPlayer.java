@@ -6,6 +6,7 @@ public class HumanPlayer extends ScrabbklePlayer {
     private String moveWord;
     private String movePosition;
     private String moveDirection;
+    private String finalWord;
     private ArrayList<Character> charsInWord;
     private ArrayList<int[]> moveSquares;
     private boolean firstMove = true;
@@ -30,7 +31,8 @@ public class HumanPlayer extends ScrabbklePlayer {
                 moveDirection = instructions[2];
                 //Split each letter in word into character
                 splitWordToChar(moveWord);
-                calculateMoveSquares(moveWord, movePosition, moveDirection);
+                calculateFinalWord(moveWord, movePosition, moveDirection);
+                calculateMoveSquares(finalWord, movePosition, moveDirection);
                 //Check if valid word, position and direction
                 if (isValidMove()) {
                     validMove = true;
@@ -59,8 +61,7 @@ public class HumanPlayer extends ScrabbklePlayer {
         }
     }
 
-    //check if correct tiles in rack
-    //check if correct tiles on board already
+
 
     //check if had wildcard (should be in super?, or limit wildcard to human)
 
@@ -95,18 +96,47 @@ public class HumanPlayer extends ScrabbklePlayer {
     }
 
 
-    public boolean isValidWord(String str) {
-        return super.getWordList().isWord(str);
+    public boolean isValidWord(String word) {
+        return super.getWordList().isWord(word);
     }
 
+    public void calculateFinalWord(String moveWord, String movePosition, String moveDirection){
+        int col = getPositionColumn(movePosition);
+        int row = getPositionRow(movePosition);
+        finalWord = "";
+        char c;
+        if(moveDirection.equals("d")){
+            for(int i = 0; i < moveWord.length(); i++){
+                if( getBoard().getBoard()[col][row].getTile() != null ){
+                    String tileLetter = String.valueOf(getBoard().getBoard()[col][row].getTile().getLetter());
+                    finalWord = finalWord + tileLetter;
+                    row = row +1;
+                    i--;
+            }
+                else {
+                    c = moveWord.charAt(i);
+                    finalWord = finalWord + c;
+                    row = row + 1;
+                }
+            }
+        } else {
+            // If move is right
+            for(int i = 0; i < moveWord.length(); i++){
+                if( getBoard().getBoard()[col][row].getTile() != null ){
+                    String tileLetter = String.valueOf(getBoard().getBoard()[col][row].getTile().getLetter());
+                    finalWord = finalWord + tileLetter;
+                    col = col +1;
+                    i--;
+                }
+                else {
+                    c = moveWord.charAt(i);
+                    finalWord = finalWord + c;
+                    col = col + 1;
+                }
+            }
+        }
+    }
 
- /*   //MOVE THIS INTO isValidPosition, and rename isValidPosition to isValidMove
-    public boolean isValidMove() {
-        return (isValidWord(moveWord)
-                && isValidMove(movePosition)
-                && isValidDirection(moveSquares, moveDirection)
-                && hasAllTilesAvailable(charsInWord));
-    }*/
 
     public boolean isValidMove() {
         boolean validMove = false;
@@ -116,18 +146,18 @@ public class HumanPlayer extends ScrabbklePlayer {
         // Check if this is humanPlayer's first move
         if (!isFirstMove()) {
             // Check if all inputs are valid
-            if(isValidWord(moveWord)
-                    && isValidDirection(moveSquares, moveDirection)
+            if(isValidWord(finalWord)
                     && hasAllTilesAvailable(charsInWord)
+                    && isValidDirection(moveSquares, moveDirection)
                     && super.intersectsWord(moveSquares))
                 {
                 validMove = true;
              }
         } else {
-            // If humanPlayer's first move, start position must equal startSquare
-            int startSquare = getBoard().getStartSquare();
-            if ((col == startSquare) && (row == startSquare)){
-                if(isValidWord(moveWord) && hasAllTilesAvailable(charsInWord)){
+            // If humanPlayer's first move, startSquare must be present in moveSquares
+            int[] startSquare = getBoard().getStartSquare();
+            if(moveSquares.contains(startSquare)){
+                if(isValidWord(finalWord) && hasAllTilesAvailable(charsInWord)){
                     validMove = true;
                     firstMove = false;
                 }
@@ -149,6 +179,7 @@ public class HumanPlayer extends ScrabbklePlayer {
         }
     }
 
+    // Check if the player's rack has all the necessary tiles, including duplicates
     public boolean hasAllTilesAvailable(ArrayList<Character> charsInWord) {
         ArrayList<ScrabbkleTile> tileRack = getTileRack();
         Map<Character, Integer> charCounts = new HashMap<>();
@@ -160,26 +191,13 @@ public class HumanPlayer extends ScrabbklePlayer {
         for (char c : charCounts.keySet()) {
             int requiredCount = charCounts.get(c);
             int tileRackCount = 0;
-            int boardCount = 0;
-            // Count the number of tiles in the tile rack and on the board
+            // Count the number of tiles in the tile rack
             for (ScrabbkleTile tile : tileRack) {
                 if (tile.getLetter() == c) {
                     tileRackCount++;
                 }
             }
-            for (int[] positions : moveSquares) {
-                int col = positions[0];
-                int row = positions[1];
-                if (super.getBoard().getBoard()[col][row].getTile() != null) {
-                    char letter = super.getBoard().getBoard()[col][row].getTile().getLetter();
-                    if (letter == c) {
-                        boardCount++;
-                    }
-                }
-            }
-            // Check if there are enough tiles to satisfy the count
-            //NEED TO UPDATE FOR WILDCARDS
-            if (tileRackCount + boardCount != requiredCount) {
+            if (tileRackCount != requiredCount) {
                 return false;
             }
         }
@@ -194,16 +212,6 @@ public class HumanPlayer extends ScrabbklePlayer {
             return "right";
         }
     }
-
-/*   //REMOVE IF REDUNDANT ??????????
-    public String getMoveWord(){
-        return moveWord;
-    }*/
-
-/*    //used for testing
-    public String getMovePosition(){
-        return movePosition;
-    }*/
 
     public int getPositionColumn(String movePosition) {
         char position = movePosition.charAt(0);
@@ -221,9 +229,11 @@ public class HumanPlayer extends ScrabbklePlayer {
         return Integer.parseInt(str);
     }
 
-    public void calculateMoveSquares(String moveWord, String movePosition, String moveDirection) {
+    // Get all the positions for the squares in the move, including squares which
+    // already have placed tiles
+    public void calculateMoveSquares(String finalWord, String movePosition, String moveDirection) {
         //create ArrayList of int[] to store row and column positions for each tile on board
-        int wordLength = moveWord.length();
+        int wordLength = finalWord.length();
         moveSquares = new ArrayList<int[]>();
         //add movePosition in first 2 elements
         int startCol = getPositionColumn(movePosition);
@@ -241,16 +251,17 @@ public class HumanPlayer extends ScrabbklePlayer {
         }
     }
 
-    //Check if given move direction is possible on the existing board
-    //Move is possible if word is in bounds of board, and has no adjacent words
+    // Check if given move direction is possible on the existing board
+    // Move is possible if word is in bounds of board, and has no parallel words
     public boolean isValidDirection(ArrayList<int[]> moveSquares, String moveDirection) {
-        return (super.moveIsInBounds(moveSquares)) && !(super.hasAdjacentWords(moveSquares, moveDirection));
+        return (super.squaresAreInBounds(moveSquares)) && !(super.hasAdjacentWords(moveSquares, moveDirection));
     }
 
     public ArrayList<int[]> getMoveSquares(){
         return moveSquares;
     }
 
+    // Used for testing
     public ArrayList<Character> getCharsInWord() {
         return charsInWord;
     }
