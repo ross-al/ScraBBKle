@@ -38,14 +38,13 @@ class ScrabbkleBoardTest {
         int expected = 1;
         int actual = Integer.parseInt(board.getBoard()[1][0].getPrintLabel());
         assertEquals(expected, actual);
-
     }
+
     @Test
     void shouldReturnInt15(){
         int expected = 15;
         int actual = Integer.parseInt(board.getBoard()[15][0].getPrintLabel());
         assertEquals(expected, actual);
-
     }
 
     @Test
@@ -75,5 +74,4 @@ class ScrabbkleBoardTest {
         int actual = board.getBoard()[1][4].getPremiumWordValue();
         assertEquals(expected, actual);
     }
-
 }

@@ -8,6 +8,6 @@ public interface Square {
     int getPremiumWordValue();
     String getPrintLabel();
     void setTile(ScrabbkleTile tile);
-    ScrabbkleTile getTile(ScrabbkleTile tile);
+    ScrabbkleTile getTile();
 
 }

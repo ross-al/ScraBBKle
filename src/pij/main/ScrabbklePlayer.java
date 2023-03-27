@@ -70,6 +70,7 @@ public class ScrabbklePlayer implements Player{
         board.getBoard()[col][row].setTile(tile);
         //must also remove tile from rack!
         //must also setNextTile()
+        // must also set above, below, right and left tiles
     }
 
     public ScrabbkleBoard getBoard(){

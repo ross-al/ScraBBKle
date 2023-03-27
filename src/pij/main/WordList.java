@@ -6,6 +6,6 @@ public interface WordList {
 
     public List<String> convertToList();
     public boolean isWord(String word);
-    public boolean isWord(ScrabbkleWord word);
+   // public boolean isWord(ScrabbkleWord word); //REDUNDANT?
     public List<String> getWordList();
 }

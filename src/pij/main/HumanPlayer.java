@@ -9,18 +9,24 @@ public class HumanPlayer extends ScrabbklePlayer {
     private String finalWord;
     private ArrayList<Character> charsInWord;
     private ArrayList<int[]> moveSquares;
+    private String errorReason;
     private boolean firstMove = true;
 
     public HumanPlayer(ScrabbkleBoard board, ScrabbkleWordList wordList, ScrabbkleTileBag tileBag) {
         super(board, wordList, tileBag);
-        charsInWord = new ArrayList<>();
     }
 
+    //NOT WORKING!
     public void playMove() {
         boolean validMove = false;
         while (!validMove) {
-            // Remove all chars in list after each move
-            charsInWord.clear();
+            // Remove all inputs from previous move
+            if (charsInWord != null) {
+                charsInWord.clear();
+            }
+            if (moveSquares != null){
+                moveSquares.clear();
+            }
             // Get player move input
             String move = getPlayerMove();
             if (!isSkip(move)) {
@@ -53,6 +59,7 @@ public class HumanPlayer extends ScrabbklePlayer {
 
                 } else {
                     System.out.println("This is not a valid move");
+                    System.out.println("Error Reason: " + errorReason);
                 }
             } else {
                 //skip move
@@ -97,6 +104,7 @@ public class HumanPlayer extends ScrabbklePlayer {
 
 
     public boolean isValidWord(String word) {
+        errorReason = "not valid word";
         return super.getWordList().isWord(word);
     }
 
@@ -173,6 +181,7 @@ public class HumanPlayer extends ScrabbklePlayer {
 
     // Split given word into character arrayList
     public void splitWordToChar(String moveWord) {
+        charsInWord = new ArrayList<>();
         for (int i = 0; i < moveWord.length(); i++) {
             char c = moveWord.charAt(i);
             charsInWord.add(c);
@@ -181,6 +190,7 @@ public class HumanPlayer extends ScrabbklePlayer {
 
     // Check if the player's rack has all the necessary tiles, including duplicates
     public boolean hasAllTilesAvailable(ArrayList<Character> charsInWord) {
+        errorReason = "not all tiles available";
         ArrayList<ScrabbkleTile> tileRack = getTileRack();
         Map<Character, Integer> charCounts = new HashMap<>();
         // Count the number of times each character appears in the word
@@ -254,6 +264,7 @@ public class HumanPlayer extends ScrabbklePlayer {
     // Check if given move direction is possible on the existing board
     // Move is possible if word is in bounds of board, and has no parallel words
     public boolean isValidDirection(ArrayList<int[]> moveSquares, String moveDirection) {
+        errorReason = "not valid direction";
         return (super.squaresAreInBounds(moveSquares)) && !(super.hasAdjacentWords(moveSquares, moveDirection));
     }
 

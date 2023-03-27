@@ -148,4 +148,9 @@ public class ScrabbkleBoard implements Board {
     public int getBoardSize(){
         return boardSize;
     }
+
+    // used for JUnit testing only
+    public void setBoardSize(int size){
+        this.boardSize = size;
+    }
 }

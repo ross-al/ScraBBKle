@@ -33,13 +33,23 @@ public class ScrabbkleWordList implements WordList{
         return wordList;
     }
 
-    public boolean isWord(String word){ //update to take type Word
-        return wordList.contains(word);
+    public boolean isWord(String word){
+        int length = word.length();
+        //words must be 2+ characters
+        if (length > 1){
+            //check is word exists in wordList
+            //cast to lower case as contains() method is case-sensitive
+            return wordList.contains(word.toLowerCase());
+        }
+        else {
+            return false;
+        }
     }
 
+/*    //REDUNDANT?
     public boolean isWord(ScrabbkleWord word){
         return wordList.contains(word);
-    }
+    }*/
 
     public List<String> getWordList(){
         return wordList;
