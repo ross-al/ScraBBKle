@@ -10,12 +10,6 @@ public class ScrabbkleTile implements Tile{
         this.value = calculateTileValue(this.letter);
     }
 
-    //constructor for wildcard?
-    //public ScrabbkleTile(){
-       // this.letter = ' ';
-        //this.value = calculateTileValue(this.letter);
-    //}
-
 
     public char getLetter(){
         return this.letter;
