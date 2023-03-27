@@ -5,11 +5,16 @@ import java.io.File;
 
 public interface Board {
 
-    ScrabbkleSquare[][] convertToBoard(ScrabbkleSquare[][] board);
-    File getInputFile();
-    int calculateBoardSize();
+    String getBoardChoice();
+    File getInputFile(String boardChoice);
+    boolean inputFileExists(File inputFile);
+    void calculateBoardSize(File inputFile);
     boolean isValidSize();
+    void convertToBoard(File inputFile);
     void printBoard();
     ScrabbkleSquare[][] getBoard();
-    int getStartSquare();
+    void calculateStartSquare(int boardSize);
+    int getBoardSize();
+    int[] getStartSquare();
+
 }
