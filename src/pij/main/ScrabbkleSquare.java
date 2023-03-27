@@ -4,6 +4,10 @@ public class ScrabbkleSquare implements Square{
 
     private ScrabbkleTile scrabbkleTile;
     private ScrabbkleTile nextTile;
+    private ScrabbkleTile aboveTile;
+    private ScrabbkleTile belowTile;
+    private ScrabbkleTile leftTile;
+    private ScrabbkleTile rightTile;
     private String printLabel; //must override printLabel with Tile if tile != null
     private int premiumLetterValue;
     private int premiumWordValue;
@@ -14,12 +18,18 @@ public class ScrabbkleSquare implements Square{
     public ScrabbkleSquare(String printLabel){
         scrabbkleTile = null;
         nextTile = null;
+        aboveTile = null;
+        belowTile = null;
+        leftTile = null;
+        rightTile = null;
         this.printLabel = printLabel; //String from input file
-        premiumLetterValue = convertPremiumLetter(printLabel);
-        premiumWordValue = convertPremiumWord(printLabel);
+        premiumLetterValue = convertPremiumLetter(this.printLabel);
+        premiumWordValue = convertPremiumWord(this.printLabel);
+        premiumLetterUsed = false;
+        premiumWordUsed = false;
     }
 
-    public int convertPremiumLetter(String printLabel){
+    public int convertPremiumWord(String printLabel){
         String sub = String.valueOf(0);
         int value;
         if (printLabel.contains("(")){  //e.g. (3)
@@ -35,7 +45,7 @@ public class ScrabbkleSquare implements Square{
         return value;
     }
 
-    public int convertPremiumWord(String printLabel){
+    public int convertPremiumLetter(String printLabel){
         String sub = String.valueOf(0);
         int value;
         if (printLabel.contains("{")){  //e.g. {3}
@@ -78,6 +88,23 @@ public class ScrabbkleSquare implements Square{
 
     public void setNextTile(ScrabbkleTile nextTile){
         this.nextTile = nextTile;
+    }
+
+
+    public ScrabbkleTile getAboveTile(){
+        return aboveTile;
+    }
+
+    public ScrabbkleTile getBelowTile() {
+        return belowTile;
+    }
+
+    public ScrabbkleTile getLeftTile() {
+        return leftTile;
+    }
+
+    public ScrabbkleTile getRightTile() {
+        return rightTile;
     }
 
 }
