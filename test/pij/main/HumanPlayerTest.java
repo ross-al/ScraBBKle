@@ -105,4 +105,20 @@ class HumanPlayerTest {
         assertEquals(expected, actual);
     }
 
+    @Test
+    void shouldReturnTrueIfCentreSquareIsInMoveSquares(){
+        humanPlayer.calculateMoveSquares("STAR", "h8", "d");
+        ArrayList<int[]> moveSquares = humanPlayer.getMoveSquares();
+        int[] centreSquare = board.getCentreSquare();
+        assertTrue(humanPlayer.containsCentreSquare(moveSquares,centreSquare));
+    }
+
+    @Test
+    void shouldReturnFalseIfCentreSquareIsNotInMoveSquares(){
+        humanPlayer.calculateMoveSquares("STAR", "a1", "r");
+        ArrayList<int[]> moveSquares = humanPlayer.getMoveSquares();
+        int[] centreSquare = board.getCentreSquare();
+        assertFalse(humanPlayer.containsCentreSquare(moveSquares,centreSquare));
+    }
+
 }

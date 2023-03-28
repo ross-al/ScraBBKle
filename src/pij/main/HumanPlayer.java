@@ -9,7 +9,7 @@ public class HumanPlayer extends ScrabbklePlayer {
     private String finalWord;
     private ArrayList<Character> charsInWord;
     private ArrayList<int[]> moveSquares;
-    private String errorReason;
+    //private String errorReason;
     private boolean firstMove = true;
 
     public HumanPlayer(ScrabbkleBoard board, ScrabbkleWordList wordList, ScrabbkleTileBag tileBag) {
@@ -20,6 +20,7 @@ public class HumanPlayer extends ScrabbklePlayer {
     public void playMove() {
         boolean validMove = false;
         while (!validMove) {
+
             // Remove all inputs from previous move
             if (charsInWord != null) {
                 charsInWord.clear();
@@ -27,18 +28,25 @@ public class HumanPlayer extends ScrabbklePlayer {
             if (moveSquares != null){
                 moveSquares.clear();
             }
+
             // Get player move input
             String move = getPlayerMove();
+
             if (!isSkip(move)) {
-                //Split player instructions into string array
+
+                // Split player instructions into string array
                 String[] instructions = interpretPlayerMove(move);
                 moveWord = instructions[0];
                 movePosition = instructions[1];
                 moveDirection = instructions[2];
-                //Split each letter in word into character
+
+                // Split each letter in word into character
                 splitWordToChar(moveWord);
+                // Calculate the player's intended word on board to check if in dictionary
                 calculateFinalWord(moveWord, movePosition, moveDirection);
+                // Calculate which squares the word will occupy
                 calculateMoveSquares(finalWord, movePosition, moveDirection);
+
                 //Check if valid word, position and direction
                 if (isValidMove()) {
                     validMove = true;
@@ -59,7 +67,7 @@ public class HumanPlayer extends ScrabbklePlayer {
 
                 } else {
                     System.out.println("This is not a valid move");
-                    System.out.println("Error Reason: " + errorReason);
+                   // System.out.println("Error Reason: " + errorReason);
                 }
             } else {
                 //skip move
@@ -79,11 +87,11 @@ public class HumanPlayer extends ScrabbklePlayer {
 
     //print word on  board //(should be in super)
     //display board
-
-
     //return to end move
 
 
+
+    // Get player input for move
     public String getPlayerMove() {
         System.out.println("Please enter your move with letter sequence, position, and");
         System.out.println("direction (d for down, r for right) separated by commas.");
@@ -93,30 +101,41 @@ public class HumanPlayer extends ScrabbklePlayer {
         return input.nextLine();
     }
 
+    // Two commas skip the player's move
     public boolean isSkip(String word) {
         return word.equals(",,");
     }
 
-
+    // Split player's move by "," to get individual instructions
     public String[] interpretPlayerMove(String word) {
         return word.split(",");
     }
 
-
-    public boolean isValidWord(String word) {
-        errorReason = "not valid word";
-        return super.getWordList().isWord(word);
+    // Split given word into individual characters and put in arrayList
+    public void splitWordToChar(String moveWord) {
+        charsInWord = new ArrayList<>();
+        for (int i = 0; i < moveWord.length(); i++) {
+            char c = moveWord.charAt(i);
+            charsInWord.add(c);
+        }
     }
 
+
+    // Calculate the player's intended word on board to check if in dictionary
     public void calculateFinalWord(String moveWord, String movePosition, String moveDirection){
+        // Convert the 'cr' format provided into int for index positions
         int col = getPositionColumn(movePosition);
         int row = getPositionRow(movePosition);
+        // Create empty string for final word
         finalWord = "";
         char c;
         if(moveDirection.equals("d")){
+            // If tile already occupied in start position, take character from tile
+            // and add to finalWord string.
+            // If not already occupied, using the character provided by player
             for(int i = 0; i < moveWord.length(); i++){
-                if( getBoard().getBoard()[col][row].getTile() != null ){
-                    String tileLetter = String.valueOf(getBoard().getBoard()[col][row].getTile().getLetter());
+                if( getBoard().getBoard()[row][col].getTile() != null ){
+                    String tileLetter = String.valueOf(getBoard().getBoard()[row][col].getTile().getLetter());
                     finalWord = finalWord + tileLetter;
                     row = row +1;
                     i--;
@@ -130,8 +149,8 @@ public class HumanPlayer extends ScrabbklePlayer {
         } else {
             // If move is right
             for(int i = 0; i < moveWord.length(); i++){
-                if( getBoard().getBoard()[col][row].getTile() != null ){
-                    String tileLetter = String.valueOf(getBoard().getBoard()[col][row].getTile().getLetter());
+                if( getBoard().getBoard()[row][col].getTile() != null ){
+                    String tileLetter = String.valueOf(getBoard().getBoard()[row][col].getTile().getLetter());
                     finalWord = finalWord + tileLetter;
                     col = col +1;
                     i--;
@@ -145,7 +164,29 @@ public class HumanPlayer extends ScrabbklePlayer {
         }
     }
 
+    // Get all the positions for the squares in the move, including squares which
+    // already have placed tiles
+    public void calculateMoveSquares(String finalWord, String movePosition, String moveDirection) {
+        //create ArrayList of int[] to store row and column positions for each tile on board
+        int wordLength = finalWord.length();
+        moveSquares = new ArrayList<int[]>();
+        //add movePosition in first 2 elements
+        int startCol = getPositionColumn(movePosition);
+        int startRow = getPositionRow(movePosition);
+        if (moveDirection.equals("d")) {
+            for (int i = 0; i < wordLength; i++) {
+                int[] positions = {startRow + i, startCol};
+                moveSquares.add(positions);
+            }
+        } else {
+            for (int i = 0; i < wordLength; i++) {
+                int[] positions = {startRow, startCol + i};
+                moveSquares.add(positions);
+            }
+        }
+    }
 
+    // Check if all the conditions for a valid move are met
     public boolean isValidMove() {
         boolean validMove = false;
         // Get col and row of start position as int
@@ -162,9 +203,9 @@ public class HumanPlayer extends ScrabbklePlayer {
                 validMove = true;
              }
         } else {
-            // If humanPlayer's first move, startSquare must be present in moveSquares
-            int[] startSquare = getBoard().getStartSquare();
-            if(moveSquares.contains(startSquare)){
+            // If humanPlayer's first move, centreSquare must be present in moveSquares
+            int[] centreSquare = getBoard().getCentreSquare();
+            if(containsCentreSquare(moveSquares,centreSquare)){
                 if(isValidWord(finalWord) && hasAllTilesAvailable(charsInWord)){
                     validMove = true;
                     firstMove = false;
@@ -174,23 +215,35 @@ public class HumanPlayer extends ScrabbklePlayer {
         return validMove;
     }
 
+    // Check if the centre square appears in any of the squares for a given move
+    public boolean containsCentreSquare(ArrayList<int[]> moveSquares, int[] centreSquare){
+        boolean containsCentreSquare = false;
+        for (int[] square : moveSquares) {
+            if (Arrays.equals(square, centreSquare)) {
+                containsCentreSquare = true;
+                break;
+            }
+        }
+        return containsCentreSquare;
+    }
+
+
+
+    // Check if word is in provided dictionary
+    public boolean isValidWord(String word) {
+        //errorReason = "not valid word";
+        return super.getWordList().isWord(word);
+    }
 
     public boolean isFirstMove() {
         return (firstMove);
     }
 
-    // Split given word into character arrayList
-    public void splitWordToChar(String moveWord) {
-        charsInWord = new ArrayList<>();
-        for (int i = 0; i < moveWord.length(); i++) {
-            char c = moveWord.charAt(i);
-            charsInWord.add(c);
-        }
-    }
+
 
     // Check if the player's rack has all the necessary tiles, including duplicates
     public boolean hasAllTilesAvailable(ArrayList<Character> charsInWord) {
-        errorReason = "not all tiles available";
+        //errorReason = "not all tiles available";
         ArrayList<ScrabbkleTile> tileRack = getTileRack();
         Map<Character, Integer> charCounts = new HashMap<>();
         // Count the number of times each character appears in the word
@@ -223,6 +276,7 @@ public class HumanPlayer extends ScrabbklePlayer {
         }
     }
 
+    // Convert the 'column' letter provided into int for index position
     public int getPositionColumn(String movePosition) {
         char position = movePosition.charAt(0);
         int col = 0;
@@ -234,37 +288,18 @@ public class HumanPlayer extends ScrabbklePlayer {
         return col;
     }
 
+    // Convert the row number provided from string to int for index position
     public int getPositionRow(String movePosition) {
         String str = movePosition.substring(1);
         return Integer.parseInt(str);
     }
 
-    // Get all the positions for the squares in the move, including squares which
-    // already have placed tiles
-    public void calculateMoveSquares(String finalWord, String movePosition, String moveDirection) {
-        //create ArrayList of int[] to store row and column positions for each tile on board
-        int wordLength = finalWord.length();
-        moveSquares = new ArrayList<int[]>();
-        //add movePosition in first 2 elements
-        int startCol = getPositionColumn(movePosition);
-        int startRow = getPositionRow(movePosition);
-        if (moveDirection.equals("d")) {
-            for (int i = 0; i < wordLength; i++) {
-                int[] positions = {startCol, startRow + i};
-                moveSquares.add(positions);
-            }
-        } else {
-            for (int i = 0; i < wordLength; i++) {
-                int[] positions = {startCol + i, startRow};
-                moveSquares.add(positions);
-            }
-        }
-    }
+
 
     // Check if given move direction is possible on the existing board
     // Move is possible if word is in bounds of board, and has no parallel words
     public boolean isValidDirection(ArrayList<int[]> moveSquares, String moveDirection) {
-        errorReason = "not valid direction";
+        //errorReason = "not valid direction";
         return (super.squaresAreInBounds(moveSquares)) && !(super.hasAdjacentWords(moveSquares, moveDirection));
     }
 
@@ -275,6 +310,11 @@ public class HumanPlayer extends ScrabbklePlayer {
     // Used for testing
     public ArrayList<Character> getCharsInWord() {
         return charsInWord;
+    }
+
+    // Used for testing
+    public String getFinalWord() {
+        return finalWord;
     }
 }
 
