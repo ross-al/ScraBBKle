@@ -3,10 +3,6 @@ package pij.main;
 import java.io.*;
 import java.util.Scanner;
 
-//NEED TO FIX MESSAGING
-//WHILE FALSE LOOP:
-//"This is not a valid file. Please enter the file name of the board:"
-
 
 public class ScrabbkleBoard implements Board {
     private int boardSize;
@@ -163,3 +159,9 @@ public class ScrabbkleBoard implements Board {
         this.boardSize = size;
     }
 }
+
+//test files (all validated):
+// ./resources/testLoadedBoard.txt
+// ./resources/testLoadedBoard2.txt
+// ./resources/testBoardShouldFail.txt
+// ./resources/defaultBoard.txt

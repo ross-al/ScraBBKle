@@ -48,13 +48,6 @@ public class Main {
             }
         }
 
-        //test files (all validated):
-        // ./resources/testLoadedBoard.txt
-        // ./resources/testLoadedBoard2.txt
-        // ./resources/testBoardShouldFail.txt
-        // ./resources/defaultBoard.txt
-
-
         // Load input file into board
         board.convertToBoard(inputFile);
 
@@ -69,30 +62,40 @@ public class Main {
         HumanPlayer humanPlayer = new HumanPlayer(board, wordList, tileBag);
         ComputerPlayer computerPlayer = new ComputerPlayer(board, wordList, tileBag);
 
-        // Start game play
-        boolean gameEnded = false;
+        // Start game
+        boolean gameOver = false;
+
         // Fill player tile racks to enter gameplay loop
         humanPlayer.fillRack();
         computerPlayer.fillRack();
 
+        // Print empty line for console readability
         System.out.println();
+
         // Continue loop until game over
         // Game continues until tileBag is empty, and one of the player racks is empty
-        while (!gameEnded) {
+        while (!gameOver) {
+
             // Check if player racks are empty
             boolean isHumanRackEmpty = humanPlayer.getTileRack().isEmpty();
             boolean isComputerRackEmpty = computerPlayer.getTileRack().isEmpty();
+
             // Human player plays first
             humanPlayer.isPlayerTurn = true;
             computerPlayer.isPlayerTurn = false;
+
             while (humanPlayer.isPlayerTurn) {
+
                 // Print current board
                 board.printBoard();
+
                 // Refill player tile rack and print
                 humanPlayer.fillRack();
                 humanPlayer.printRack();
+
                 // Get human player move input and make move
                 humanPlayer.playMove();
+
                 // Print scores and update board
                 System.out.println();
                 System.out.println("Human player score: " + humanPlayer.getPlayerScore());
@@ -124,8 +127,9 @@ public class Main {
                 computerPlayer.isPlayerTurn = false;
                 humanPlayer.isPlayerTurn = true;
             }
-            if ((tileBag.isEmpty()) && isHumanRackEmpty || isComputerRackEmpty) {
-                gameEnded = true;
+
+            if ((tileBag.isEmpty()) && (isHumanRackEmpty || isComputerRackEmpty)) {
+                gameOver = true;
             }
         }
 

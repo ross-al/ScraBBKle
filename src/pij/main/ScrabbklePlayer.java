@@ -5,9 +5,9 @@ import java.util.ArrayList;
 public class ScrabbklePlayer implements Player{
     protected boolean isPlayerTurn;
     private int score;
-    private ArrayList<ScrabbkleTile> tileRack;//need to restrict to 7 tiles
+    private ArrayList<ScrabbkleTile> tileRack;
     private ScrabbkleBoard board;
-    private ScrabbkleWordList wordList;
+    private final ScrabbkleWordList wordList;
     private ScrabbkleTileBag tileBag;
 
     public ScrabbklePlayer(ScrabbkleBoard board, ScrabbkleWordList wordList, ScrabbkleTileBag tileBag){
@@ -172,7 +172,8 @@ public class ScrabbklePlayer implements Player{
         for (int[] moveSquare : moveSquares) {
             int col = moveSquare[0];
             int row = moveSquare[1];
-            if (row < 0 || row > boardSize || col < 0 || col > boardSize) {
+            // Bounds of board are 1,1 due to row and column labels
+            if (row < 1 || row > boardSize || col < 1 || col > boardSize) {
                 return false;
             }
         }
