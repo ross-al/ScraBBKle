@@ -13,8 +13,8 @@ public interface Board {
     void convertToBoard(File inputFile);
     void printBoard();
     ScrabbkleSquare[][] getBoard();
-    void calculateStartSquare(int boardSize);
+    int[] calculateCentreSquare(int boardSize);
     int getBoardSize();
-    int[] getStartSquare();
+    int[] getCentreSquare();
 
 }

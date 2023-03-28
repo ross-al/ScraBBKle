@@ -74,4 +74,20 @@ class ScrabbkleBoardTest {
         int actual = board.getBoard()[1][4].getPremiumWordValue();
         assertEquals(expected, actual);
     }
+
+    @Test
+    void shouldReturnCentreSquareIfOddBoard(){
+        int expected = 8;
+        int[] centreSquare = board.calculateCentreSquare(15);
+        int actual = centreSquare[0];
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void shouldReturnCentreSquareIfEvenBoard(){
+        int expected = 7;
+        int[] centreSquare = board.calculateCentreSquare(14);
+        int actual = centreSquare[0];
+        assertEquals(expected, actual);
+    }
 }

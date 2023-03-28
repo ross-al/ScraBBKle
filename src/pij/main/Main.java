@@ -23,26 +23,37 @@ public class Main {
             }
         }
 
-        // Get input file to load selected board type
-        File inputFile = board.getInputFile(boardChoice);
+        // Create file variable from which to load board
+        File inputFile = null;
 
-        // Check if file exists
-        boolean fileExists = board.inputFileExists(inputFile);
-        if (fileExists) {
-            // Calculate board size
-            board.calculateBoardSize(inputFile);
-        }
-        // Check if input file exists and is valid size
-        while (!board.inputFileExists(inputFile) || (!board.isValidSize())) {
-            System.out.println("This is not a valid file.");
-            if (!board.inputFileExists(inputFile)) {
+        // Create boolean to check if valid file
+        boolean validFile= false;
+        while(!validFile){
+            // Get input file to load selected board type
+            inputFile = board.getInputFile(boardChoice);
+            // Check if file exists
+            boolean fileExists = board.inputFileExists(inputFile);
+            if(fileExists){
+                // Calculate board size
+                board.calculateBoardSize(inputFile);
+                if(board.isValidSize()){
+                    validFile = true;
+                } else {
+                    System.out.println("This is not a valid file.");
+                    System.out.println("Error: Incorrect file size.");
+                }
+            } else {
+                System.out.println("This is not a valid file.");
                 System.out.println("Error: Cannot find file.");
             }
-            if (!board.isValidSize()) {
-                System.out.println("Error: File size not valid.");
-            }
-            inputFile = board.getInputFile(boardChoice);
         }
+
+        //test files (all validated):
+        // ./resources/testLoadedBoard.txt
+        // ./resources/testLoadedBoard2.txt
+        // ./resources/testBoardShouldFail.txt
+        // ./resources/defaultBoard.txt
+
 
         // Load input file into board
         board.convertToBoard(inputFile);

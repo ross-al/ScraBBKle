@@ -9,10 +9,9 @@ import java.util.Scanner;
 
 
 public class ScrabbkleBoard implements Board {
-    private File inputFile;
     private int boardSize;
     private ScrabbkleSquare[][] board;
-    private int[] startSquare;
+    private int[] centreSquare;
 
     // Ask for player board type choice
 
@@ -21,8 +20,7 @@ public class ScrabbkleBoard implements Board {
         System.out.println("Please enter your choice (l/d):");
         System.out.println();
         Scanner input = new Scanner(System.in);
-        String boardChoice = input.nextLine().toLowerCase();
-        return boardChoice;
+        return input.nextLine().toLowerCase();
     }
 
     // Calculate input file
@@ -30,16 +28,15 @@ public class ScrabbkleBoard implements Board {
     public File getInputFile(String boardChoice) {
         // Default file name:
         String fileName = "./resources/defaultBoard.txt";
-        inputFile = new File(fileName);
-        String defaultBoard = "d";
+        File inputFile = new File(fileName);
         String loadBoard = "l";
         // If player selects to load a board, get new file name
         if (boardChoice.equals(loadBoard)) {
             System.out.println();
             System.out.println("Please enter the file name of the board: ");
             Scanner input = new Scanner(System.in);
-            fileName = input.nextLine();
-            inputFile = new File(fileName);
+            String loadFileName = input.nextLine();
+            inputFile = new File(loadFileName);
         }
         return inputFile;
     }
@@ -114,7 +111,7 @@ public class ScrabbkleBoard implements Board {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        calculateStartSquare(boardSize);
+        centreSquare = calculateCentreSquare(boardSize);
     }
 
     // To print updated board after every move
@@ -134,15 +131,27 @@ public class ScrabbkleBoard implements Board {
         return board;
     }
 
-    public void calculateStartSquare(int boardSize){
-        int input = boardSize -1;
-        int rowAndCol = input/2;
-        startSquare = new int[]{rowAndCol, rowAndCol};
+    public int[] calculateCentreSquare(int boardSize){
+        int row;
+        int col;
+        // If board size is even:
+        if(boardSize % 2 == 0){
+           row = boardSize / 2;
+           col = boardSize / 2;
+        }
+        // If board size is odd:
+        else {
+            int input = boardSize +1;
+            row = input/2;
+            col = row;
+        }
+        centreSquare = new int[]{row, col};
+        return centreSquare;
     }
 
 
-    public int[] getStartSquare(){
-        return this.startSquare;
+    public int[] getCentreSquare(){
+        return this.centreSquare;
     }
 
     public int getBoardSize(){
