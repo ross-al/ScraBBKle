@@ -20,7 +20,10 @@ public class HumanPlayer extends ScrabbklePlayer {
         tileRack = super.getTileRack();
     }
 
-    //NOT WORKING!
+    //isValid checks not working
+    //e.g. if first move, needs to say start on centreSquare, and keep as first move
+    //some moves say insufficient tiles
+    //second move saying word not conntected to tiles, even though firstmove failed
     public void playMove() {
         boolean validMove = false;
         while (!validMove) {
@@ -53,7 +56,6 @@ public class HumanPlayer extends ScrabbklePlayer {
 
                 // Check if human player's first move
 
-                //VALID MOVE IS ALWAYS TRUE FOR TESTING
                 if (isFirstMove()) {
                     // If humanPlayer's first move, centreSquare must be present in moveSquares
                     int[] centreSquare = getBoard().getCentreSquare();
@@ -223,11 +225,11 @@ public class HumanPlayer extends ScrabbklePlayer {
 
     // Check if all the conditions for a valid move are met
     public boolean isValidMove() {
-        /*(isValidWord(finalWord)
+        return (isValidWord(finalWord)
                 && hasAllTilesAvailable(charsInWord, tileRack)
                 && isValidDirection(moveSquares, moveDirection)
-                && super.intersectsWord(moveSquares));*/
-        return true; //always true for testing
+                && super.intersectsWord(moveSquares));
+        //return true; //always true for testing
     }
 
     // Check if the centre square appears in any of the squares for a given move
@@ -239,22 +241,22 @@ public class HumanPlayer extends ScrabbklePlayer {
                 break;
             }
         }
-       // return containsCentreSquare;
-        return true; //for testing
+        return containsCentreSquare;
+       // return true; //for testing
     }
 
 
     // Check if word is in provided dictionary
     public boolean isValidWord(String word) {
 
-        //return super.getWordList().isWord(word);
-        return true; //for testing
+        return super.getWordList().isWord(word);
+        //return true; //for testing
     }
 
     // Check if it is the human player's first move
     public boolean isFirstMove() {
-        //return (firstMove);
-        return true; //for testing
+        return (firstMove);
+        //return true; //for testing
     }
 
 
@@ -277,8 +279,8 @@ public class HumanPlayer extends ScrabbklePlayer {
                 }
             }
             if (tileRackCount != requiredCount) {
-                return true; //for testing
-               // return false;
+                //return true; //for testing
+               return false;
 
             }
         }
@@ -316,8 +318,8 @@ public class HumanPlayer extends ScrabbklePlayer {
     // Check if given move direction is possible on the existing board
     // Move is possible if word is in bounds of board, and has no parallel words
     public boolean isValidDirection(ArrayList<int[]> moveSquares, String moveDirection) {
-        // return (super.squaresAreInBounds(moveSquares)) && !(super.hasAdjacentWords(moveSquares, moveDirection));
-        return true; //for testing
+        return (super.squaresAreInBounds(moveSquares)) && !(super.hasAdjacentWords(moveSquares, moveDirection));
+        //return true; //for testing
     }
 
     // Get a list of all the squares in the player's move

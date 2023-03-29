@@ -68,9 +68,9 @@ public class ScrabbklePlayer implements Player{
     @Override
     public void placeTile(ScrabbkleTile tile, int row, int col) {
         board.getBoard()[row][col].setTile(tile);
-        //must also remove tile from rack!
+        setNeighbouringTiles(row,col);
         //must also setNextTile()
-        // must also set above, below, right and left tiles
+
     }
 
     public ScrabbkleBoard getBoard(){
@@ -166,7 +166,7 @@ public class ScrabbklePlayer implements Player{
         return hasAdjacentWord;
     }
 
-    //Check if the given move is within the bounds of the board
+    // Check if the given move is within the bounds of the board
     public boolean squaresAreInBounds(ArrayList<int[]> moveSquares) {
         int boardSize = getBoard().getBoardSize();
         for (int[] moveSquare : moveSquares) {
@@ -178,6 +178,51 @@ public class ScrabbklePlayer implements Player{
             }
         }
         return true;
+    }
+
+    // Check if individual positions for squares are within bounds
+    // Used for setting nextTile
+    public boolean positionIsInBounds(int row, int col) {
+        int boardSize = getBoard().getBoardSize();
+        // Bounds of board are 1,1 due to row and column labels
+        if (row < 1 || row > boardSize || col < 1 || col > boardSize) {
+            return false;
+        }
+        return true;
+    }
+
+    // Set aboveTile, belowTile, leftTile and rightTile
+    public void setNeighbouringTiles(int row, int col) {
+        ScrabbkleTile aboveTile;
+        ScrabbkleTile belowTile;
+        ScrabbkleTile leftTile;
+        ScrabbkleTile rightTile;
+        // Check if aboveTile is within bounds
+        if (positionIsInBounds(row - 1, col)) {
+            // Check if aboveTile already has a tile present and set to aboveTile if so
+            if (getBoard().getBoard()[row - 1][col].getTile() != null) {
+                aboveTile = getBoard().getBoard()[row - 1][col].getTile();
+                getBoard().getBoard()[row][col].setAboveTile(aboveTile);
+            }
+        } // belowTile
+        if (positionIsInBounds(row + 1, col)) {
+            if (getBoard().getBoard()[row + 1][col].getTile() != null) {
+                belowTile = getBoard().getBoard()[row + 1][col].getTile();
+                getBoard().getBoard()[row][col].setBelowTile(belowTile);
+            }
+        } // leftTile
+        if (positionIsInBounds(row, col - 1)) {
+            if (getBoard().getBoard()[row][col - 1].getTile() != null) {
+                leftTile = getBoard().getBoard()[row][col - 1].getTile();
+                getBoard().getBoard()[row][col].setLeftTile(leftTile);
+            }
+        } // rightTile
+        if (positionIsInBounds(row, col + 1)) {
+            if (getBoard().getBoard()[row][col + 1].getTile() != null) {
+                rightTile = getBoard().getBoard()[row][col + 1].getTile();
+                getBoard().getBoard()[row][col].setRightTile(rightTile);
+            }
+        }
     }
 
     // Check if tile has at least one other tile touching it

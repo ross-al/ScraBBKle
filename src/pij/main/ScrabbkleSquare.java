@@ -93,6 +93,21 @@ public class ScrabbkleSquare implements Square{
         this.nextTile = nextTile;
     }
 
+    public void setAboveTile(ScrabbkleTile tile){
+        this.aboveTile = tile;
+    }
+
+    public void setBelowTile(ScrabbkleTile tile){
+        this.belowTile = tile;
+    }
+
+    public void setRightTile(ScrabbkleTile tile){
+        this.rightTile = tile;
+    }
+
+    public void setLeftTile(ScrabbkleTile tile){
+        this.leftTile = tile;
+    }
 
     public ScrabbkleTile getAboveTile(){
         return aboveTile;
