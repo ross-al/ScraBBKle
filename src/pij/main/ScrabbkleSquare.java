@@ -74,10 +74,13 @@ public class ScrabbkleSquare implements Square{
     }
 
     public void setTile(ScrabbkleTile tile){
-        this.scrabbkleTile = tile;
-        printLabel = scrabbkleTile.getPrintOnBoardFormat();
+        scrabbkleTile = tile;
+        setPrintLabel(tile);
     }
 
+    public void setPrintLabel(ScrabbkleTile tile){
+        printLabel = tile.getPrintOnBoardFormat();
+    }
     public ScrabbkleTile getTile(){
         return scrabbkleTile;
     }

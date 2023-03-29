@@ -66,8 +66,8 @@ public class ScrabbklePlayer implements Player{
     }
 
     @Override
-    public void placeTile(ScrabbkleTile tile, int col, int row) {
-        board.getBoard()[col][row].setTile(tile);
+    public void placeTile(ScrabbkleTile tile, int row, int col) {
+        board.getBoard()[row][col].setTile(tile);
         //must also remove tile from rack!
         //must also setNextTile()
         // must also set above, below, right and left tiles
@@ -106,29 +106,29 @@ public class ScrabbklePlayer implements Player{
         if (moveDirection.equals("d")){
             //  If move is down, calculate corresponding columns either side
             for (int[] movePositions : moveSquares) {
-                int[] adjacentPositions = {movePositions[0] - 1, movePositions[1]};
+                int[] adjacentPositions = {movePositions[0], movePositions[1]-1};
                 leftColumn.add(adjacentPositions);
             }
             for (int[] movePositions : moveSquares) {
-                int[] adjacentPositions = {movePositions[0] + 1, movePositions[1]};
+                int[] adjacentPositions = {movePositions[0], movePositions[1]+1};
                 rightColumn.add(adjacentPositions);
             }
             // Check if left column has two or more touching tiles
             for(int[] leftPositions : leftColumn){
-                int col = leftPositions[0];
-                int row = leftPositions[1];
+                int row = leftPositions[0];
+                int col = leftPositions[1];
                 if(squaresAreInBounds(leftColumn)){
-                    if(board.getBoard()[col][row].getNextTile() != null){
+                    if(board.getBoard()[row][col].getNextTile() != null){
                         hasAdjacentWord = true;
                     }
                 }
             }
             // Check if right column has two or more touching tiles
             for(int[] rightPositions : rightColumn){
-                int col = rightPositions[0];
-                int row = rightPositions[1];
+                int row = rightPositions[0];
+                int col = rightPositions[1];
                 if(squaresAreInBounds(rightColumn)){
-                    if(board.getBoard()[col][row].getNextTile() != null){
+                    if(board.getBoard()[row][col].getNextTile() != null){
                         hasAdjacentWord = true;
                     }
                 }
@@ -136,28 +136,28 @@ public class ScrabbklePlayer implements Player{
         } else {
             // If move is right, calculate corresponding above and below rows
             for (int[] movePositions : moveSquares) {
-                int[] adjacentPositions = {movePositions[0], movePositions[1] - 1};
+                int[] adjacentPositions = {movePositions[0]-1, movePositions[1]};
                 aboveRow.add(adjacentPositions);
             }
             for (int[] movePositions : moveSquares) {
-                int[] adjacentPositions = {movePositions[0], movePositions[1] + 1};
+                int[] adjacentPositions = {movePositions[0]+1, movePositions[1]};
                 belowRow.add(adjacentPositions);
             }
             // Check if top or bottom rows have adjacent words
             for(int[] abovePositions : aboveRow){
-                int col = abovePositions[0];
-                int row = abovePositions[1];
+                int row = abovePositions[0];
+                int col = abovePositions[1];
                 if(squaresAreInBounds(aboveRow)){
-                    if(board.getBoard()[col][row].getNextTile() != null){
+                    if(board.getBoard()[row][col].getNextTile() != null){
                         hasAdjacentWord = true;
                     }
                 }
             }
             for(int[] belowPositions : belowRow){
-                int col = belowPositions[0];
-                int row = belowPositions[1];
+                int row = belowPositions[0];
+                int col = belowPositions[1];
                 if(squaresAreInBounds(belowRow)){
-                    if(board.getBoard()[col][row].getNextTile() != null){
+                    if(board.getBoard()[row][col].getNextTile() != null){
                         hasAdjacentWord = true;
                     }
                 }
@@ -170,8 +170,8 @@ public class ScrabbklePlayer implements Player{
     public boolean squaresAreInBounds(ArrayList<int[]> moveSquares) {
         int boardSize = getBoard().getBoardSize();
         for (int[] moveSquare : moveSquares) {
-            int col = moveSquare[0];
-            int row = moveSquare[1];
+            int row = moveSquare[0];
+            int col = moveSquare[1];
             // Bounds of board are 1,1 due to row and column labels
             if (row < 1 || row > boardSize || col < 1 || col > boardSize) {
                 return false;
@@ -186,17 +186,18 @@ public class ScrabbklePlayer implements Player{
     public boolean intersectsWord(ArrayList<int[]> moveSquares){
         boolean intersectsWord = false;
         for(int[] moveSquare: moveSquares){
-            int col = moveSquare[0];
-            int row = moveSquare[1];
+            int row = moveSquare[0];
+            int col = moveSquare[1];
             // Check if at least one tile above, below, to right or to left has a tile
-            if(        (board.getBoard()[col][row].getAboveTile() != null)
-                    || (board.getBoard()[col][row].getBelowTile() != null)
-                    || (board.getBoard()[col][row].getLeftTile() != null)
-                    || (board.getBoard()[col][row].getRightTile() != null) )
+            if(        (board.getBoard()[row][col].getAboveTile() != null)
+                    || (board.getBoard()[row][col].getBelowTile() != null)
+                    || (board.getBoard()[row][col].getLeftTile() != null)
+                    || (board.getBoard()[row][col].getRightTile() != null) )
                 intersectsWord = true;
         }
         return intersectsWord;
     }
+
 
     //words using all 7 tiles in rack score an extra 70 points
     public boolean sevenTileBonus(){

@@ -10,10 +10,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class HumanPlayerTest {
     ScrabbkleBoard board;
-    ScrabbkleTile tile1, tile2;
+    ScrabbkleTile tile1, tile2, tile3, tile4, tile5;
     HumanPlayer humanPlayer;
     ScrabbkleWordList wordList;
     ScrabbkleTileBag tileBag;
+    ArrayList<ScrabbkleTile> tileRack;
 
     @BeforeEach
     void buildUp(){
@@ -24,9 +25,18 @@ class HumanPlayerTest {
         board.convertToBoard(inputFile);
         tile1 = new ScrabbkleTile('I');
         tile2 = new ScrabbkleTile('T');
+        tile3 = new ScrabbkleTile('F');
+        tile4 = new ScrabbkleTile('E');
+        tile5 = new ScrabbkleTile('E');
         wordList = new ScrabbkleWordList();
         tileBag = new ScrabbkleTileBag();
         humanPlayer = new HumanPlayer(board,wordList,tileBag);
+        tileRack = new ArrayList<>();
+        tileRack.add(tile1);
+        tileRack.add(tile2);
+        tileRack.add(tile3);
+        tileRack.add(tile4);
+        tileRack.add(tile5);
     }
 
     @Test
@@ -119,6 +129,52 @@ class HumanPlayerTest {
         ArrayList<int[]> moveSquares = humanPlayer.getMoveSquares();
         int[] centreSquare = board.getCentreSquare();
         assertFalse(humanPlayer.containsCentreSquare(moveSquares,centreSquare));
+    }
+
+    @Test
+    void shouldReturnTrueIfPlayerHasEnoughTiles(){
+        char f = 'F';
+        char e = 'E';
+        char e2 = 'E';
+        char t = 'T';
+        ArrayList<Character> charsInWord = new ArrayList<>() {
+            {
+                add(0, f);
+                add(1, e);
+                add(2, e2);
+                add(3, t);
+            }
+        };
+        assertTrue(humanPlayer.hasAllTilesAvailable(charsInWord, tileRack));
+
+    }
+
+    @Test
+    void shouldReturnFalseIfPlayerDoesNotHaveEnoughTiles(){
+        char f = 'F';
+        char e = 'E';
+        char e2 = 'E';
+        char t = 'T';
+        char f2 = 'F';
+        ArrayList<Character> charsInWord = new ArrayList<>() {
+            {
+                add(0, f);
+                add(1, e);
+                add(2, e2);
+                add(3, t);
+                add(4,f2);
+            }
+        };
+        assertFalse(humanPlayer.hasAllTilesAvailable(charsInWord, tileRack));
+    }
+
+    @Test
+    void shouldReturnTileFromRackWithMatchingLetter(){
+        ScrabbkleTile testTile = new ScrabbkleTile('I');
+        humanPlayer.getTileRack().add(testTile);
+        ScrabbkleTile actual = humanPlayer.getTileFromRack('I');
+        ScrabbkleTile expected = testTile;
+        assertEquals(expected,actual);
     }
 
 }
