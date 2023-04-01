@@ -7,9 +7,9 @@ public class ScrabbkleTile implements Tile{
     // private int col;
     private int premiumWordValue;
     private int premiumLetterValue;
-    private ScrabbkleTile leftTile;
     private boolean premiumWordValueUsed;
     private boolean premiumLetterValueUsed;
+    private ScrabbkleTile leftTile;
     private ScrabbkleTile rightTile;
     private ScrabbkleTile aboveTile;
     private ScrabbkleTile belowTile;
@@ -19,7 +19,7 @@ public class ScrabbkleTile implements Tile{
         this.letter = letter;
         this.value = calculateTileValue(this.letter);
         premiumWordValue = 1;
-        premiumLetterValue = 0;
+        premiumLetterValue = 1;
         premiumWordValueUsed = false;
         premiumLetterValueUsed = false;
     }
@@ -134,14 +134,6 @@ public class ScrabbkleTile implements Tile{
         this.belowTile = belowTile;
     }
 
-
-/*    public int getRow() {
-        return row;
-    }
-
-    public int getCol() {
-        return col;
-    }*/
 
     public int getPremiumWordValue() {
         return premiumWordValue;

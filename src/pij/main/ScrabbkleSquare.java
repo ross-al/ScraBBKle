@@ -70,8 +70,10 @@ public class ScrabbkleSquare implements Square{
     }
 
     public void setTile(ScrabbkleTile tile){
-        scrabbkleTile = tile;
-        setPrintLabel(tile);
+        if(tile!=null) {
+            scrabbkleTile = tile;
+            setPrintLabel(tile);
+        }
     }
 
     public void setPrintLabel(ScrabbkleTile tile){

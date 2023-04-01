@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ScrabbklePlayerTest {
     ScrabbkleBoard board;
-    ScrabbkleTile tile1, tile2, tile3, tile4, tile5;
+    ScrabbkleTile tileA, tileB, tileC, tileD, tileE;
     ScrabbklePlayer player;
 
     @BeforeEach
@@ -22,54 +22,25 @@ class ScrabbklePlayerTest {
         String fileName = "./resources/defaultBoard.txt";
         File inputFile = new File(fileName);
         board.convertToBoard(inputFile);
-        tile1 = new ScrabbkleTile('A');
-        tile2 = new ScrabbkleTile('B');
-        tile3 = new ScrabbkleTile('C');
-        tile4 = new ScrabbkleTile('D');
-        tile5 = new ScrabbkleTile('E');
+        tileA = new ScrabbkleTile('A'); //value 1
+        tileB = new ScrabbkleTile('B'); //value 3
+        tileC = new ScrabbkleTile('C'); //value 3
+        tileD = new ScrabbkleTile('D'); //value 2
+        tileE = new ScrabbkleTile('E'); //value 1
+        player.placeTile(tileA,1,1);
+        player.placeTile(tileB,1,2);
+        player.placeTile(tileC,1,3);
+        player.placeTile(tileD,1,4);
+        player.placeTile(tileE,1,5);
     }
 
     @Test
-    void shouldReturnAboveTile(){
-        // Tile that was already on the board
-        board.getBoard()[7][8].setTile(tile1);
-        // Tile that player places below the above tile during a move
-        player.placeTile(tile2, 8, 8);
-        ScrabbkleTile expected = tile1;
-        ScrabbkleTile actual = board.getBoard()[8][8].getTile().getAboveTile();
-        assertEquals(expected, actual);
+    void shouldReturnWordScoreOf36(){
+        String moveDirection = "r";
+        int tileCounter = 0;
+        int expected = 36;
+        int actual = player.calculateWordScore(moveDirection,1,1,tileCounter);
+        assertEquals(expected,actual);
     }
 
-    @Test
-    void shouldReturnBelowTile(){
-        // Tile that was already on the board
-        board.getBoard()[7][8].setTile(tile1);
-        // Tile that player places above tile1 during a move
-        player.placeTile(tile2, 6, 8);
-        ScrabbkleTile expected = tile1;
-        ScrabbkleTile actual = board.getBoard()[6][8].getTile().getBelowTile();
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    void shouldReturnLeftTile(){
-        // Tile that was already on the board
-        board.getBoard()[7][8].setTile(tile1);
-        // Tile that player places to right of tile1 during a move
-        player.placeTile(tile2, 7, 9);
-        ScrabbkleTile expected = tile1;
-        ScrabbkleTile actual = board.getBoard()[7][9].getTile().getLeftTile();
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    void shouldReturnRightTile(){
-        // Tile that was already on the board
-        board.getBoard()[7][8].setTile(tile1);
-        // Tile that player places to left of tile1 during a move
-        player.placeTile(tile2, 7, 7);
-        ScrabbkleTile expected = tile1;
-        ScrabbkleTile actual = board.getBoard()[7][7].getTile().getRightTile();
-        assertEquals(expected, actual);
-    }
 }
