@@ -2,9 +2,7 @@ package pij.main;
 
 public class ScrabbkleTile implements Tile{
     private char letter;
-    private int value;
-    //private int row; //WHAT WERE THESE FOR????
-    // private int col;
+    private final int value;
     private int premiumWordValue;
     private int premiumLetterValue;
     private boolean premiumWordValueUsed;
@@ -158,6 +156,14 @@ public class ScrabbkleTile implements Tile{
     public void setPremiumLetterValueUsed(boolean bool){
         premiumLetterValueUsed = bool;
     }
+
+    public boolean isPremiumWordValueUsed() {
+        return premiumWordValueUsed;
+    }
+
+    public boolean isPremiumLetterValueUsed() {
+        return premiumLetterValueUsed;
+    }
 }
 
 //tile values:
@@ -169,3 +175,7 @@ public class ScrabbkleTile implements Tile{
 //(8 points)- J, X.
 //(10 points)-Q, Z.
 //(3 points) Wildcard
+
+//testing
+//STARK = 9
+//STAR = 4

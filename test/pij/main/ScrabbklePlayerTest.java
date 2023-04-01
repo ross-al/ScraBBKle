@@ -22,25 +22,73 @@ class ScrabbklePlayerTest {
         String fileName = "./resources/defaultBoard.txt";
         File inputFile = new File(fileName);
         board.convertToBoard(inputFile);
-        tileA = new ScrabbkleTile('A'); //value 1
-        tileB = new ScrabbkleTile('B'); //value 3
-        tileC = new ScrabbkleTile('C'); //value 3
-        tileD = new ScrabbkleTile('D'); //value 2
-        tileE = new ScrabbkleTile('E'); //value 1
-        player.placeTile(tileA,1,1);
-        player.placeTile(tileB,1,2);
-        player.placeTile(tileC,1,3);
-        player.placeTile(tileD,1,4);
-        player.placeTile(tileE,1,5);
     }
 
     @Test
-    void shouldReturnWordScoreOf36(){
-        String moveDirection = "r";
+    void shouldReturnWordScoreOfXX(){
+        ScrabbkleTile tileS = new ScrabbkleTile('S');
+        ScrabbkleTile tileT = new ScrabbkleTile('T');
+        ScrabbkleTile tileA = new ScrabbkleTile('A');
+        ScrabbkleTile tileR = new ScrabbkleTile('R');
+        ScrabbkleTile tileK = new ScrabbkleTile('K');
+
+        player.placeTile(tileS, 7, 8);
+        player.placeTile(tileT, 8, 8);
+        player.placeTile(tileA, 9, 8);
+        player.placeTile(tileR, 10, 8);
+        player.placeTile(tileK, 11, 8);
+
+        String moveDirection = "d";
+        // move position is h7 {7,8}
+        int row = 7;
+        int col = 8;
         int tileCounter = 0;
-        int expected = 36;
-        int actual = player.calculateWordScore(moveDirection,1,1,tileCounter);
-        assertEquals(expected,actual);
+
+        int actual = player.calculateWordScore(moveDirection, row, col, tileCounter);
+        int expected = 18;
+        assertEquals(expected, actual);
     }
 
+    @Test
+    void shouldReturnWordScoreOfXXUsingManualNeighbouringTiles() {
+
+        // player placed tiles
+        ScrabbkleTile tileS = new ScrabbkleTile('S');
+        ScrabbkleTile tileT = new ScrabbkleTile('T');
+        ScrabbkleTile tileA = new ScrabbkleTile('A');
+        ScrabbkleTile tileR = new ScrabbkleTile('R');
+        // move position is h7 {7,8}
+        board.getBoard()[7][8].setTile(tileS);
+        board.getBoard()[8][8].setTile(tileT);
+        board.getBoard()[9][8].setTile(tileA);
+        board.getBoard()[10][8].setTile(tileR);
+        //manually set neighbour tiles
+
+        // Tile S, above tile = null, below tile = T
+        //board.getBoard()[7][8].getTile().setAboveTile();
+        board.getBoard()[7][8].getTile().setBelowTile(tileT);
+
+        // Tile T, above tile = S, below tile = A
+        board.getBoard()[8][8].getTile().setAboveTile(tileS);
+        board.getBoard()[8][8].getTile().setBelowTile(tileA);
+
+        // Tile A, above tile = T, below tile = R
+        board.getBoard()[9][8].getTile().setAboveTile(tileT);
+        board.getBoard()[9][8].getTile().setBelowTile(tileR);
+
+        // Tile R, above tile = A, below tile = null
+        board.getBoard()[10][8].getTile().setAboveTile(tileA);
+        //board.getBoard()[9][8].getTile().setBelowTile();
+
+        String moveDirection = "d";
+        // move position is h7 {7,8}
+        int row = 7;
+        int col = 8;
+        int tileCounter = 0;
+
+        int actual = player.calculateWordScore(moveDirection, row, col, tileCounter);
+        int expected = 8;
+
+        assertEquals(expected, actual);
+    }
 }

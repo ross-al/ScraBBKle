@@ -27,6 +27,7 @@ public class ScrabbklePlayer implements Player{
         }
     }
 
+
     @Override
     public void addTileToRack() {
         ScrabbkleTile myTile = tileBag.getRandomTile();
@@ -59,12 +60,11 @@ public class ScrabbklePlayer implements Player{
         setNeighbouringTiles(tile,row,col);
 
         // Assign any premium values of the square to the tile
-        int premiumWord = board.getBoard()[row][col].getPremiumWordValue();
-        board.getBoard()[row][col].getTile().setPremiumWordValue(premiumWord);
+        int premiumWordValue = board.getBoard()[row][col].getPremiumWordValue();
+        board.getBoard()[row][col].getTile().setPremiumWordValue(premiumWordValue);
 
-        int premiumLetter = board.getBoard()[row][col].getPremiumLetterValue();
-        board.getBoard()[row][col].getTile().setPremiumLetterValue(premiumLetter);
-
+        int premiumLetterValue = board.getBoard()[row][col].getPremiumLetterValue();
+        board.getBoard()[row][col].getTile().setPremiumLetterValue(premiumLetterValue);
     }
 
     public ScrabbkleBoard getBoard(){
@@ -112,8 +112,10 @@ public class ScrabbklePlayer implements Player{
                 int row = leftPositions[0];
                 int col = leftPositions[1];
                 if(squaresAreInBounds(leftColumn)){
-                    if(board.getBoard()[row][col].getLeftTile() != null){
-                        hasAdjacentWord = true;
+                    if(board.getBoard()[row][col].getTile() != null) {
+                        if (board.getBoard()[row][col].getTile().getLeftTile() != null) {
+                            hasAdjacentWord = true;
+                        }
                     }
                 }
             }
@@ -122,8 +124,10 @@ public class ScrabbklePlayer implements Player{
                 int row = rightPositions[0];
                 int col = rightPositions[1];
                 if(squaresAreInBounds(rightColumn)){
-                    if(board.getBoard()[row][col].getRightTile() != null){
-                        hasAdjacentWord = true;
+                    if(board.getBoard()[row][col].getTile() != null) {
+                        if (board.getBoard()[row][col].getTile().getRightTile() != null) {
+                            hasAdjacentWord = true;
+                        }
                     }
                 }
             }
@@ -142,8 +146,10 @@ public class ScrabbklePlayer implements Player{
                 int row = abovePositions[0];
                 int col = abovePositions[1];
                 if(squaresAreInBounds(aboveRow)){
-                    if(board.getBoard()[row][col].getAboveTile() != null){
-                        hasAdjacentWord = true;
+                    if(board.getBoard()[row][col].getTile() != null) {
+                        if (board.getBoard()[row][col].getTile().getAboveTile() != null) {
+                            hasAdjacentWord = true;
+                        }
                     }
                 }
             }
@@ -151,8 +157,10 @@ public class ScrabbklePlayer implements Player{
                 int row = belowPositions[0];
                 int col = belowPositions[1];
                 if(squaresAreInBounds(belowRow)){
-                    if(board.getBoard()[row][col].getBelowTile() != null){
-                        hasAdjacentWord = true;
+                    if(board.getBoard()[row][col].getTile() != null) {
+                        if (board.getBoard()[row][col].getTile().getBelowTile() != null) {
+                            hasAdjacentWord = true;
+                        }
                     }
                 }
             }
@@ -302,14 +310,10 @@ public class ScrabbklePlayer implements Player{
                 // Get the tile form the board
                 ScrabbkleTile tile = getBoard().getBoard()[row][col].getTile();
                 // Reset its premium values
-                tile.setPremiumLetterValue(0);
-                tile.setPremiumWordValue(0);
+                tile.setPremiumLetterValue(1);
+                tile.setPremiumWordValue(1);
                 // Remove tile from board
                 getBoard().getBoard()[row][col].removeTile();
-                //WHAT WAS THIS FOR???
-                // Can't set int to null, so we set row and col to -1 when removing from board
-                // When tile is replaced in later moves, rol and col will be updated to current position
-                // getBoard().getBoard()[row][col].getTile().setRowAndCol(-1, -1);
             }
         }
     }
@@ -364,75 +368,47 @@ public class ScrabbklePlayer implements Player{
         }
     }
 
-
+    // Check for null pointers in this method
     @Override
     public int calculateWordScore(String moveDirection, int row, int col, int tileCounter) {
         int wordScore = 0;
+        int tileValue;
+        int letterScore;
+        int premiumLetterValue ;
+        int premiumWordValue = 1 ;
         // Create square to track position in linked list
-        ScrabbkleTile currentTile;
-        // Initialise premiumWord value to 1
-        int premiumWordValues = 1;
-        // If word direction is down
-        if(moveDirection.equals("d")) {
-            // Find the top tile in the word on the board
-            // First find if there is a tile above player's position and find top most tile if so
-            // This will be the beginning of the word for scoring
-            currentTile = getBoard().getBoard()[row][col].getTile();
+        ScrabbkleTile currentTile = getBoard().getBoard()[row][col].getTile();
+        // If direction is down
+        if (moveDirection.equals("d")) {
             while(currentTile.getAboveTile() != null){
                 currentTile = currentTile.getAboveTile();
             }
-            while (currentTile != null && currentTile != currentTile.getBelowTile()) {
-                // If the tile has a premiumLetter value
-                // get the tile value, multiply by the premium letter value and add to score
-                if(currentTile.getPremiumLetterValue() != 0) {
-                    wordScore += currentTile.getValue() * currentTile.getPremiumLetterValue();
-                } else { // if premium value is 0, just add the letter value to the score
-                    wordScore += currentTile.getValue();
-                }
-                currentTile.setPremiumLetterValueUsed(true);
-                currentTile.setPremiumLetterValueUsed(true);
-                premiumWordValues *= currentTile.getPremiumWordValue();
-                if(currentTile.getBelowTile() != null) {
-                    currentTile = currentTile.getBelowTile(); // move to the next tile below
-                }
-            }  // Then multiply by premiumWordValues to get final word score
-            wordScore *= premiumWordValues;
+            while (currentTile != null) {
+                tileValue = currentTile.getValue();
+                premiumLetterValue = currentTile.getPremiumLetterValue();
+                //wordScore = wordScore + tileValue;
+                letterScore = tileValue * premiumLetterValue;
+                wordScore = wordScore + letterScore;
 
-            // if word direction is right
-        } else {
-            // Find the left-most tile in the word on the board
-            // First find if there is a tile to the left of player's position and find left-most tile if so
-            // This will be the beginning of the word for scoring
-            currentTile = getBoard().getBoard()[row][col].getTile();
-            while(currentTile.getLeftTile() != null){
-                currentTile = currentTile.getLeftTile();
+                premiumWordValue = (premiumWordValue * currentTile.getPremiumWordValue());
+
+                currentTile.setPremiumWordValueUsed(true);
+                currentTile.setPremiumWordValue(1);
+
+                currentTile.setPremiumLetterValueUsed(true);
+                currentTile.setPremiumLetterValue(1);
+
+                currentTile = currentTile.getBelowTile(); // move to the next tile to the right
             }
-            while (currentTile != null && currentTile != currentTile.getRightTile()) {
-                // If the tile has a premiumLetter value
-                // get the tile value, multiply by the premium letter value and add to score
-                if(currentTile.getPremiumLetterValue() != 0) {
-                    wordScore += currentTile.getValue() * currentTile.getPremiumLetterValue();
-                } else { // if premium value is 0, just add the letter value to the score
-                    wordScore += currentTile.getValue();
-                }
-                currentTile.setPremiumLetterValueUsed(true);
-                currentTile.setPremiumLetterValueUsed(true);
-                premiumWordValues *= currentTile.getPremiumWordValue();
-                if(currentTile.getRightTile() != null){
-                    currentTile = currentTile.getRightTile(); // move to the next tile below
-                }
-            }  // Then multiply by premiumWordValues to get final word score
-            wordScore *= premiumWordValues;
+        }
+        //if direction is right
+        // (duplicate code, put into helper methods)
+        wordScore = (wordScore * premiumWordValue);
 
+        if(tileCounter == 7){
+            wordScore = wordScore + 70;
         }
 
-        //get tile values
-        //get premium word and premium letter valuse
-        //premiums can only be used once, so need isUsed flag
-        //calculate 7 tile bonus
-        if(sevenTileBonus()){
-            //add 70 extra points to total
-        };
         return wordScore;
     }
 
@@ -442,10 +418,4 @@ public class ScrabbklePlayer implements Player{
         return score;
     }
 
-
-    //words using all 7 tiles in rack score an extra 70 points
-    public boolean sevenTileBonus(){
-        //if all tiles used in rack
-        return true;
-    }
 }

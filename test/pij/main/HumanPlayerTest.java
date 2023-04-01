@@ -328,21 +328,31 @@ class HumanPlayerTest {
         String actual = humanPlayer.calculateFinalWord("f8","r");
         String expected = "LITTLE";
         assertEquals(expected, actual);
-
-
-
-
-
-
-
-
-
-
-
     }
 
 
+    @Test
+    void shouldReturnFinalWordWhenOnlyPlacingOneTileAtBottomOfExistingWord(){
+        //e.g. word on board: STAR
+        //new word on board: STAR + S
 
+        ScrabbkleTile tileS = new ScrabbkleTile('S');
+        ScrabbkleTile tileA = new ScrabbkleTile('A');
+        ScrabbkleTile tileR = new ScrabbkleTile('R');
+        ScrabbkleTile tileS2 = new ScrabbkleTile('S');
 
+        //tiles on board already at {8,7} and {8,8}
+        humanPlayer.placeTile(tileS, 7, 8);
+        humanPlayer.placeTile(tileT, 8, 8);
+        humanPlayer.placeTile(tileA, 9, 8);
+        humanPlayer.placeTile(tileR, 10, 8);
 
+        // player placed tiles
+        humanPlayer.placeTile(tileS2, 11, 8);
+
+        // Place tile at bottom of word in position h11 {11,8}
+        String actual = humanPlayer.calculateFinalWord("h11","d");
+        String expected = "STARS";
+        assertEquals(expected, actual);
+    }
 }

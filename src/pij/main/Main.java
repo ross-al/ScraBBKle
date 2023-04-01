@@ -72,6 +72,7 @@ public class Main {
         // Print empty line for console readability
         System.out.println();
 
+
         // Continue loop until game over
         // Game continues until tileBag is empty, and one of the player racks is empty
         while (!gameOver) {
@@ -129,7 +130,15 @@ public class Main {
                 humanPlayer.isPlayerTurn = true;
             }
 
-            if ((tileBag.isEmpty()) && (isHumanRackEmpty || isComputerRackEmpty)) {
+            // Get skip counts from players
+
+            int humanSkipCount = humanPlayer.getSkipCount();
+            int computerSkipCount = computerPlayer.getSkipCount();
+
+            // If both players skip two times in a row, then game over
+            // If tile bag is empty AND either the human rack or computer rack is empty, then game over
+
+            if (((tileBag.isEmpty()) && (isHumanRackEmpty || isComputerRackEmpty)) || ((humanSkipCount >= 2 && computerSkipCount >= 2))) {
                 gameOver = true;
             }
         }
@@ -152,7 +161,7 @@ public class Main {
     }
 }
 
-//   Thanks for playing! :)
+//   Thanks for playing! Or trying too... :)
 //    ________  ________  ________  ________  ________  ________  ___  __    ___       _______
 //   |\   ____\|\   ____\|\   __  \|\   __  \|\   __  \|\   __  \|\  \|\  \ |\  \     |\  ___ \
 //   \ \  \___|\ \  \___|\ \  \|\  \ \  \|\  \ \  \|\ /\ \  \|\ /\ \  \/  /|\ \  \    \ \   __/|
