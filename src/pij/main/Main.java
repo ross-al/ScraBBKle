@@ -94,10 +94,6 @@ public class Main {
                 humanPlayer.fillRack();
                 humanPlayer.printRack();
 
-                ScrabbkleTile tile = humanPlayer.getTileRack().get(1);
-                board.getBoard()[3][7].setTile(tile);
-
-
                 // Get human player move input and make move
                 humanPlayer.playMove();
 

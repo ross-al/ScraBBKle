@@ -5,7 +5,7 @@ public interface Player {
 
     void addTileToRack();
 
-    int calculateWordScore();
+    int calculateWordScore(String moveDirection, int row, int col, int tiles);
 
     int getPlayerScore();
 

@@ -3,12 +3,13 @@ package pij.main;
 public class ScrabbkleSquare implements Square{
 
     private ScrabbkleTile scrabbkleTile;
-    private ScrabbkleTile nextTile;
+    //private ScrabbkleTile nextTile;
     private ScrabbkleTile aboveTile;
     private ScrabbkleTile belowTile;
     private ScrabbkleTile leftTile;
     private ScrabbkleTile rightTile;
-    private String printLabel; //must override printLabel with Tile if tile != null
+    private String printLabel;
+    private String filePrintLabel;
     private int premiumLetterValue;
     private int premiumWordValue;
     private boolean premiumLetterUsed;
@@ -16,13 +17,8 @@ public class ScrabbkleSquare implements Square{
 
 
     public ScrabbkleSquare(String printLabel){
-        scrabbkleTile = null;
-        nextTile = null;
-        aboveTile = null;
-        belowTile = null;
-        leftTile = null;
-        rightTile = null;
         this.printLabel = printLabel; //String from input file
+        this.filePrintLabel = this.printLabel; // used to remember original print label
         premiumLetterValue = convertPremiumLetter(this.printLabel);
         premiumWordValue = convertPremiumWord(this.printLabel);
         premiumLetterUsed = false;
@@ -85,13 +81,13 @@ public class ScrabbkleSquare implements Square{
         return scrabbkleTile;
     }
 
-    public ScrabbkleTile getNextTile(){
+   /* public ScrabbkleTile getNextTile(){
         return nextTile;
     }
 
     public void setNextTile(ScrabbkleTile nextTile){
         this.nextTile = nextTile;
-    }
+    }*/
 
     public void setAboveTile(ScrabbkleTile tile){
         this.aboveTile = tile;
@@ -123,6 +119,14 @@ public class ScrabbkleSquare implements Square{
 
     public ScrabbkleTile getRightTile() {
         return rightTile;
+    }
+
+    public void removeTile(){
+        // Remove tile from the Square
+       scrabbkleTile = null;
+       // Reset print label
+       printLabel = filePrintLabel;
+
     }
 
 }

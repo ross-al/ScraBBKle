@@ -36,7 +36,7 @@ class ScrabbklePlayerTest {
         // Tile that player places below the above tile during a move
         player.placeTile(tile2, 8, 8);
         ScrabbkleTile expected = tile1;
-        ScrabbkleTile actual = board.getBoard()[8][8].getAboveTile();
+        ScrabbkleTile actual = board.getBoard()[8][8].getTile().getAboveTile();
         assertEquals(expected, actual);
     }
 
@@ -47,7 +47,7 @@ class ScrabbklePlayerTest {
         // Tile that player places above tile1 during a move
         player.placeTile(tile2, 6, 8);
         ScrabbkleTile expected = tile1;
-        ScrabbkleTile actual = board.getBoard()[6][8].getBelowTile();
+        ScrabbkleTile actual = board.getBoard()[6][8].getTile().getBelowTile();
         assertEquals(expected, actual);
     }
 
@@ -58,7 +58,7 @@ class ScrabbklePlayerTest {
         // Tile that player places to right of tile1 during a move
         player.placeTile(tile2, 7, 9);
         ScrabbkleTile expected = tile1;
-        ScrabbkleTile actual = board.getBoard()[7][9].getLeftTile();
+        ScrabbkleTile actual = board.getBoard()[7][9].getTile().getLeftTile();
         assertEquals(expected, actual);
     }
 
@@ -69,7 +69,7 @@ class ScrabbklePlayerTest {
         // Tile that player places to left of tile1 during a move
         player.placeTile(tile2, 7, 7);
         ScrabbkleTile expected = tile1;
-        ScrabbkleTile actual = board.getBoard()[7][7].getRightTile();
+        ScrabbkleTile actual = board.getBoard()[7][7].getTile().getRightTile();
         assertEquals(expected, actual);
     }
 }

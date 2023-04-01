@@ -11,10 +11,6 @@ public class ScrabbkleTileBag implements TileBag{
         scrabbkleTileBag = new ArrayList<>();
     }
 
-    //use a map for tile counter, map can sum all?
-    //how many starting letters?
-    //need counter for how many letters left
-    //do we need to track used letters? e.g. usedLetters()
 
     @Override
     public int getSize() {
@@ -148,9 +144,6 @@ public class ScrabbkleTileBag implements TileBag{
 }
 
 
-//
-
-//randomise bag?
 
 //Quantity (tileBag must contain 100 tiles at start):
 //2 blank tiles (Wildcards)

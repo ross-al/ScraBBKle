@@ -7,16 +7,17 @@ import java.util.List;
 public class ScrabbkleWordList implements WordList{
     private List<String> wordList;
 
-    /**
-     * @return an ArrayList of input txt file
-     * @throws FileNotFoundException if the input file does not exist in given directory
-     * @throws IOException if error when accessing file data
-     */
+
 
     public ScrabbkleWordList(){
         this.wordList = convertToList();
     }
 
+    /**
+     * @return an ArrayList of input txt file
+     * @throws FileNotFoundException if the input file does not exist in given directory
+     * @throws IOException if error when accessing file data
+     */
     public List<String> convertToList(){
         List<String> wordList = new ArrayList<>();
         File file = new File("./resources/wordlist.txt");
@@ -35,10 +36,10 @@ public class ScrabbkleWordList implements WordList{
 
     public boolean isWord(String word){
         int length = word.length();
-        //words must be 2+ characters
+        // Words must be 2+ characters
         if (length > 1){
-            //check is word exists in wordList
-            //cast to lower case as contains() method is case-sensitive
+            // Check if word exists in wordList
+            // Cast to lower case as contains() method is case-sensitive
             return wordList.contains(word.toLowerCase());
         }
         else {
@@ -46,10 +47,6 @@ public class ScrabbkleWordList implements WordList{
         }
     }
 
-/*    //REDUNDANT?
-    public boolean isWord(ScrabbkleWord word){
-        return wordList.contains(word);
-    }*/
 
     public List<String> getWordList(){
         return wordList;

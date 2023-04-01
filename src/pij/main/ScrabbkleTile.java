@@ -3,11 +3,25 @@ package pij.main;
 public class ScrabbkleTile implements Tile{
     private char letter;
     private int value;
+    //private int row; //WHAT WERE THESE FOR????
+    // private int col;
+    private int premiumWordValue;
+    private int premiumLetterValue;
+    private ScrabbkleTile leftTile;
+    private boolean premiumWordValueUsed;
+    private boolean premiumLetterValueUsed;
+    private ScrabbkleTile rightTile;
+    private ScrabbkleTile aboveTile;
+    private ScrabbkleTile belowTile;
 
-    //constructor for letters
+
     public ScrabbkleTile(char letter){
         this.letter = letter;
         this.value = calculateTileValue(this.letter);
+        premiumWordValue = 1;
+        premiumLetterValue = 0;
+        premiumWordValueUsed = false;
+        premiumLetterValueUsed = false;
     }
 
 
@@ -20,12 +34,10 @@ public class ScrabbkleTile implements Tile{
     }
 
     public String getPrintInTileRackFormat(){
-        //char upperCaseLetter = Character.toUpperCase(letter); //we don't want this for WildCard tiles
         return "[" + letter + value + "]";
     }
 
     public String getPrintOnBoardFormat(){
-        //char upperCaseLetter = Character.toUpperCase(letter); //we don't want this for WildCard tiles
         return letter + String.valueOf(value);
     }
 
@@ -34,6 +46,11 @@ public class ScrabbkleTile implements Tile{
         this.letter = Character.toLowerCase(wildCard);
 
     }
+
+    /*public void setRowAndCol(int row, int col){
+        this.row = row;
+        this.col = col;
+    }*/
 
     public int calculateTileValue(char letter){ //need wildcard logic too
         int value;
@@ -85,6 +102,70 @@ public class ScrabbkleTile implements Tile{
         return value;
     }
 
+    public void setLeftTile(ScrabbkleTile leftTile) {
+        this.leftTile = leftTile;
+    }
+
+    public ScrabbkleTile getLeftTile() {
+        return leftTile;
+    }
+
+    public ScrabbkleTile getRightTile() {
+        return rightTile;
+    }
+
+    public void setRightTile(ScrabbkleTile rightTile) {
+        this.rightTile = rightTile;
+    }
+
+    public ScrabbkleTile getAboveTile() {
+        return aboveTile;
+    }
+
+    public void setAboveTile(ScrabbkleTile aboveTile) {
+        this.aboveTile = aboveTile;
+    }
+
+    public ScrabbkleTile getBelowTile() {
+        return belowTile;
+    }
+
+    public void setBelowTile(ScrabbkleTile belowTile) {
+        this.belowTile = belowTile;
+    }
+
+
+/*    public int getRow() {
+        return row;
+    }
+
+    public int getCol() {
+        return col;
+    }*/
+
+    public int getPremiumWordValue() {
+        return premiumWordValue;
+    }
+
+    public void setPremiumWordValue(int premiumWordValue) {
+        this.premiumWordValue = premiumWordValue;
+    }
+
+    public int getPremiumLetterValue() {
+        return premiumLetterValue;
+    }
+
+    public void setPremiumLetterValue(int premiumLetterValue) {
+        this.premiumLetterValue = premiumLetterValue;
+    }
+
+    public void setPremiumWordValueUsed(boolean bool){
+        premiumWordValueUsed = bool;
+    }
+
+    public void setPremiumLetterValueUsed(boolean bool){
+        premiumLetterValueUsed = bool;
+    }
 }
 
 //tile values:
