@@ -62,6 +62,12 @@ public class Main {
         HumanPlayer humanPlayer = new HumanPlayer(board, wordList, tileBag);
         ComputerPlayer computerPlayer = new ComputerPlayer(board, wordList, tileBag);
 
+        // Create score boards
+
+        int humanPlayerScore = humanPlayer.getPlayerScore();
+        int computerPlayerScore = computerPlayer.getPlayerScore();
+
+
         // Start game
         boolean gameOver = false;
 
@@ -98,10 +104,15 @@ public class Main {
                 // Get human player move input and make move
                 humanPlayer.playMove();
 
+                // Get updated scores
+                humanPlayerScore = humanPlayer.getPlayerScore();
+                computerPlayerScore = computerPlayer.getPlayerScore();
+
+
                 // Print scores and update board
                 System.out.println();
-                System.out.println("Human player score: " + humanPlayer.getPlayerScore());
-                System.out.println("Computer player score: " + computerPlayer.getPlayerScore());
+                System.out.println("Human player score: " + humanPlayerScore);
+                System.out.println("Computer player score: " + computerPlayerScore);
                 System.out.println();
                 board.printBoard();
 
@@ -120,9 +131,14 @@ public class Main {
                 //print updated board after computer player move (????)
                 //board.printBoard();
 
+                // Get updated scores
+                humanPlayerScore = humanPlayer.getPlayerScore();
+                computerPlayerScore = computerPlayer.getPlayerScore();
+
+
                 System.out.println();
-                System.out.println("Human player score: " + humanPlayer.getPlayerScore());
-                System.out.println("Computer player score: " + computerPlayer.getPlayerScore());
+                System.out.println("Human player score: " + humanPlayerScore);
+                System.out.println("Computer player score: " + computerPlayerScore);
                 System.out.println();
 
                 // End computerPlayer turn
@@ -145,14 +161,14 @@ public class Main {
 
         // Calculate scores and declare winner
 
-        int humanFinalScore = humanPlayer.getPlayerScore();
-        int computerFinalScore = computerPlayer.getPlayerScore();
+        humanPlayerScore = humanPlayer.getPlayerScore();
+        computerPlayerScore = computerPlayer.getPlayerScore();
         System.out.println("Game Over!");
-        System.out.println("The human player scored " + humanFinalScore + " points.");
-        System.out.println("The computer player scored " + computerFinalScore + " points.");
-        if (humanFinalScore > computerFinalScore) {
+        System.out.println("The human player scored " + humanPlayerScore + " points.");
+        System.out.println("The computer player scored " + computerPlayerScore + " points.");
+        if (humanPlayerScore > computerPlayerScore) {
             System.out.println("The human player wins!");
-        } else if (computerFinalScore > humanFinalScore) {
+        } else if (computerPlayerScore > humanPlayerScore) {
             System.out.println("The computer player wins!");
         } else {
             System.out.println("It's a draw!");

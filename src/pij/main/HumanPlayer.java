@@ -22,7 +22,7 @@ public class HumanPlayer extends ScrabbklePlayer {
         String moveWord;
         String movePosition;
         String moveDirection;
-        String finalWord = "";
+        String finalWord;
         ArrayList<Character> charsInWord;
         ArrayList<int[]> moveSquares;
         int tileCounter;
@@ -83,7 +83,8 @@ public class HumanPlayer extends ScrabbklePlayer {
                             // Count how many tiles in move
                             tileCounter = moveWord.length();
                             // Calculate word score
-                            score = score + calculateWordScore(movePosition, moveDirection, tileCounter);
+                            int wordScore = calculateWordScore(movePosition, moveDirection, tileCounter);
+                            score = score + wordScore;
 
                             // Print summary of player's move
                             printMoveSummary(moveWord, movePosition, moveDirection);
@@ -92,7 +93,6 @@ public class HumanPlayer extends ScrabbklePlayer {
                             // Set firstMove to false ready for next move
                             validMove = true;
                             firstMove = false;
-
 
                         }
                     } else { // Explain why move was rejected
@@ -143,7 +143,8 @@ public class HumanPlayer extends ScrabbklePlayer {
                             // Count how many tiles in move
                             tileCounter = moveWord.length();
                             // Calculate word score
-                            score = score + calculateWordScore(movePosition, moveDirection, tileCounter);
+                            int wordScore = calculateWordScore(movePosition, moveDirection, tileCounter);
+                            score = score + wordScore;
 
                             // Print summary of player's move
                             printMoveSummary(moveWord, movePosition, moveDirection);
@@ -390,13 +391,6 @@ public class HumanPlayer extends ScrabbklePlayer {
     }
 
 
-    // Check if it is the human player's first move
-    public boolean isFirstMove() {
-        return (firstMove);
-        //return true; //for testing
-    }
-
-
     // Check if the centre square appears in any of the squares for a given move
     public boolean containsCentreSquare(ArrayList<int[]> moveSquares, int[] centreSquare) {
         boolean containsCentreSquare = false;
@@ -407,7 +401,6 @@ public class HumanPlayer extends ScrabbklePlayer {
             }
         }
         return containsCentreSquare;
-        //return true; //for testing
     }
 
 
@@ -449,6 +442,9 @@ public class HumanPlayer extends ScrabbklePlayer {
         super.placeTile(tile, row, col);
     }
 
+    public int getPlayerScore() {
+        return score;
+    }
 }
 
 

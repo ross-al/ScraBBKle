@@ -319,4 +319,11 @@ class HumanPlayerTest {
         String expected = "STARS";
         assertEquals(expected, actual);
     }
+
+    @Test
+    void shouldReturnScoreOf3(){
+
+
+        int actual = humanPlayer.getPlayerScore();
+    }
 }

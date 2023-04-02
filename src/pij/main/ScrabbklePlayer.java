@@ -7,7 +7,6 @@ import java.util.Map;
 
 public class ScrabbklePlayer implements Player{
     protected boolean isPlayerTurn;
-    private int score;
     private ArrayList<ScrabbkleTile> tileRack;
     private ScrabbkleBoard board;
     private final ScrabbkleWordList wordList;
@@ -440,11 +439,6 @@ public class ScrabbklePlayer implements Player{
         return premiumWordValue;
     }
 
-
-    @Override
-    public int getPlayerScore() {
-        return score;
-    }
 
 }
 

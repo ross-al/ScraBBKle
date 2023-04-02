@@ -26,4 +26,8 @@ public class ComputerPlayer extends ScrabbklePlayer {
     public int getSkipCount(){
         return skipCount;
     }
+
+    public int getPlayerScore() {
+        return score;
+    }
 }

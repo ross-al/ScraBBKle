@@ -7,8 +7,6 @@ public interface Player {
 
     int calculateWordScore(String moveDirection, int row, int col, int tiles);
 
-    int getPlayerScore();
-
     void placeTile(ScrabbkleTile tile, int col, int row);
 
 }
