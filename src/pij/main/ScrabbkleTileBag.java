@@ -12,7 +12,6 @@ public class ScrabbkleTileBag implements TileBag{
     }
 
 
-    @Override
     public int getSize() {
         return scrabbkleTileBag.size();
     }
@@ -21,10 +20,12 @@ public class ScrabbkleTileBag implements TileBag{
         return (!(getSize() > 0));
     }
 
+    // Shuffles the tile bag
     public void shuffleBag(){
         Collections.shuffle(scrabbkleTileBag);
     }
 
+    // Returns a random tile from a shuffled bag
     @Override
     public ScrabbkleTile getRandomTile() {
         shuffleBag();

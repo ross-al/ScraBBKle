@@ -19,38 +19,21 @@ public class ScrabbkleTile implements Tile{
         premiumLetterValue = 1;
     }
 
-
-    public char getLetter(){
-        return this.letter;
-    }
-
-    public int getValue(){
-        return this.value;
-    }
-
-    public String getPrintInTileRackFormat(){
-        return "[" + letter + value + "]";
-    }
-
-    public String getPrintOnBoardFormat(){
-        return letter + String.valueOf(value);
-    }
-
-
-    // assign a lower case letter to a tile to make it a wildcard
+    // Assign a lower case letter to a tile to make it a wildcard
     public void assignWildCard(char c){
         this.letter = Character.toLowerCase(c);
         isWildCard = true;
     }
 
-    // remove a wildCard assignment when removing invalid moves from board
+    // Remove a wildCard assignment when removing invalid moves from board
     public void removeWildCard(){
         letter = ' ';
         isWildCard = false;
     }
 
-
-    public int calculateTileValue(char letter){ //need wildcard logic too
+    // Calculate tile value based on letter
+    // default is wildcard
+    public int calculateTileValue(char letter){
         int value;
         switch (letter){
             case 'A':
@@ -101,6 +84,13 @@ public class ScrabbkleTile implements Tile{
         return value;
     }
 
+
+    public boolean isWildCard() {
+        return isWildCard;
+    }
+
+    // Getters and Setters
+
     public void setLeftTile(ScrabbkleTile leftTile) {
         this.leftTile = leftTile;
     }
@@ -149,10 +139,6 @@ public class ScrabbkleTile implements Tile{
         this.premiumLetterValue = premiumLetterValue;
     }
 
-    public boolean isWildCard() {
-        return isWildCard;
-    }
-
     public void resetAboveTile(){
         aboveTile = null;
     }
@@ -167,6 +153,22 @@ public class ScrabbkleTile implements Tile{
 
     public void resetRightTile(){
         rightTile = null;
+    }
+
+    public char getLetter(){
+        return this.letter;
+    }
+
+    public int getValue(){
+        return this.value;
+    }
+
+    public String getPrintInTileRackFormat(){
+        return "[" + letter + value + "]";
+    }
+
+    public String getPrintOnBoardFormat(){
+        return letter + String.valueOf(value);
     }
 
 }

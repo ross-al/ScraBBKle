@@ -1,5 +1,7 @@
 package pij.main;
 
+import org.jetbrains.annotations.VisibleForTesting;
+
 import java.io.*;
 import java.util.Scanner;
 
@@ -10,7 +12,6 @@ public class ScrabbkleBoard implements Board {
     private int[] centreSquare;
 
     // Ask for player board type choice
-
     public String getBoardChoice(){
         System.out.println("Would you like to _l_oad a board or use the _d_efault board?");
         System.out.println("Please enter your choice (l/d):");
@@ -20,7 +21,6 @@ public class ScrabbkleBoard implements Board {
     }
 
     // Calculate input file
-
     public File getInputFile(String boardChoice) {
         // Default file name:
         String fileName = "./resources/defaultBoard.txt";
@@ -38,11 +38,11 @@ public class ScrabbkleBoard implements Board {
     }
 
     // Check inputFile exists in resources folder
-
     public boolean inputFileExists(File inputFile){
         return(inputFile.exists());
     }
 
+    // Calculate the board size by reading first line in file
     public void calculateBoardSize(File inputFile) {
         try (BufferedReader reader = new BufferedReader(new FileReader(inputFile))) {
             String text = reader.readLine();
@@ -59,11 +59,13 @@ public class ScrabbkleBoard implements Board {
         }
     }
 
+    // Check if loaded board meets size requirements
     public boolean isValidSize() {
         return boardSize >= 12 && boardSize <= 26;
     }
 
 
+    // Convert the txt file into a board
     public void convertToBoard(File inputFile) {
         int rows = 1 + boardSize;
         int columns = rows;
@@ -123,10 +125,8 @@ public class ScrabbkleBoard implements Board {
         }
     }
 
-    public ScrabbkleSquare[][] getBoard() {
-        return board;
-    }
 
+    // Calculate the centre square for human player's first move
     public int[] calculateCentreSquare(int boardSize){
         int row;
         int col;
@@ -146,6 +146,13 @@ public class ScrabbkleBoard implements Board {
     }
 
 
+
+    // Getters
+
+    public ScrabbkleSquare[][] getBoard() {
+        return board;
+    }
+
     public int[] getCentreSquare(){
         return this.centreSquare;
     }
@@ -155,6 +162,7 @@ public class ScrabbkleBoard implements Board {
     }
 
     // used for JUnit testing only
+    @VisibleForTesting
     public void setBoardSize(int size){
         this.boardSize = size;
     }

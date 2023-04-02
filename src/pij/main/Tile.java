@@ -2,6 +2,11 @@ package pij.main;
 
 public interface Tile {
 
+    /**
+     *
+     * @return
+     */
+
     char getLetter();
     int getValue();
     String getPrintInTileRackFormat();

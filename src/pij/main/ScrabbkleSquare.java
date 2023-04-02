@@ -18,6 +18,8 @@ public class ScrabbkleSquare implements Square{
 
     }
 
+
+    // Convert file format to print label
     public int convertPremiumLetter(String printLabel) {
         String sub = String.valueOf(1);
         int value;
@@ -35,6 +37,8 @@ public class ScrabbkleSquare implements Square{
         return value;
     }
 
+
+    // Convert file format to print label
     public int convertPremiumWord(String printLabel){
         String sub = String.valueOf(1);
         int value;
@@ -52,6 +56,31 @@ public class ScrabbkleSquare implements Square{
         return value;
     }
 
+
+    // Remove a tile from a square when move is invalid
+    public void removeTile(){
+        // Remove tile from the Square
+        scrabbkleTile = null;
+        // Reset print label
+        printLabel = filePrintLabel;
+    }
+
+
+    // Setters
+
+    public void setTile(ScrabbkleTile tile){
+        if(tile!=null) {
+            scrabbkleTile = tile;
+            setPrintLabel(tile);
+        }
+    }
+
+    public void setPrintLabel(ScrabbkleTile tile){
+        printLabel = tile.getPrintOnBoardFormat();
+    }
+
+    // Getters
+
     public int getPremiumLetterValue(){
         return premiumLetterValue;
     }
@@ -64,25 +93,8 @@ public class ScrabbkleSquare implements Square{
         return printLabel;
     }
 
-    public void setTile(ScrabbkleTile tile){
-        if(tile!=null) {
-            scrabbkleTile = tile;
-            setPrintLabel(tile);
-        }
-    }
-
-    public void setPrintLabel(ScrabbkleTile tile){
-        printLabel = tile.getPrintOnBoardFormat();
-    }
     public ScrabbkleTile getTile(){
         return scrabbkleTile;
-    }
-
-    public void removeTile(){
-        // Remove tile from the Square
-        scrabbkleTile = null;
-        // Reset print label
-        printLabel = filePrintLabel;
     }
 
 }
