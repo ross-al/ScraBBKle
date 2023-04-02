@@ -5,12 +5,11 @@ public class ScrabbkleTile implements Tile{
     private int value;
     private int premiumWordValue;
     private int premiumLetterValue;
-    private boolean premiumWordValueUsed;
-    private boolean premiumLetterValueUsed;
     private ScrabbkleTile leftTile;
     private ScrabbkleTile rightTile;
     private ScrabbkleTile aboveTile;
     private ScrabbkleTile belowTile;
+    private boolean isWildCard;
 
 
     public ScrabbkleTile(char letter){
@@ -18,8 +17,6 @@ public class ScrabbkleTile implements Tile{
         this.value = calculateTileValue(letter);
         premiumWordValue = 1;
         premiumLetterValue = 1;
-        premiumWordValueUsed = false;
-        premiumLetterValueUsed = false;
     }
 
 
@@ -39,10 +36,17 @@ public class ScrabbkleTile implements Tile{
         return letter + String.valueOf(value);
     }
 
-    public void assignWildCard(String str){
-        char wildCard = str.charAt(0);
-        this.letter = Character.toLowerCase(wildCard);
 
+    // assign a lower case letter to a tile to make it a wildcard
+    public void assignWildCard(char c){
+        this.letter = Character.toLowerCase(c);
+        isWildCard = true;
+    }
+
+    // remove a wildCard assignment when removing invalid moves from board
+    public void removeWildCard(){
+        letter = ' ';
+        isWildCard = false;
     }
 
 
@@ -91,6 +95,7 @@ public class ScrabbkleTile implements Tile{
                 break;
             default:
                 value = 3; //for WildCard
+                isWildCard = true;
                 break;
         }
         return value;
@@ -145,21 +150,12 @@ public class ScrabbkleTile implements Tile{
         this.premiumLetterValue = premiumLetterValue;
     }
 
-    public void setPremiumWordValueUsed(boolean bool){
-        premiumWordValueUsed = bool;
+    public boolean isWildCard() {
+        return isWildCard;
     }
 
-    public void setPremiumLetterValueUsed(boolean bool){
-        premiumLetterValueUsed = bool;
-    }
 
-    public boolean isPremiumWordValueUsed() {
-        return premiumWordValueUsed;
-    }
 
-    public boolean isPremiumLetterValueUsed() {
-        return premiumLetterValueUsed;
-    }
 }
 
 //tile values:

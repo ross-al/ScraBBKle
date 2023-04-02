@@ -11,5 +11,4 @@ public interface Player {
 
     void placeTile(ScrabbkleTile tile, int col, int row);
 
-    ScrabbkleTile playWord(); //remove if redundant
 }

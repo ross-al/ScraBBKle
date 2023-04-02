@@ -7,6 +7,7 @@ public interface Tile {
     String getPrintInTileRackFormat();
     String getPrintOnBoardFormat();
     int calculateTileValue(char letter);
-    void assignWildCard(String str);
+    void assignWildCard(char c);
+    void removeWildCard();
 
 }

@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -11,6 +12,7 @@ class ScrabbklePlayerTest {
     ScrabbkleBoard board;
     ScrabbkleTile tileA, tileB, tileC, tileD, tileE;
     ScrabbklePlayer player;
+    ArrayList<ScrabbkleTile> tileRack;
 
     @BeforeEach
     void buildUp() {
@@ -125,5 +127,83 @@ class ScrabbklePlayerTest {
         assertEquals(expected, actual);
     }
 
+   /* @Test
+    void shouldReturnWildCard(){
+        ScrabbkleTile wildCard = new ScrabbkleTile(' ');
+        tileRack.add(wildCard);
+
+    }*/
+
+    @Test
+    void shouldReturnTrueIfAllTilesAvailableInRack(){
+        tileRack = new ArrayList<>();
+        String moveWord = "BOOKKEEPING";
+        ScrabbkleTile tileB = new ScrabbkleTile('B');
+        ScrabbkleTile tileO = new ScrabbkleTile('O');
+        ScrabbkleTile tileO2 = new ScrabbkleTile('O');
+        ScrabbkleTile tileK= new ScrabbkleTile('K');
+        ScrabbkleTile tileK2 = new ScrabbkleTile('K');
+        ScrabbkleTile tileE = new ScrabbkleTile('E');
+        ScrabbkleTile tileE2 = new ScrabbkleTile('E');
+        ScrabbkleTile tileP = new ScrabbkleTile('P');
+        ScrabbkleTile tileI = new ScrabbkleTile('I');
+        ScrabbkleTile tileN = new ScrabbkleTile('N');
+        ScrabbkleTile tileG = new ScrabbkleTile('G');
+
+        tileRack.add(tileB);
+        tileRack.add(tileO);
+        tileRack.add(tileO2);
+        tileRack.add(tileK);
+        tileRack.add(tileK2);
+        tileRack.add(tileE);
+        tileRack.add(tileE2);
+        tileRack.add(tileP);
+        tileRack.add(tileI);
+        tileRack.add(tileN);
+        tileRack.add(tileG);
+
+        assertTrue(player.hasAllTilesAvailable(moveWord,  tileRack));
+    }
+
+    @Test
+    void shouldReturnFalseIfNotAllTilesAvailableInRack(){
+        tileRack = new ArrayList<>();
+        String moveWord = "BOOKKEEPING";
+        ScrabbkleTile tileB = new ScrabbkleTile('B');
+        ScrabbkleTile tileO = new ScrabbkleTile('O');
+        ScrabbkleTile tileO2 = new ScrabbkleTile('O');
+        ScrabbkleTile tileK= new ScrabbkleTile('K');
+        //ScrabbkleTile tileK2 = new ScrabbkleTile('K');
+        ScrabbkleTile tileE = new ScrabbkleTile('E');
+        ScrabbkleTile tileE2 = new ScrabbkleTile('E');
+        ScrabbkleTile tileP = new ScrabbkleTile('P');
+        ScrabbkleTile tileI = new ScrabbkleTile('I');
+        ScrabbkleTile tileN = new ScrabbkleTile('N');
+        ScrabbkleTile tileG = new ScrabbkleTile('G');
+
+        tileRack.add(tileB);
+        tileRack.add(tileO);
+        tileRack.add(tileO2);
+        tileRack.add(tileK);
+        //tileRack.add(tileK2);
+        tileRack.add(tileE);
+        tileRack.add(tileE2);
+        tileRack.add(tileP);
+        tileRack.add(tileI);
+        tileRack.add(tileN);
+        tileRack.add(tileG);
+
+        assertFalse(player.hasAllTilesAvailable(moveWord,  tileRack));
+    }
+
+    @Test
+    void shouldReturnTrueIfWildCardInRack(){
+        tileRack = new ArrayList<>();
+        String moveWord = " ";
+        ScrabbkleTile wildCard = new ScrabbkleTile(' ');
+        tileRack.add(wildCard);
+        assertTrue(player.hasAllTilesAvailable(moveWord, tileRack));
+
+    }
 
 }

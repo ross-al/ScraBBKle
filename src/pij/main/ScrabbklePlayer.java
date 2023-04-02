@@ -51,21 +51,6 @@ public class ScrabbklePlayer implements Player{
         System.out.println();
     }
 
-    @Override
-    public void placeTile(ScrabbkleTile tile, int row, int col) {
-        // Place the tile on the board
-        board.getBoard()[row][col].setTile(tile);
-
-        // Set its neighbouring tiles for linked lists
-        setNeighbouringTiles(tile,row,col);
-
-        // Assign any premium values of the square to the tile
-        int premiumWordValue = board.getBoard()[row][col].getPremiumWordValue();
-        board.getBoard()[row][col].getTile().setPremiumWordValue(premiumWordValue);
-
-        int premiumLetterValue = board.getBoard()[row][col].getPremiumLetterValue();
-        board.getBoard()[row][col].getTile().setPremiumLetterValue(premiumLetterValue);
-    }
 
     public ScrabbkleBoard getBoard(){
         return board;
@@ -79,15 +64,7 @@ public class ScrabbklePlayer implements Player{
         return wordList;
     }
 
-    //BELOW METHODS DO NOT WORK YET!
 
-    @Override
-    public ScrabbkleTile playWord() {
-        //use this method to call placeTile method in board?
-        //use loop to place each tile?
-        //must also setNextTile();
-        return null;
-    }
 
     // Check if any words are adjacent to player word and reject if so
     public boolean formsMultipleWords(ArrayList<int[]> moveSquares, String moveDirection) {
@@ -190,43 +167,6 @@ public class ScrabbklePlayer implements Player{
         return row >= 1 && row <= boardSize && col >= 1 && col <= boardSize;
     }
 
-
-
-/*    // Set aboveTile, belowTile, leftTile and rightTile
-    public void setNeighbouringTiles(int row, int col) {
-        ScrabbkleTile aboveTile;
-        ScrabbkleTile belowTile;
-        ScrabbkleTile leftTile;
-        ScrabbkleTile rightTile;
-        // Check if aboveTile is within bounds
-        if (positionIsInBounds(row - 1, col)) {
-            // Check if aboveTile already has a tile present and set to aboveTile if so
-            if (getBoard().getBoard()[row - 1][col].getTile() != null) {
-                aboveTile = getBoard().getBoard()[row - 1][col].getTile();
-                getBoard().getBoard()[row][col].setAboveTile(aboveTile);
-            }
-        } // belowTile
-        if (positionIsInBounds(row + 1, col)) {
-            if (getBoard().getBoard()[row + 1][col].getTile() != null) {
-                belowTile = getBoard().getBoard()[row + 1][col].getTile();
-                getBoard().getBoard()[row][col].setBelowTile(belowTile);
-            }
-        } // leftTile
-        if (positionIsInBounds(row, col - 1)) {
-            if (getBoard().getBoard()[row][col - 1].getTile() != null) {
-                leftTile = getBoard().getBoard()[row][col - 1].getTile();
-                getBoard().getBoard()[row][col].setLeftTile(leftTile);
-            }
-        } // rightTile
-        if (positionIsInBounds(row, col + 1)) {
-            if (getBoard().getBoard()[row][col + 1].getTile() != null) {
-                rightTile = getBoard().getBoard()[row][col + 1].getTile();
-                getBoard().getBoard()[row][col].setRightTile(rightTile);
-            }
-        }
-    }*/
-
-
     // Set aboveTile, belowTile, leftTile and rightTile
     public void setNeighbouringTiles(ScrabbkleTile tile, int row, int col) {
         ScrabbkleTile currentTile = tile;
@@ -318,14 +258,20 @@ public class ScrabbklePlayer implements Player{
         }
     }
 
-    // Check if the player's rack has all the necessary tiles, including duplicates
-    public boolean hasAllTilesAvailable(ArrayList<Character> charsInWord, ArrayList<ScrabbkleTile> tileRack) {
+    // Check if the player's rack has all the necessary tiles, including duplicates and wildCards
+
+    public boolean hasAllTilesAvailable(String moveWord, ArrayList<ScrabbkleTile> tileRack) {
         Map<Character, Integer> charCounts = new HashMap<>();
-        // Count the number of times each character appears in the word
-        for (char c : charsInWord) {
-            charCounts.put(c, charCounts.getOrDefault(c, 0) + 1);
+        int wildcardCount = 0;
+        // Count the number of times each character appears in the moveWord
+        for (char c : moveWord.toCharArray()) {
+            if (Character.isLowerCase(c)) {
+                wildcardCount++;
+            } else {
+                charCounts.put(c, charCounts.getOrDefault(c, 0) + 1);
+            }
         }
-        // Check if there are enough tiles for each character
+        // Check if there are enough tiles for each regular letter
         for (char c : charCounts.keySet()) {
             int requiredCount = charCounts.get(c);
             int tileRackCount = 0;
@@ -335,30 +281,66 @@ public class ScrabbklePlayer implements Player{
                     tileRackCount++;
                 }
             }
-            if (tileRackCount != requiredCount) {
-                //return true; //for testing
+            if (tileRackCount < requiredCount) {
                 return false;
-
+            }
+        }
+        // Check if there are enough tiles for the wildcards
+        if (wildcardCount > 0) {
+            int tileRackCount = 0;
+            for (ScrabbkleTile tile : tileRack) {
+                if (tile.getLetter() == ' ') {
+                    tileRackCount++;
+                }
+            }
+            if (tileRackCount < wildcardCount) {
+                return false;
             }
         }
         return true;
     }
 
-    // NEED TO WORK OUT WILDCARDS! can use empty character?
     public ScrabbkleTile getTileFromRack(char c) {
         ScrabbkleTile tile = null;
-        if(!tileRack.isEmpty()) {
-            for(ScrabbkleTile tileInRack : tileRack){
-                if(tileInRack.getLetter() == c){
-                    tile = tileInRack;
+        if (!tileRack.isEmpty()) {
+            // If character is lower case, it's a wildcard
+            // get wildCard
+            if (Character.isLowerCase(c)) {
+                for (ScrabbkleTile tileInRack : tileRack) {
+                    if (tileInRack.isWildCard()) {
+                        tile = tileInRack;
+                        // Assign the wildcard letter to the tile
+                        tile.assignWildCard(c);
+                    }
+                }
+            } else {
+                for (ScrabbkleTile tileInRack : tileRack) {
+                    if (tileInRack.getLetter() == c) {
+                        tile = tileInRack;
+                    }
                 }
             }
-        }
-        return tile;
+        } return tile;
+    }
+
+    @Override
+    public void placeTile(ScrabbkleTile tile, int row, int col) {
+        // Place the tile on the board
+        board.getBoard()[row][col].setTile(tile);
+
+        // Set its neighbouring tiles for linked lists
+        setNeighbouringTiles(tile,row,col);
+
+        // Assign any premium values of the square to the tile
+        int premiumWordValue = board.getBoard()[row][col].getPremiumWordValue();
+        board.getBoard()[row][col].getTile().setPremiumWordValue(premiumWordValue);
+
+        int premiumLetterValue = board.getBoard()[row][col].getPremiumLetterValue();
+        board.getBoard()[row][col].getTile().setPremiumLetterValue(premiumLetterValue);
     }
 
     // Remove tiles from rack
-    public void removeTilesFromRack(String  moveWord){
+    public void removeTilesFromRack(String moveWord) {
         ScrabbkleTile tile = null;
         char c;
         for(int i = 0; i < moveWord.length(); i++){
@@ -368,7 +350,7 @@ public class ScrabbklePlayer implements Player{
         }
     }
 
-    // Check for null pointers in this method
+
     @Override
     public int calculateWordScore(String moveDirection, int row, int col, int tileCounter) {
         int wordScore = 0;
@@ -425,6 +407,8 @@ public class ScrabbklePlayer implements Player{
     public int calculateTileScores(ScrabbkleTile tile){
         int tileValue = tile.getValue();
         int premiumLetterValue = tile.getPremiumLetterValue();
+        // Reset premiumLetterValue to default
+        tile.setPremiumLetterValue(1);
         return tileValue * premiumLetterValue;
     }
 
@@ -432,8 +416,6 @@ public class ScrabbklePlayer implements Player{
         int premiumWordValue = tile.getPremiumWordValue();
         // Reset premiumWordValue to default
         tile.setPremiumWordValue(1);
-        // Reset premiumLetterValue to default
-        tile.setPremiumLetterValue(1);
         return premiumWordValue;
     }
 
@@ -444,3 +426,37 @@ public class ScrabbklePlayer implements Player{
     }
 
 }
+
+/*    // Set aboveTile, belowTile, leftTile and rightTile
+    public void setNeighbouringTiles(int row, int col) {
+        ScrabbkleTile aboveTile;
+        ScrabbkleTile belowTile;
+        ScrabbkleTile leftTile;
+        ScrabbkleTile rightTile;
+        // Check if aboveTile is within bounds
+        if (positionIsInBounds(row - 1, col)) {
+            // Check if aboveTile already has a tile present and set to aboveTile if so
+            if (getBoard().getBoard()[row - 1][col].getTile() != null) {
+                aboveTile = getBoard().getBoard()[row - 1][col].getTile();
+                getBoard().getBoard()[row][col].setAboveTile(aboveTile);
+            }
+        } // belowTile
+        if (positionIsInBounds(row + 1, col)) {
+            if (getBoard().getBoard()[row + 1][col].getTile() != null) {
+                belowTile = getBoard().getBoard()[row + 1][col].getTile();
+                getBoard().getBoard()[row][col].setBelowTile(belowTile);
+            }
+        } // leftTile
+        if (positionIsInBounds(row, col - 1)) {
+            if (getBoard().getBoard()[row][col - 1].getTile() != null) {
+                leftTile = getBoard().getBoard()[row][col - 1].getTile();
+                getBoard().getBoard()[row][col].setLeftTile(leftTile);
+            }
+        } // rightTile
+        if (positionIsInBounds(row, col + 1)) {
+            if (getBoard().getBoard()[row][col + 1].getTile() != null) {
+                rightTile = getBoard().getBoard()[row][col + 1].getTile();
+                getBoard().getBoard()[row][col].setRightTile(rightTile);
+            }
+        }
+    }*/

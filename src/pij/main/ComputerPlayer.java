@@ -12,6 +12,7 @@ public class ComputerPlayer extends ScrabbklePlayer {
     public ComputerPlayer(ScrabbkleBoard board, ScrabbkleWordList wordList, ScrabbkleTileBag tileBag) {
         super(board, wordList, tileBag);
         tileRack = super.getTileRack();
+        score = 0;
         skipCount = 0;
     }
 

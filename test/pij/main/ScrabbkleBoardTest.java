@@ -63,15 +63,15 @@ class ScrabbkleBoardTest {
 
     @Test
     void shouldReturnPremiumLetterIntValue(){
-        int expected = 3;
-        int actual = board.getBoard()[1][1].getPremiumLetterValue();
+        int expected = 2;
+        int actual = board.getBoard()[4][1].getPremiumLetterValue();
         assertEquals(expected, actual);
     }
 
     @Test
     void shouldReturnPremiumWordIntValue(){
-        int expected = 2;
-        int actual = board.getBoard()[1][4].getPremiumWordValue();
+        int expected = 3;
+        int actual = board.getBoard()[1][1].getPremiumWordValue();
         assertEquals(expected, actual);
     }
 

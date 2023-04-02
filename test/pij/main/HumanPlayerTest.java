@@ -110,7 +110,35 @@ class HumanPlayerTest {
         assertFalse(humanPlayer.containsCentreSquare(moveSquares,centreSquare));
     }
 
-    @Test
+
+
+  /*  @Test
+    void shouldReturnTrueIfWildCardIsReturned() {
+        tileRack = new ArrayList<>();
+        ScrabbkleTile tileB = new ScrabbkleTile('B');
+        ScrabbkleTile wildCard = new ScrabbkleTile(' ');
+        ScrabbkleTile tileL = new ScrabbkleTile('L');
+        ScrabbkleTile tileE = new ScrabbkleTile('E');
+
+        tileRack.add(tileB);
+        tileRack.add(wildCard);
+        tileRack.add(tileL);
+        tileRack.add(tileE);
+
+        String moveWord = "BLuE";
+        String movePosition = "h8";
+        String moveDirection = "d";
+        humanPlayer.playWord(moveWord,movePosition, moveDirection);
+
+
+
+
+        ScrabbkleTile actual = player.getTileFromRack(' ');
+        ScrabbkleTile expected = wildCard;
+        assertEquals(expected, actual);
+    }*/
+
+/*    @Test
     void shouldReturnTrueIfPlayerHasEnoughTiles(){
         char f = 'F';
         char e = 'E';
@@ -145,7 +173,7 @@ class HumanPlayerTest {
             }
         };
         assertFalse(humanPlayer.hasAllTilesAvailable(charsInWord, tileRack));
-    }
+    }*/
 
     @Test
     void shouldReturnTileFromRackWithMatchingLetter(){

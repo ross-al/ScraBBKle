@@ -34,5 +34,26 @@ class ScrabbkleTileTest {
         assertEquals(expected,actual);
     }
 
+    @Test
+    void shouldReturnTrueIfWildCard(){
+        ScrabbkleTile wildCard = new ScrabbkleTile(' ');
+        assertTrue(wildCard.isWildCard());
+    }
+
+    @Test
+    void shouldReturnTrueIfWildCardRemovedFromTile(){
+        ScrabbkleTile wildCard = new ScrabbkleTile(' ');
+        wildCard.removeWildCard();
+        assertFalse(wildCard.isWildCard());
+    }
+
+    @Test
+    void shouldReturnTrueIfWildCardAssignedToTile(){
+        ScrabbkleTile wildCard = new ScrabbkleTile(' ');
+        wildCard.assignWildCard('u');
+        char expected = 'u';
+        char actual = wildCard.getLetter();
+        assertEquals(expected, actual);
+    }
 
 }

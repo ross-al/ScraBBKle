@@ -5,12 +5,6 @@ import org.jetbrains.annotations.VisibleForTesting;
 import java.util.*;
 
 public class HumanPlayer extends ScrabbklePlayer {
-    /*    private String moveWord;
-        private String movePosition;
-        private String moveDirection;
-        private String finalWord;
-        private ArrayList<Character> charsInWord;
-        private ArrayList<int[]> moveSquares;*/
     private ArrayList<ScrabbkleTile> tileRack;
     private boolean firstMove = true;
     private int score;
@@ -19,7 +13,7 @@ public class HumanPlayer extends ScrabbklePlayer {
     public HumanPlayer(ScrabbkleBoard board, ScrabbkleWordList wordList, ScrabbkleTileBag tileBag) {
         super(board, wordList, tileBag);
         tileRack = super.getTileRack();
-        score = super.getPlayerScore();
+        score = 0;
         skipCount = 0;
     }
 
@@ -53,7 +47,7 @@ public class HumanPlayer extends ScrabbklePlayer {
                 charsInWord = splitWordToChar(moveWord);
 
                 // Check if tiles available for given word
-                boolean tilesAvailable = hasAllTilesAvailable(charsInWord, tileRack);
+                boolean tilesAvailable = hasAllTilesAvailable(moveWord, tileRack);
 
                 // Calculate which squares the word will occupy (i.e. skip over occupied squares)
                 moveSquares = calculateMoveSquares(moveWord, movePosition, moveDirection);
@@ -89,7 +83,7 @@ public class HumanPlayer extends ScrabbklePlayer {
                             // Count how many tiles in move
                             tileCounter = moveWord.length();
                             // Calculate word score
-                            score += calculateWordScore(movePosition, moveDirection, tileCounter);
+                            score = score + calculateWordScore(movePosition, moveDirection, tileCounter);
 
                             // Print summary of player's move
                             printMoveSummary(moveWord, movePosition, moveDirection);
@@ -145,10 +139,8 @@ public class HumanPlayer extends ScrabbklePlayer {
                             // Count how many tiles in move
                             tileCounter = moveWord.length();
                             // Calculate word score
-                            score += calculateWordScore(movePosition, moveDirection, tileCounter);
+                            score = score + calculateWordScore(movePosition, moveDirection, tileCounter);
 
-
-                            // THIS ISN'T PRINTING?
                             // Print summary of player's move
                             printMoveSummary(moveWord, movePosition, moveDirection);
 
@@ -167,11 +159,6 @@ public class HumanPlayer extends ScrabbklePlayer {
 
                             // Remove tiles from board
                             removeTilesFromBoard(moveSquares);
-
-                            // Test if:
-                            // Reset tile int row col values (CAN'T REMEMBER WHAT THIS IS FOR!!!!???)
-                            // Reset neighbouring tiles?
-                            // Reset Square print labels (as we removed Tile from board)
 
                             System.out.println("This is not a valid move");
                             if (!isValidWord) {
@@ -210,8 +197,6 @@ public class HumanPlayer extends ScrabbklePlayer {
 
 
 
-
-
     // Get player input for move
     public String getPlayerMove() {
         System.out.println("Please enter your move with letter sequence, position, and");
@@ -227,10 +212,12 @@ public class HumanPlayer extends ScrabbklePlayer {
         return word.equals(",,");
     }
 
+
     // Split player's move by "," to get individual instructions
     public String[] interpretPlayerMove(String word) {
         return word.split(",");
     }
+
 
     // Split given word into individual characters and put in arrayList
     public ArrayList<Character> splitWordToChar(String moveWord) {
@@ -255,26 +242,26 @@ public class HumanPlayer extends ScrabbklePlayer {
         ScrabbkleTile currentTile;
         // If word direction is down
         if (moveDirection.equals("d")) {
-            // Find the left-most tile in the word on the board
-            // First find if there is a tile to the left of player's position and find left-most tile if so
+            // Find the top-most tile in the word on the board
+            // First find if there is a tile on top of player's position and find top-most tile if so
             // This will be the beginning of the word
             currentTile = getBoard().getBoard()[row][col].getTile();
             while (currentTile.getAboveTile() != null) {
                 currentTile = currentTile.getAboveTile();
             }
-            // add the tiles to the right of the currentTile to finalWord
-            while (currentTile != null && currentTile.getBelowTile() != null && currentTile != currentTile.getBelowTile()) {
+            // add the tiles to the bottom of the currentTile to finalWord
+            /*while (currentTile != null && currentTile.getBelowTile() != null && currentTile != currentTile.getBelowTile()) {
                 finalWord += currentTile.getLetter(); // append the letter to the finalWord string
                 currentTile = currentTile.getBelowTile(); // move to the next tile to the right
-            }
-            // add the currentTile to finalWord
+            }*/
+          /*  // add the currentTile to finalWord
             finalWord += currentTile.getLetter();
-            // add the tiles to the right of the currentTile to finalWord
-            currentTile = currentTile.getBelowTile();
+            // add the tiles to the bottom of the currentTile to finalWord
+            currentTile = currentTile.getBelowTile();*/
 
             while (currentTile != null) {
                 finalWord += currentTile.getLetter(); // append the letter to the finalWord string
-                currentTile = currentTile.getBelowTile(); // move to the next tile to the right
+                currentTile = currentTile.getBelowTile(); // move to the next tile to the tile below
             }
 
             // if word direction is right
@@ -287,15 +274,15 @@ public class HumanPlayer extends ScrabbklePlayer {
                 currentTile = currentTile.getLeftTile();
             }
             // add the tiles to the right of the currentTile to finalWord
-            while (currentTile != null && currentTile.getRightTile() != null && currentTile != currentTile.getRightTile()) {
+          /*  while (currentTile != null && currentTile.getRightTile() != null && currentTile != currentTile.getRightTile()) {
                 finalWord += currentTile.getLetter(); // append the letter to the finalWord string
                 currentTile = currentTile.getRightTile(); // move to the next tile to the right
-            }
-            // add the currentTile to finalWord
+            }*/
+           /* // add the currentTile to finalWord
             finalWord += currentTile.getLetter();
             // add the tiles to the right of the currentTile to finalWord
-            currentTile = currentTile.getRightTile();
-                while (currentTile != null) {
+            currentTile = currentTile.getRightTile();*/
+               while (currentTile != null) {
                     finalWord += currentTile.getLetter(); // append the letter to the finalWord string
                     currentTile = currentTile.getRightTile(); // move to the next tile to the right
                 }
@@ -440,16 +427,16 @@ public class HumanPlayer extends ScrabbklePlayer {
 
     public int calculateWordScore(String movePosition, String moveDirection, int tileCounter) {
         // Convert the 'cr' format provided into int for index positions
-        int wordScore = 0;
         int col = getPositionColumn(movePosition);
         int row = getPositionRow(movePosition);
-        wordScore = super.calculateWordScore(moveDirection, row, col, tileCounter);
-        return wordScore;
+        return super.calculateWordScore(moveDirection, row, col, tileCounter);
     }
 
     public int getSkipCount(){
         return skipCount;
     }
+
+
 
     // duplicate placeTile method of same signature is redundant but needed for testing humanPlayer
     // as cannot call methods in super in jUnit tests in HumanPlayerTest
