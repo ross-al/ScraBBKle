@@ -43,9 +43,6 @@ public class HumanPlayer extends ScrabbklePlayer {
                 movePosition = instructions[1];
                 moveDirection = instructions[2];
 
-                // Split each letter in word into character
-                //charsInWord = splitWordToChar(moveWord);
-
                 // Check if tiles available for given word
                 boolean tilesAvailable = hasAllTilesAvailable(moveWord, tileRack);
 
@@ -430,7 +427,7 @@ public class HumanPlayer extends ScrabbklePlayer {
 
 
 
-    //DELETE OR KEEP???
+    //DELETE
 
 /*    // Check if given move direction is possible on the existing board
     // Move is possible if word is in bounds of board, and has no parallel words
