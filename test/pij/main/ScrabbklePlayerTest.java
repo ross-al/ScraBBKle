@@ -25,7 +25,7 @@ class ScrabbklePlayerTest {
     }
 
     @Test
-    void shouldReturnWordScoreOfXX(){
+    void shouldReturnWordScoreOf18(){
         ScrabbkleTile tileS = new ScrabbkleTile('S');
         ScrabbkleTile tileT = new ScrabbkleTile('T');
         ScrabbkleTile tileA = new ScrabbkleTile('A');
@@ -49,46 +49,81 @@ class ScrabbklePlayerTest {
         assertEquals(expected, actual);
     }
 
-    @Test
-    void shouldReturnWordScoreOfXXUsingManualNeighbouringTiles() {
 
-        // player placed tiles
+    @Test
+    void shouldReturnWordScoreOf30(){
         ScrabbkleTile tileS = new ScrabbkleTile('S');
         ScrabbkleTile tileT = new ScrabbkleTile('T');
         ScrabbkleTile tileA = new ScrabbkleTile('A');
         ScrabbkleTile tileR = new ScrabbkleTile('R');
-        // move position is h7 {7,8}
-        board.getBoard()[7][8].setTile(tileS);
-        board.getBoard()[8][8].setTile(tileT);
-        board.getBoard()[9][8].setTile(tileA);
-        board.getBoard()[10][8].setTile(tileR);
-        //manually set neighbour tiles
+        ScrabbkleTile tileK = new ScrabbkleTile('K');
 
-        // Tile S, above tile = null, below tile = T
-        //board.getBoard()[7][8].getTile().setAboveTile();
-        board.getBoard()[7][8].getTile().setBelowTile(tileT);
-
-        // Tile T, above tile = S, below tile = A
-        board.getBoard()[8][8].getTile().setAboveTile(tileS);
-        board.getBoard()[8][8].getTile().setBelowTile(tileA);
-
-        // Tile A, above tile = T, below tile = R
-        board.getBoard()[9][8].getTile().setAboveTile(tileT);
-        board.getBoard()[9][8].getTile().setBelowTile(tileR);
-
-        // Tile R, above tile = A, below tile = null
-        board.getBoard()[10][8].getTile().setAboveTile(tileA);
-        //board.getBoard()[9][8].getTile().setBelowTile();
+        player.placeTile(tileS, 1, 1);
+        player.placeTile(tileT, 2, 1);
+        player.placeTile(tileA, 3, 1);
+        player.placeTile(tileR, 4, 1);
+        player.placeTile(tileK, 5, 1);
 
         String moveDirection = "d";
-        // move position is h7 {7,8}
-        int row = 7;
-        int col = 8;
+
+        int row = 1;
+        int col = 1;
         int tileCounter = 0;
 
         int actual = player.calculateWordScore(moveDirection, row, col, tileCounter);
-        int expected = 8;
+        int expected = 30;
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void shouldReturnWordScoreOf100With7TileBonus(){
+        ScrabbkleTile tileS = new ScrabbkleTile('S');
+        ScrabbkleTile tileT = new ScrabbkleTile('T');
+        ScrabbkleTile tileA = new ScrabbkleTile('A');
+        ScrabbkleTile tileR = new ScrabbkleTile('R');
+        ScrabbkleTile tileK = new ScrabbkleTile('K');
+
+        player.placeTile(tileS, 1, 1);
+        player.placeTile(tileT, 2, 1);
+        player.placeTile(tileA, 3, 1);
+        player.placeTile(tileR, 4, 1);
+        player.placeTile(tileK, 5, 1);
+
+        String moveDirection = "d";
+
+        int row = 1;
+        int col = 1;
+        int tileCounter = 7;
+
+        int actual = player.calculateWordScore(moveDirection, row, col, tileCounter);
+        int expected = 100;
+        assertEquals(expected, actual);
+    }
+
+
+    @Test
+    void shouldReturnPremiumWordValue() {
+
+        // player placed tiles
+        ScrabbkleTile tileS = new ScrabbkleTile('S');
+        player.placeTile(tileS, 1, 1);
+        int actual = tileS.getPremiumWordValue();
+        int expected = 3;
 
         assertEquals(expected, actual);
     }
+
+    @Test
+    void shouldReturnPremiumLetterValue() {
+
+        // player placed tiles
+        ScrabbkleTile tileS = new ScrabbkleTile('S');
+        player.placeTile(tileS, 7, 7);
+        int actual = tileS.getPremiumLetterValue();
+        int expected = 2;
+
+        assertEquals(expected, actual);
+    }
+
+
 }

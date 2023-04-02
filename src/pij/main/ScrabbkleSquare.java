@@ -18,8 +18,8 @@ public class ScrabbkleSquare implements Square{
 
     }
 
-    public int convertPremiumWord(String printLabel) {
-        String sub = String.valueOf(0);
+    public int convertPremiumLetter(String printLabel) {
+        String sub = String.valueOf(1);
         int value;
         if (printLabel.contains("(")) {  //e.g. (3)
             if (printLabel.charAt(2) == ')') {
@@ -35,8 +35,8 @@ public class ScrabbkleSquare implements Square{
         return value;
     }
 
-    public int convertPremiumLetter(String printLabel){
-        String sub = String.valueOf(0);
+    public int convertPremiumWord(String printLabel){
+        String sub = String.valueOf(1);
         int value;
         if (printLabel.contains("{")){  //e.g. {3}
             if (printLabel.charAt(2) == '}') {

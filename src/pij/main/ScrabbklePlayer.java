@@ -375,35 +375,67 @@ public class ScrabbklePlayer implements Player{
         int tileValue;
         int letterScore;
         int premiumLetterValue ;
-        int premiumWordValue = 1 ;
+        int premiumWordFactor = 1 ;
         // Create square to track position in linked list
         ScrabbkleTile currentTile = getBoard().getBoard()[row][col].getTile();
         // If direction is down
         if (moveDirection.equals("d")) {
+            // Find the top most tile in a word
             while(currentTile.getAboveTile() != null){
                 currentTile = currentTile.getAboveTile();
             }
-            while (currentTile != null) {
+
+            while (currentTile  != null) {
+
                 tileValue = currentTile.getValue();
                 premiumLetterValue = currentTile.getPremiumLetterValue();
-                //wordScore = wordScore + tileValue;
                 letterScore = tileValue * premiumLetterValue;
+
                 wordScore = wordScore + letterScore;
 
-                premiumWordValue = (premiumWordValue * currentTile.getPremiumWordValue());
+                int premiumWordValue = currentTile.getPremiumWordValue();
+                premiumWordFactor = premiumWordFactor * premiumWordValue;
 
-                currentTile.setPremiumWordValueUsed(true);
+
+                // Reset premiumWordValue to default
                 currentTile.setPremiumWordValue(1);
 
-                currentTile.setPremiumLetterValueUsed(true);
+                // Reset premiumLetterValue to default
                 currentTile.setPremiumLetterValue(1);
 
                 currentTile = currentTile.getBelowTile(); // move to the next tile to the right
             }
+        } else {
+            // Find the top most tile in a word
+            while(currentTile.getLeftTile() != null){
+                currentTile = currentTile.getLeftTile();
+            }
+
+            while (currentTile  != null) {
+
+                tileValue = currentTile.getValue();
+                premiumLetterValue = currentTile.getPremiumLetterValue();
+                letterScore = tileValue * premiumLetterValue;
+
+                wordScore = wordScore + letterScore;
+
+                int premiumWordValue = currentTile.getPremiumWordValue();
+                premiumWordFactor = premiumWordFactor * premiumWordValue;
+
+
+                // Reset premiumWordValue to default
+                currentTile.setPremiumWordValue(1);
+
+                // Reset premiumLetterValue to default
+                currentTile.setPremiumLetterValue(1);
+
+                currentTile = currentTile.getRightTile(); // move to the next tile to the right
+            }
         }
-        //if direction is right
+        // if direction is right...
         // (duplicate code, put into helper methods)
-        wordScore = (wordScore * premiumWordValue);
+
+        wordScore = wordScore * premiumWordFactor;
 
         if(tileCounter == 7){
             wordScore = wordScore + 70;

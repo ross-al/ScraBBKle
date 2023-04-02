@@ -2,7 +2,7 @@ package pij.main;
 
 public class ScrabbkleTile implements Tile{
     private char letter;
-    private final int value;
+    private int value;
     private int premiumWordValue;
     private int premiumLetterValue;
     private boolean premiumWordValueUsed;
@@ -15,7 +15,7 @@ public class ScrabbkleTile implements Tile{
 
     public ScrabbkleTile(char letter){
         this.letter = letter;
-        this.value = calculateTileValue(this.letter);
+        this.value = calculateTileValue(letter);
         premiumWordValue = 1;
         premiumLetterValue = 1;
         premiumWordValueUsed = false;
@@ -45,10 +45,6 @@ public class ScrabbkleTile implements Tile{
 
     }
 
-    /*public void setRowAndCol(int row, int col){
-        this.row = row;
-        this.col = col;
-    }*/
 
     public int calculateTileValue(char letter){ //need wildcard logic too
         int value;
