@@ -372,9 +372,6 @@ public class ScrabbklePlayer implements Player{
     @Override
     public int calculateWordScore(String moveDirection, int row, int col, int tileCounter) {
         int wordScore = 0;
-        int tileValue;
-        int letterScore;
-        int premiumLetterValue ;
         int premiumWordFactor = 1 ;
         // Create square to track position in linked list
         ScrabbkleTile currentTile = getBoard().getBoard()[row][col].getTile();
@@ -384,64 +381,60 @@ public class ScrabbklePlayer implements Player{
             while(currentTile.getAboveTile() != null){
                 currentTile = currentTile.getAboveTile();
             }
-
             while (currentTile  != null) {
+                // Calculate score of tile * premiumLetterValue for each tile
+                int letterScore = calculateTileScores(currentTile);
 
-                tileValue = currentTile.getValue();
-                premiumLetterValue = currentTile.getPremiumLetterValue();
-                letterScore = tileValue * premiumLetterValue;
-
+                // Add the letter score to the current wordScore total
                 wordScore = wordScore + letterScore;
 
-                int premiumWordValue = currentTile.getPremiumWordValue();
-                premiumWordFactor = premiumWordFactor * premiumWordValue;
+                // Calculate the premiumWordFactor
+                premiumWordFactor = premiumWordFactor * calculatePremiumWordScore(currentTile);
 
-
-                // Reset premiumWordValue to default
-                currentTile.setPremiumWordValue(1);
-
-                // Reset premiumLetterValue to default
-                currentTile.setPremiumLetterValue(1);
-
-                currentTile = currentTile.getBelowTile(); // move to the next tile to the right
+                // move to the next tile to the below tile
+                currentTile = currentTile.getBelowTile();
             }
         } else {
-            // Find the top most tile in a word
+            // If direction is right
             while(currentTile.getLeftTile() != null){
                 currentTile = currentTile.getLeftTile();
             }
 
             while (currentTile  != null) {
 
-                tileValue = currentTile.getValue();
-                premiumLetterValue = currentTile.getPremiumLetterValue();
-                letterScore = tileValue * premiumLetterValue;
-
+                int letterScore = calculateTileScores(currentTile);
                 wordScore = wordScore + letterScore;
 
-                int premiumWordValue = currentTile.getPremiumWordValue();
-                premiumWordFactor = premiumWordFactor * premiumWordValue;
+                premiumWordFactor = premiumWordFactor * calculatePremiumWordScore(currentTile);
 
-
-                // Reset premiumWordValue to default
-                currentTile.setPremiumWordValue(1);
-
-                // Reset premiumLetterValue to default
-                currentTile.setPremiumLetterValue(1);
-
-                currentTile = currentTile.getRightTile(); // move to the next tile to the right
+                // move to the next tile to the right
+                currentTile = currentTile.getRightTile();
             }
         }
-        // if direction is right...
-        // (duplicate code, put into helper methods)
-
+        // Multiply the word score by premiumWordFactor
         wordScore = wordScore * premiumWordFactor;
 
+        // Apply bonus points if all 7 tiles used from tile rack
         if(tileCounter == 7){
             wordScore = wordScore + 70;
         }
-
         return wordScore;
+    }
+
+
+    public int calculateTileScores(ScrabbkleTile tile){
+        int tileValue = tile.getValue();
+        int premiumLetterValue = tile.getPremiumLetterValue();
+        return tileValue * premiumLetterValue;
+    }
+
+    public int calculatePremiumWordScore(ScrabbkleTile tile){
+        int premiumWordValue = tile.getPremiumWordValue();
+        // Reset premiumWordValue to default
+        tile.setPremiumWordValue(1);
+        // Reset premiumLetterValue to default
+        tile.setPremiumLetterValue(1);
+        return premiumWordValue;
     }
 
 
