@@ -103,6 +103,10 @@ public class HumanPlayer extends ScrabbklePlayer {
                         if (!tilesAvailable) {
                             System.out.println("Error: You do not have the right tile(s).");
                         }
+                        if (!tileOnCentreSquare) {
+                            System.out.println("This is not a valid move");
+                            System.out.println("Error: Your first move must contain the centre square.");
+                        }
                         System.out.println();
                     }
 
@@ -126,7 +130,7 @@ public class HumanPlayer extends ScrabbklePlayer {
                         // Check if placed word connects to a word on the board
                         boolean intersectsExistingWord = intersectsWord(moveSquares);
                         // Check if placed tiles form more than one word (not allowed in Scrabbkle)
-                        boolean formsMultipleWords = formsMultipleWords(moveSquares, moveDirection);
+                        boolean formsMultipleWords = formsMultipleWords(moveSquares);
 
                         // If player has available tiles, move is within bounds and squares are not already occupied
                         // then play word by placing tiles

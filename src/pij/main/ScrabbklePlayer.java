@@ -65,85 +65,45 @@ public class ScrabbklePlayer implements Player{
     }
 
 
-
     // Check if any words are adjacent to player word and reject if so
-    public boolean formsMultipleWords(ArrayList<int[]> moveSquares, String moveDirection) {
+    public boolean formsMultipleWords(ArrayList<int[]> moveSquares){
         boolean hasAdjacentWord = false;
-        // Create lists of positions where parallel words could exist
-        ArrayList<int[]> leftColumn = new ArrayList<>();
-        ArrayList<int[]> rightColumn = new ArrayList<>();
-        ArrayList<int[]> aboveRow = new ArrayList<>();
-        ArrayList<int[]> belowRow = new ArrayList<>();
-        if (moveDirection.equals("d")){
-            //  If move is down, calculate corresponding columns either side
             for (int[] movePositions : moveSquares) {
-                int[] adjacentPositions = {movePositions[0], movePositions[1]-1};
-                leftColumn.add(adjacentPositions);
-            }
-            for (int[] movePositions : moveSquares) {
-                int[] adjacentPositions = {movePositions[0], movePositions[1]+1};
-                rightColumn.add(adjacentPositions);
-            }
-            // Check if left column has two or more touching tiles
-            for(int[] leftPositions : leftColumn){
-                int row = leftPositions[0];
-                int col = leftPositions[1];
-                if(squaresAreInBounds(leftColumn)){
-                    if(board.getBoard()[row][col].getTile() != null) {
-                        if (board.getBoard()[row][col].getTile().getLeftTile() != null) {
-                            hasAdjacentWord = true;
+                int row = movePositions[0];
+                int col = movePositions[1];
+                if(board.getBoard()[row][col].getTile() != null){
+                    ScrabbkleTile currentTile = board.getBoard()[row][col].getTile();
+                    if(currentTile.getLeftTile() != null){
+                        if(currentTile.getLeftTile().getAboveTile() != null){
+                            if(currentTile.getAboveTile() != null){
+                                hasAdjacentWord = true;
+                            }
+                        }
+                    }if(currentTile.getRightTile() != null){
+                        if(currentTile.getRightTile().getAboveTile() != null){
+                            if(currentTile.getAboveTile() != null){
+                                hasAdjacentWord = true;
+                            }
+                        }
+                    }if(currentTile.getLeftTile() != null){
+                        if(currentTile.getLeftTile().getBelowTile() != null){
+                            if(currentTile.getBelowTile() != null){
+                                hasAdjacentWord = true;
+                            }
+                        }
+                    }
+                    if(currentTile.getRightTile() != null){
+                        if(currentTile.getRightTile().getBelowTile() != null){
+                            if(currentTile.getBelowTile() != null){
+                                hasAdjacentWord = true;
+                            }
                         }
                     }
                 }
             }
-            // Check if right column has two or more touching tiles
-            for(int[] rightPositions : rightColumn){
-                int row = rightPositions[0];
-                int col = rightPositions[1];
-                if(squaresAreInBounds(rightColumn)){
-                    if(board.getBoard()[row][col].getTile() != null) {
-                        if (board.getBoard()[row][col].getTile().getRightTile() != null) {
-                            hasAdjacentWord = true;
-                        }
-                    }
-                }
-            }
-        } else {
-            // If move is right, calculate corresponding above and below rows
-            for (int[] movePositions : moveSquares) {
-                int[] adjacentPositions = {movePositions[0]-1, movePositions[1]};
-                aboveRow.add(adjacentPositions);
-            }
-            for (int[] movePositions : moveSquares) {
-                int[] adjacentPositions = {movePositions[0]+1, movePositions[1]};
-                belowRow.add(adjacentPositions);
-            }
-            // Check if top or bottom rows have adjacent words
-            for(int[] abovePositions : aboveRow){
-                int row = abovePositions[0];
-                int col = abovePositions[1];
-                if(squaresAreInBounds(aboveRow)){
-                    if(board.getBoard()[row][col].getTile() != null) {
-                        if (board.getBoard()[row][col].getTile().getAboveTile() != null) {
-                            hasAdjacentWord = true;
-                        }
-                    }
-                }
-            }
-            for(int[] belowPositions : belowRow){
-                int row = belowPositions[0];
-                int col = belowPositions[1];
-                if(squaresAreInBounds(belowRow)){
-                    if(board.getBoard()[row][col].getTile() != null) {
-                        if (board.getBoard()[row][col].getTile().getBelowTile() != null) {
-                            hasAdjacentWord = true;
-                        }
-                    }
-                }
-            }
-        }
         return hasAdjacentWord;
     }
+
 
     // Check if the given move is within the bounds of the board
     public boolean squaresAreInBounds(ArrayList<int[]> moveSquares) {
@@ -253,13 +213,47 @@ public class ScrabbklePlayer implements Player{
                 tile.setPremiumLetterValue(1);
                 tile.setPremiumWordValue(1);
                 // Remove tile from board
+                removeNeighbouringTiles(tile);
                 getBoard().getBoard()[row][col].removeTile();
+
+
             }
         }
     }
 
-    // Check if the player's rack has all the necessary tiles, including duplicates and wildCards
 
+    // Reset neighbouring tile when move is invalid
+    public void removeNeighbouringTiles(ScrabbkleTile tile) {
+        ScrabbkleTile aboveTile;
+        ScrabbkleTile belowTile;
+        ScrabbkleTile leftTile;
+        ScrabbkleTile rightTile;
+
+        if (tile.getAboveTile() != null) {
+            aboveTile = tile.getAboveTile();
+            aboveTile.resetBelowTile();
+        }
+        if (tile.getBelowTile() != null){
+            belowTile = tile.getBelowTile();
+            belowTile.resetAboveTile();
+        }
+        if(tile.getLeftTile() != null){
+            leftTile = tile.getLeftTile();
+            leftTile.resetRightTile();
+        }
+        if(tile.getRightTile() != null){
+            rightTile = tile.getRightTile();
+            rightTile.resetLeftTile();
+        }
+
+        // remove all the pointers on the current tile
+        tile.resetAboveTile();
+        tile.resetBelowTile();
+        tile.resetLeftTile();
+        tile.resetRightTile();
+    }
+
+    // Check if the player's rack has all the necessary tiles, including duplicates and wildCards
     public boolean hasAllTilesAvailable(String moveWord, ArrayList<ScrabbkleTile> tileRack) {
         Map<Character, Integer> charCounts = new HashMap<>();
         int wildcardCount = 0;
@@ -427,36 +421,80 @@ public class ScrabbklePlayer implements Player{
 
 }
 
-/*    // Set aboveTile, belowTile, leftTile and rightTile
-    public void setNeighbouringTiles(int row, int col) {
-        ScrabbkleTile aboveTile;
-        ScrabbkleTile belowTile;
-        ScrabbkleTile leftTile;
-        ScrabbkleTile rightTile;
-        // Check if aboveTile is within bounds
-        if (positionIsInBounds(row - 1, col)) {
-            // Check if aboveTile already has a tile present and set to aboveTile if so
-            if (getBoard().getBoard()[row - 1][col].getTile() != null) {
-                aboveTile = getBoard().getBoard()[row - 1][col].getTile();
-                getBoard().getBoard()[row][col].setAboveTile(aboveTile);
+/*    public boolean formsMultipleWords(ArrayList<int[]> moveSquares, String moveDirection) {
+        boolean hasAdjacentWord = false;
+        // Create lists of positions where parallel words could exist
+        ArrayList<int[]> leftColumn = new ArrayList<>();
+        ArrayList<int[]> rightColumn = new ArrayList<>();
+        ArrayList<int[]> aboveRow = new ArrayList<>();
+        ArrayList<int[]> belowRow = new ArrayList<>();
+        if (moveDirection.equals("d")){
+            //  If move is down, calculate corresponding columns either side
+            for (int[] movePositions : moveSquares) {
+                int[] adjacentPositions = {movePositions[0], movePositions[1]-1};
+                leftColumn.add(adjacentPositions);
             }
-        } // belowTile
-        if (positionIsInBounds(row + 1, col)) {
-            if (getBoard().getBoard()[row + 1][col].getTile() != null) {
-                belowTile = getBoard().getBoard()[row + 1][col].getTile();
-                getBoard().getBoard()[row][col].setBelowTile(belowTile);
+            for (int[] movePositions : moveSquares) {
+                int[] adjacentPositions = {movePositions[0], movePositions[1]+1};
+                rightColumn.add(adjacentPositions);
             }
-        } // leftTile
-        if (positionIsInBounds(row, col - 1)) {
-            if (getBoard().getBoard()[row][col - 1].getTile() != null) {
-                leftTile = getBoard().getBoard()[row][col - 1].getTile();
-                getBoard().getBoard()[row][col].setLeftTile(leftTile);
+            // Check if left column has two or more touching tiles
+            for(int[] leftPositions : leftColumn){
+                int row = leftPositions[0];
+                int col = leftPositions[1];
+                if(squaresAreInBounds(leftColumn)){
+                    if(board.getBoard()[row][col].getTile() != null) {
+                        if (board.getBoard()[row][col].getTile().getLeftTile() != null) {
+                            hasAdjacentWord = true;
+                        }
+                    }
+                }
             }
-        } // rightTile
-        if (positionIsInBounds(row, col + 1)) {
-            if (getBoard().getBoard()[row][col + 1].getTile() != null) {
-                rightTile = getBoard().getBoard()[row][col + 1].getTile();
-                getBoard().getBoard()[row][col].setRightTile(rightTile);
+            // Check if right column has two or more touching tiles
+            for(int[] rightPositions : rightColumn){
+                int row = rightPositions[0];
+                int col = rightPositions[1];
+                if(squaresAreInBounds(rightColumn)){
+                    if(board.getBoard()[row][col].getTile() != null) {
+                        if (board.getBoard()[row][col].getTile().getRightTile() != null) {
+                            hasAdjacentWord = true;
+                        }
+                    }
+                }
+            }
+        } else {
+            // If move is right, calculate corresponding above and below rows
+            for (int[] movePositions : moveSquares) {
+                int[] adjacentPositions = {movePositions[0]-1, movePositions[1]};
+                aboveRow.add(adjacentPositions);
+            }
+            for (int[] movePositions : moveSquares) {
+                int[] adjacentPositions = {movePositions[0]+1, movePositions[1]};
+                belowRow.add(adjacentPositions);
+            }
+            // Check if top or bottom rows have adjacent words
+            for(int[] abovePositions : aboveRow){
+                int row = abovePositions[0];
+                int col = abovePositions[1];
+                if(squaresAreInBounds(aboveRow)){
+                    if(board.getBoard()[row][col].getTile() != null) {
+                        if (board.getBoard()[row][col].getTile().getAboveTile() != null) {
+                            hasAdjacentWord = true;
+                        }
+                    }
+                }
+            }
+            for(int[] belowPositions : belowRow){
+                int row = belowPositions[0];
+                int col = belowPositions[1];
+                if(squaresAreInBounds(belowRow)){
+                    if(board.getBoard()[row][col].getTile() != null) {
+                        if (board.getBoard()[row][col].getTile().getBelowTile() != null) {
+                            hasAdjacentWord = true;
+                        }
+                    }
+                }
             }
         }
+        return hasAdjacentWord;
     }*/

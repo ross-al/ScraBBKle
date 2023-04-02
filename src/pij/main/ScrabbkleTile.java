@@ -133,7 +133,6 @@ public class ScrabbkleTile implements Tile{
         this.belowTile = belowTile;
     }
 
-
     public int getPremiumWordValue() {
         return premiumWordValue;
     }
@@ -152,6 +151,22 @@ public class ScrabbkleTile implements Tile{
 
     public boolean isWildCard() {
         return isWildCard;
+    }
+
+    public void resetAboveTile(){
+        aboveTile = null;
+    }
+
+    public void resetBelowTile(){
+        belowTile = null;
+    }
+
+    public void resetLeftTile(){
+        leftTile = null;
+    }
+
+    public void resetRightTile(){
+        rightTile = null;
     }
 
 

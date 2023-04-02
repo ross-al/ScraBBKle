@@ -206,4 +206,18 @@ class ScrabbklePlayerTest {
 
     }
 
+    @Test
+    void shouldReturnTrueIfMoreThanOneWordIsCreated(){
+        //
+        ScrabbkleTile tileB = new ScrabbkleTile('B');
+        ScrabbkleTile tileO = new ScrabbkleTile('O');
+        ScrabbkleTile tileO2 = new ScrabbkleTile('O');
+        ScrabbkleTile tileK= new ScrabbkleTile('K');
+
+        tileRack.add(tileB);
+        tileRack.add(tileO);
+        tileRack.add(tileO2);
+        tileRack.add(tileK);
+    }
+
 }
