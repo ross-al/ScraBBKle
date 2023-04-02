@@ -169,8 +169,6 @@ public class ScrabbkleTile implements Tile{
         rightTile = null;
     }
 
-
-
 }
 
 //tile values:

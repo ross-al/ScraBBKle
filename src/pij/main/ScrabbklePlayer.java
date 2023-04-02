@@ -2,6 +2,7 @@ package pij.main;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ScrabbklePlayer implements Player{
@@ -137,50 +138,76 @@ public class ScrabbklePlayer implements Player{
         if (currentTile!= null){
             // Check if there is a tile above
             // Set to aboveTile if so
-            if (getBoard().getBoard()[row - 1][col].getTile() != null) {
-                aboveTile = getBoard().getBoard()[row - 1][col].getTile();
-                currentTile.setAboveTile(aboveTile);
-                // Then set the aboveTile's belowTile to currentTile
-                aboveTile.setBelowTile(currentTile);
+            if(positionIsInBounds(row-1,col)){
+                if (getBoard().getBoard()[row - 1][col].getTile() != null) {
+                    aboveTile = getBoard().getBoard()[row - 1][col].getTile();
+                    currentTile.setAboveTile(aboveTile);
+                    // Then set the aboveTile's belowTile to currentTile
+                    aboveTile.setBelowTile(currentTile);
+                }
             } // belowTile
-            if (getBoard().getBoard()[row + 1][col].getTile() != null) {
-                belowTile = getBoard().getBoard()[row + 1][col].getTile();
-                currentTile.setBelowTile(belowTile);
-                belowTile.setAboveTile(currentTile);
-            } // leftTile
-            if (getBoard().getBoard()[row][col - 1].getTile() != null) {
-                leftTile = getBoard().getBoard()[row][col - 1].getTile();
-                currentTile.setLeftTile(leftTile);
-                leftTile.setRightTile(currentTile);
-            } // rightTile
-            if (getBoard().getBoard()[row][col + 1].getTile() != null) {
-                rightTile = getBoard().getBoard()[row][col + 1].getTile();
-                currentTile.setRightTile(rightTile);
-                rightTile.setLeftTile(currentTile);
+            if(positionIsInBounds(row+1,col)){
+                if (getBoard().getBoard()[row + 1][col].getTile() != null) {
+                    belowTile = getBoard().getBoard()[row + 1][col].getTile();
+                    currentTile.setBelowTile(belowTile);
+                    belowTile.setAboveTile(currentTile);
+                }
+            }
+            // leftTile
+            if(positionIsInBounds(row,col-1)){
+                if (getBoard().getBoard()[row][col - 1].getTile() != null) {
+                    leftTile = getBoard().getBoard()[row][col - 1].getTile();
+                    currentTile.setLeftTile(leftTile);
+                    leftTile.setRightTile(currentTile);
+                }
+            }
+             // rightTile
+            if(positionIsInBounds(row,col+1)){
+                if (getBoard().getBoard()[row][col + 1].getTile() != null) {
+                    rightTile = getBoard().getBoard()[row][col + 1].getTile();
+                    currentTile.setRightTile(rightTile);
+                    rightTile.setLeftTile(currentTile);
+                }
             }
         }
     }
 
-    // Check if tile has at least one other tile touching it
-    // i.e. to show player word is connected existing words and not
-    // an isolated word
+    // not working
     public boolean intersectsWord(ArrayList<int[]> moveSquares) {
         boolean intersectsWord = false;
         for (int[] moveSquare : moveSquares) {
             int row = moveSquare[0];
             int col = moveSquare[1];
-            // Check if at least one tile above, below, to right or to left has a tile
-            if (board.getBoard()[row][col].getTile() != null) {
-                if ((board.getBoard()[row][col].getTile().getAboveTile() != null)
-                        || (board.getBoard()[row][col].getTile().getBelowTile() != null)
-                        || (board.getBoard()[row][col].getTile().getLeftTile() != null)
-                        || (board.getBoard()[row][col].getTile().getRightTile() != null)
-                ) {
+            List<ScrabbkleSquare> adjacentSquares = getAdjacentTiles(row, col);
+            for (Square adjacentSquare : adjacentSquares) {
+                if (adjacentSquare.getTile() != null) {
                     intersectsWord = true;
+                    break;
                 }
             }
+            if (intersectsWord) {
+                break;
+            }
+        }
+        return intersectsWord;
+    }
 
-        } return intersectsWord;
+    // Helper method to calculate adjacent squares
+    public List<ScrabbkleSquare> getAdjacentTiles(int row, int col) {
+        List<ScrabbkleSquare> adjacentSquares = new ArrayList<>();
+        if (row > 1) {
+            adjacentSquares.add(board.getBoard()[row - 1][col]);
+        }
+        if (row < board.getBoardSize() - 1) {
+            adjacentSquares.add(board.getBoard()[row + 1][col]);
+        }
+        if (col > 1) {
+            adjacentSquares.add(board.getBoard()[row][col - 1]);
+        }
+        if (col < board.getBoard()[row].length - 1) {
+            adjacentSquares.add(board.getBoard()[row][col + 1]);
+        }
+        return adjacentSquares;
     }
 
     public boolean moveSquaresOccupied(ArrayList<int[]> moveSquares){
@@ -497,4 +524,35 @@ public class ScrabbklePlayer implements Player{
             }
         }
         return hasAdjacentWord;
+    }*/
+
+// Check if tile has at least one other tile touching it
+// i.e. to show player word is connected to existing words and not an isolated word
+/*    public boolean intersectsWord(ArrayList<int[]> moveSquares) {
+        boolean intersectsWord = false;
+        int tileTouchCounter = 0;
+        for (int[] moveSquare : moveSquares) {
+            int row = moveSquare[0];
+            int col = moveSquare[1];
+            // Check if at least one tile above, below, to right or to left has a tile
+            if (board.getBoard()[row][col].getTile() != null) {
+                if (board.getBoard()[row][col].getTile().getAboveTile() != null){
+                    tileTouchCounter++;
+                }
+                if (board.getBoard()[row][col].getTile().getBelowTile() != null){
+                    tileTouchCounter++;
+                }
+                if (board.getBoard()[row][col].getTile().getLeftTile() != null){
+                    tileTouchCounter++;
+                }
+                if (board.getBoard()[row][col].getTile().getRightTile() != null){
+                    tileTouchCounter++;
+                }
+            }
+        }
+        //placed word must touch at lest one other tile on the board already
+        if(tileTouchCounter > 0){
+            intersectsWord = true;
+        }
+        return intersectsWord;
     }*/
