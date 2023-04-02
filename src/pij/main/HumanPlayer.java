@@ -42,7 +42,7 @@ public class HumanPlayer extends ScrabbklePlayer {
                 if(move.equals(",,")){
                     validInputFormat = true;
                 } else {
-                    boolean isMatch = move.matches("[a-zA-Z]+,[a-z]\\d{1,2},[a-zA-Z]+");
+                    boolean isMatch = move.matches("[a-zA-Z]+,[a-z]\\d{1,2},[dr]+");
                     if(isMatch) {
                         validInputFormat = true;
                     }
