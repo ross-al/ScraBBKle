@@ -44,7 +44,7 @@ public class HumanPlayer extends ScrabbklePlayer {
                 moveDirection = instructions[2];
 
                 // Split each letter in word into character
-                charsInWord = splitWordToChar(moveWord);
+                //charsInWord = splitWordToChar(moveWord);
 
                 // Check if tiles available for given word
                 boolean tilesAvailable = hasAllTilesAvailable(moveWord, tileRack);
@@ -224,7 +224,7 @@ public class HumanPlayer extends ScrabbklePlayer {
     }
 
 
-    // Split given word into individual characters and put in arrayList
+/*    // Split given word into individual characters and put in arrayList
     public ArrayList<Character> splitWordToChar(String moveWord) {
         ArrayList<Character> charsInWord = new ArrayList<>();
         for (int i = 0; i < moveWord.length(); i++) {
@@ -232,7 +232,7 @@ public class HumanPlayer extends ScrabbklePlayer {
             charsInWord.add(c);
         }
         return charsInWord;
-    }
+    }*/
 
 
     // Calculate the player's intended word on board to check if in dictionary
@@ -254,16 +254,6 @@ public class HumanPlayer extends ScrabbklePlayer {
             while (currentTile.getAboveTile() != null) {
                 currentTile = currentTile.getAboveTile();
             }
-            // add the tiles to the bottom of the currentTile to finalWord
-            /*while (currentTile != null && currentTile.getBelowTile() != null && currentTile != currentTile.getBelowTile()) {
-                finalWord += currentTile.getLetter(); // append the letter to the finalWord string
-                currentTile = currentTile.getBelowTile(); // move to the next tile to the right
-            }*/
-          /*  // add the currentTile to finalWord
-            finalWord += currentTile.getLetter();
-            // add the tiles to the bottom of the currentTile to finalWord
-            currentTile = currentTile.getBelowTile();*/
-
             while (currentTile != null) {
                 finalWord += currentTile.getLetter(); // append the letter to the finalWord string
                 currentTile = currentTile.getBelowTile(); // move to the next tile to the tile below
@@ -278,15 +268,6 @@ public class HumanPlayer extends ScrabbklePlayer {
             while (currentTile.getLeftTile() != null) {
                 currentTile = currentTile.getLeftTile();
             }
-            // add the tiles to the right of the currentTile to finalWord
-          /*  while (currentTile != null && currentTile.getRightTile() != null && currentTile != currentTile.getRightTile()) {
-                finalWord += currentTile.getLetter(); // append the letter to the finalWord string
-                currentTile = currentTile.getRightTile(); // move to the next tile to the right
-            }*/
-           /* // add the currentTile to finalWord
-            finalWord += currentTile.getLetter();
-            // add the tiles to the right of the currentTile to finalWord
-            currentTile = currentTile.getRightTile();*/
                while (currentTile != null) {
                     finalWord += currentTile.getLetter(); // append the letter to the finalWord string
                     currentTile = currentTile.getRightTile(); // move to the next tile to the right
@@ -446,6 +427,7 @@ public class HumanPlayer extends ScrabbklePlayer {
         return score;
     }
 }
+
 
 
     //DELETE OR KEEP???
@@ -642,6 +624,66 @@ public class HumanPlayer extends ScrabbklePlayer {
                 return;
             }
         }
+    }*/
+
+/*    // Calculate the player's intended word on board to check if in dictionary
+    public String calculateFinalWord(String movePosition, String moveDirection) {
+        // Convert the 'cr' format provided into int for index positions
+        int col = getPositionColumn(movePosition);
+        int row = getPositionRow(movePosition);
+        // Create empty string for final word
+        String finalWord = "";
+        char c;
+        // Create square to track position in linked list
+        ScrabbkleTile currentTile;
+        // If word direction is down
+        if (moveDirection.equals("d")) {
+            // Find the top-most tile in the word on the board
+            // First find if there is a tile on top of player's position and find top-most tile if so
+            // This will be the beginning of the word
+            currentTile = getBoard().getBoard()[row][col].getTile();
+            while (currentTile.getAboveTile() != null) {
+                currentTile = currentTile.getAboveTile();
+            }
+            // add the tiles to the bottom of the currentTile to finalWord
+            *//*while (currentTile != null && currentTile.getBelowTile() != null && currentTile != currentTile.getBelowTile()) {
+                finalWord += currentTile.getLetter(); // append the letter to the finalWord string
+                currentTile = currentTile.getBelowTile(); // move to the next tile to the right
+            }*//*
+          *//*  // add the currentTile to finalWord
+            finalWord += currentTile.getLetter();
+            // add the tiles to the bottom of the currentTile to finalWord
+            currentTile = currentTile.getBelowTile();*//*
+
+            while (currentTile != null) {
+                finalWord += currentTile.getLetter(); // append the letter to the finalWord string
+                currentTile = currentTile.getBelowTile(); // move to the next tile to the tile below
+            }
+
+            // if word direction is right
+        } else {
+            // Find the left-most tile in the word on the board
+            // First find if there is a tile to the left of player's position and find left-most tile if so
+            // This will be the beginning of the word
+            currentTile = getBoard().getBoard()[row][col].getTile();
+            while (currentTile.getLeftTile() != null) {
+                currentTile = currentTile.getLeftTile();
+            }
+            // add the tiles to the right of the currentTile to finalWord
+          *//*  while (currentTile != null && currentTile.getRightTile() != null && currentTile != currentTile.getRightTile()) {
+                finalWord += currentTile.getLetter(); // append the letter to the finalWord string
+                currentTile = currentTile.getRightTile(); // move to the next tile to the right
+            }*//*
+           *//* // add the currentTile to finalWord
+            finalWord += currentTile.getLetter();
+            // add the tiles to the right of the currentTile to finalWord
+            currentTile = currentTile.getRightTile();*//*
+            while (currentTile != null) {
+                finalWord += currentTile.getLetter(); // append the letter to the finalWord string
+                currentTile = currentTile.getRightTile(); // move to the next tile to the right
+            }
+        }
+        return finalWord;
     }*/
 
 

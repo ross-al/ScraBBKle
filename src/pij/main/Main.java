@@ -64,8 +64,8 @@ public class Main {
 
         // Create score boards
 
-        int humanPlayerScore = humanPlayer.getPlayerScore();
-        int computerPlayerScore = computerPlayer.getPlayerScore();
+        int humanPlayerScore;
+        int computerPlayerScore;
 
 
         // Start game
