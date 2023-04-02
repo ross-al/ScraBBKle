@@ -2,6 +2,7 @@ package pij.main;
 
 import org.jetbrains.annotations.VisibleForTesting;
 
+import java.sql.SQLOutput;
 import java.util.*;
 
 public class HumanPlayer extends ScrabbklePlayer {
@@ -29,11 +30,24 @@ public class HumanPlayer extends ScrabbklePlayer {
         boolean validMove = false;
         while (!validMove) {
 
-            // Get player move input
-            String move = getPlayerMove();
+            boolean validInputFormat = false;
 
-            // Check if valid string format "WORD, cr, d" or ",,"
-            //(isValidMoveFormat(String move)
+            // Initial string for getting player's input
+            String move = null;
+
+            // Check if valid string format "WORD, cr, d" or ",," for skip
+            while(!validInputFormat) {
+                // Get player move input
+                move = getPlayerMove();
+                if(move.equals(",,")){
+                    validInputFormat = true;
+                } else {
+                    boolean isMatch = move.matches("[a-zA-Z]+,[a-z]\\d{1,2},[a-zA-Z]+");
+                    if(isMatch) {
+                        validInputFormat = true;
+                    }
+                }
+            }
 
             if (!isSkip(move)) {
 
@@ -218,6 +232,54 @@ public class HumanPlayer extends ScrabbklePlayer {
     // Split player's move by "," to get individual instructions
     public String[] interpretPlayerMove(String word) {
         return word.split(",");
+    }
+
+
+    public boolean isWordFormat(String moveWord) {
+        // checks if the String is null
+        if (moveWord == null)  {
+            return false;
+        }
+        int length = moveWord.length();
+            for (int i = 0; i < length; i++) {
+            // Check if the character is not a letter
+            // if it is not a letter, return false
+                if ((!Character.isLetter(moveWord.charAt(i)))) {
+                    return false;
+                }
+            }
+            return true;
+    }
+
+    public boolean isMovePositionFormat(String movePosition){
+        // checks if the String is null
+        if (movePosition == null)  {
+            return false;
+        }
+        // Check if first character in position is a letter
+        if((!Character.isLetter(movePosition.charAt(0)))){
+            return false;
+        }
+        // Check last two characters are numbers
+        int length = movePosition.length();
+        for (int i = 1; i < length; i++) {
+            // Check if the character is not a letter
+            // if it is not a letter, return false
+            if ((!Character.isDigit(movePosition.charAt(i)))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean isMoveDirection(String moveDirection){
+        if(moveDirection.equals("d")){
+            return true;
+        }
+        if(moveDirection.equals("r")){
+            return true;
+        }
+        return false;
     }
 
 
