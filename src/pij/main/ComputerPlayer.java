@@ -27,10 +27,10 @@ public class ComputerPlayer extends ScrabbklePlayer {
         // Both booleans set to true for testing
         // Computer player will always skip
 
-       boolean isSkip = true;
-       boolean validMove = true;
+        boolean isSkip = true;
+        boolean validMove = true;
 
-       // Check all tiles going right
+        // Check all tiles going right
         String moveDirection = "r";
         String movePosition; //i.e. 'h7'
         ArrayList<int[]> moveSquares;
@@ -39,7 +39,7 @@ public class ComputerPlayer extends ScrabbklePlayer {
         // Need faster logic
         // Use a trie
 
-        for(ScrabbkleTile tile : tileRack) {
+        for (ScrabbkleTile tile : tileRack) {
             while (!validMove) {
                 for (int i = 1; i < getBoard().getBoardSize(); i++) {
                     for (int j = 1; j < getBoard().getBoardSize(); j++) {
@@ -90,7 +90,7 @@ public class ComputerPlayer extends ScrabbklePlayer {
                                     // Remove tiles from board
                                     removeTilesFromBoard(moveSquares);
                                 }
-                                if(validMove){
+                                if (validMove) {
                                     // If successful move, keep isSkip as false, else true to tell humanPlayer move was skipped
                                     isSkip = false;
                                 }
@@ -105,13 +105,13 @@ public class ComputerPlayer extends ScrabbklePlayer {
         // moveDirection = "d";
 
 
-        if(!isSkip){
-            if(skipCount > 0){
+        if (!isSkip) {
+            if (skipCount > 0) {
                 skipCount--;
             }
         }
 
-        if(isSkip) {
+        if (isSkip) {
             System.out.println();
             System.out.println("Computer player skipped their turn");
             System.out.println();
@@ -123,10 +123,10 @@ public class ComputerPlayer extends ScrabbklePlayer {
 
     // Calculate movePosition (e.g. 'h7') based on given int row and int col
 
-    public String convertRowAndColToString(int row, int col){
+    public String convertRowAndColToString(int row, int col) {
         char c = getColumnLetter(col);
         String r = String.valueOf(Integer.valueOf(row));
-        return c+r;
+        return c + r;
     }
 
     // Convert the int provided into a letter for board index position
@@ -137,7 +137,7 @@ public class ComputerPlayer extends ScrabbklePlayer {
 
     // Getters
 
-    public int getSkipCount(){
+    public int getSkipCount() {
         return skipCount;
     }
 

@@ -12,7 +12,7 @@ public class ScrabbkleBoard implements Board {
     private int[] centreSquare;
 
     // Ask for player board type choice
-    public String getBoardChoice(){
+    public String getBoardChoice() {
         System.out.println("Would you like to _l_oad a board or use the _d_efault board?");
         System.out.println("Please enter your choice (l/d):");
         System.out.println();
@@ -26,7 +26,7 @@ public class ScrabbkleBoard implements Board {
         String defaultPath = "." + File.separator + "resources" + File.separator;
         // Default file name:
         // default file is "./resources/defaultBoard.txt";
-        String fileName =  defaultPath + "defaultBoard.txt";
+        String fileName = defaultPath + "defaultBoard.txt";
         File inputFile = new File(fileName);
         String loadBoard = "l";
         // If player selects to load a board, get new file name
@@ -42,8 +42,8 @@ public class ScrabbkleBoard implements Board {
     }
 
     // Check inputFile exists in resources folder
-    public boolean inputFileExists(File inputFile){
-        return(inputFile.exists());
+    public boolean inputFileExists(File inputFile) {
+        return (inputFile.exists());
     }
 
     // Calculate the board size by reading first line in file
@@ -95,15 +95,14 @@ public class ScrabbkleBoard implements Board {
                 for (int j = 1; j < board.length; j++) {
                     char ch = line.charAt(charCount);
                     switch (ch) {
-                        case '{':
-                        case '(':
+                        case '{', '(' -> {
                             sub = line.substring(charCount, charCount + 3);
                             charCount = charCount + 3;
-                            break;
-                        case '.':
+                        }
+                        case '.' -> {
                             sub = line.substring(charCount, charCount + 1);
                             charCount = charCount + 1;
-                            break;
+                        }
                     }
                     board[i][j] = new ScrabbkleSquare(sub);
                 }
@@ -121,9 +120,9 @@ public class ScrabbkleBoard implements Board {
         System.out.println();
         System.out.println("Your current board: ");
         System.out.println();
-        for (int i = 0; i < board.length; i++) {
+        for (ScrabbkleSquare[] scrabbkleSquares : board) {
             for (int j = 0; j < board.length; j++) {
-                System.out.print(board[i][j].getPrintLabel() + "\t");
+                System.out.print(scrabbkleSquares[j].getPrintLabel() + "\t");
             }
             System.out.println();
         }
@@ -131,24 +130,23 @@ public class ScrabbkleBoard implements Board {
 
 
     // Calculate the centre square for human player's first move
-    public int[] calculateCentreSquare(int boardSize){
+    public int[] calculateCentreSquare(int boardSize) {
         int row;
         int col;
         // If board size is even:
-        if(boardSize % 2 == 0){
-           row = boardSize / 2;
-           col = boardSize / 2;
+        if (boardSize % 2 == 0) {
+            row = boardSize / 2;
+            col = boardSize / 2;
         }
         // If board size is odd:
         else {
-            int input = boardSize +1;
-            row = input/2;
+            int input = boardSize + 1;
+            row = input / 2;
             col = row;
         }
         centreSquare = new int[]{row, col};
         return centreSquare;
     }
-
 
 
     // Getters
@@ -157,17 +155,17 @@ public class ScrabbkleBoard implements Board {
         return board;
     }
 
-    public int[] getCentreSquare(){
+    public int[] getCentreSquare() {
         return this.centreSquare;
     }
 
-    public int getBoardSize(){
+    public int getBoardSize() {
         return boardSize;
     }
 
     // used for JUnit testing only
     @VisibleForTesting
-    public void setBoardSize(int size){
+    public void setBoardSize(int size) {
         this.boardSize = size;
     }
 }

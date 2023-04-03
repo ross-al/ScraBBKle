@@ -2,7 +2,6 @@ package pij.main;
 
 import org.jetbrains.annotations.VisibleForTesting;
 
-import java.sql.SQLOutput;
 import java.util.*;
 
 public class HumanPlayer extends ScrabbklePlayer {
@@ -24,7 +23,6 @@ public class HumanPlayer extends ScrabbklePlayer {
         String movePosition;
         String moveDirection;
         String finalWord;
-        ArrayList<Character> charsInWord;
         ArrayList<int[]> moveSquares;
         int tileCounter;
         boolean validMove = false;
@@ -36,14 +34,14 @@ public class HumanPlayer extends ScrabbklePlayer {
             String move = null;
 
             // Check if valid string format "WORD, cr, d" or ",," for skip
-            while(!validInputFormat) {
+            while (!validInputFormat) {
                 // Get player move input
                 move = getPlayerMove();
-                if(move.equals(",,")){
+                if (move.equals(",,")) {
                     validInputFormat = true;
                 } else {
                     boolean isMatch = move.matches("[a-zA-Z]+,[a-z]\\d{1,2},[dr]+");
-                    if(isMatch) {
+                    if (isMatch) {
                         validInputFormat = true;
                     }
                 }
@@ -265,7 +263,7 @@ public class HumanPlayer extends ScrabbklePlayer {
 
     // Getters
 
-    public int getSkipCount(){
+    public int getSkipCount() {
         return skipCount;
     }
 

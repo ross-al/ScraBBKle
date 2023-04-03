@@ -1,6 +1,6 @@
 package pij.main;
 
-public class ScrabbkleSquare implements Square{
+public class ScrabbkleSquare implements Square {
 
     private ScrabbkleTile scrabbkleTile;
     private String printLabel;
@@ -9,8 +9,7 @@ public class ScrabbkleSquare implements Square{
     private int premiumWordValue;
 
 
-
-    public ScrabbkleSquare(String printLabel){
+    public ScrabbkleSquare(String printLabel) {
         this.printLabel = printLabel; //String from input file
         this.filePrintLabel = this.printLabel; // used to remember original print label
         premiumLetterValue = convertPremiumLetter(this.printLabel);
@@ -28,7 +27,7 @@ public class ScrabbkleSquare implements Square{
                 sub = String.valueOf(printLabel.charAt(1)); //e.g. 3
             }
             if (printLabel.charAt(2) != ')') { //e.g. (99
-                sub = String.valueOf(printLabel.substring(1)); //e.g. 99
+                sub = printLabel.substring(1); //e.g. 99
             }
             value = Integer.parseInt(sub);
         } else {
@@ -39,15 +38,15 @@ public class ScrabbkleSquare implements Square{
 
 
     // Convert file format to print label
-    public int convertPremiumWord(String printLabel){
+    public int convertPremiumWord(String printLabel) {
         String sub = String.valueOf(1);
         int value;
-        if (printLabel.contains("{")){  //e.g. {3}
+        if (printLabel.contains("{")) {  //e.g. {3}
             if (printLabel.charAt(2) == '}') {
                 sub = String.valueOf(printLabel.charAt(1)); //e.g. 3
             }
-            if (printLabel.charAt(2) != '}'){ //e.g. {99
-                sub = String.valueOf(printLabel.substring(1)); //e.g. 99
+            if (printLabel.charAt(2) != '}') { //e.g. {99
+                sub = printLabel.substring(1); //e.g. 99
             }
             value = Integer.parseInt(sub);
         } else {
@@ -58,7 +57,7 @@ public class ScrabbkleSquare implements Square{
 
 
     // Remove a tile from a square when move is invalid
-    public void removeTile(){
+    public void removeTile() {
         // Remove tile from the Square
         scrabbkleTile = null;
         // Reset print label
@@ -68,32 +67,32 @@ public class ScrabbkleSquare implements Square{
 
     // Setters
 
-    public void setTile(ScrabbkleTile tile){
-        if(tile!=null) {
+    public void setTile(ScrabbkleTile tile) {
+        if (tile != null) {
             scrabbkleTile = tile;
             setPrintLabel(tile);
         }
     }
 
-    public void setPrintLabel(ScrabbkleTile tile){
+    public void setPrintLabel(ScrabbkleTile tile) {
         printLabel = tile.getPrintOnBoardFormat();
     }
 
     // Getters
 
-    public int getPremiumLetterValue(){
+    public int getPremiumLetterValue() {
         return premiumLetterValue;
     }
 
-    public int getPremiumWordValue(){
+    public int getPremiumWordValue() {
         return premiumWordValue;
     }
 
-    public String getPrintLabel(){
+    public String getPrintLabel() {
         return printLabel;
     }
 
-    public ScrabbkleTile getTile(){
+    public ScrabbkleTile getTile() {
         return scrabbkleTile;
     }
 

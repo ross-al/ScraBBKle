@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 
-public class ScrabbkleTileBag implements TileBag{
+public class ScrabbkleTileBag implements TileBag {
     private ArrayList<ScrabbkleTile> scrabbkleTileBag;
 
-    public ScrabbkleTileBag(){
+    public ScrabbkleTileBag() {
         scrabbkleTileBag = new ArrayList<>();
     }
 
@@ -16,12 +16,12 @@ public class ScrabbkleTileBag implements TileBag{
         return scrabbkleTileBag.size();
     }
 
-    public boolean isEmpty(){
+    public boolean isEmpty() {
         return (!(getSize() > 0));
     }
 
     // Shuffles the tile bag
-    public void shuffleBag(){
+    public void shuffleBag() {
         Collections.shuffle(scrabbkleTileBag);
     }
 
@@ -143,7 +143,6 @@ public class ScrabbkleTileBag implements TileBag{
         }
     }
 }
-
 
 
 //Quantity (tileBag must contain 100 tiles at start):

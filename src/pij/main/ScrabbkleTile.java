@@ -1,6 +1,6 @@
 package pij.main;
 
-public class ScrabbkleTile implements Tile{
+public class ScrabbkleTile implements Tile {
     private char letter;
     private int value;
     private int premiumWordValue;
@@ -13,7 +13,7 @@ public class ScrabbkleTile implements Tile{
     private boolean connectsToExistingWord;
 
 
-    public ScrabbkleTile(char letter){
+    public ScrabbkleTile(char letter) {
         this.letter = letter;
         this.value = calculateTileValue(letter);
         premiumWordValue = 1;
@@ -21,66 +21,33 @@ public class ScrabbkleTile implements Tile{
     }
 
     // Assign a lower case letter to a tile to make it a wildcard
-    public void assignWildCard(char c){
+    public void assignWildCard(char c) {
         this.letter = Character.toLowerCase(c);
         isWildCard = true;
     }
 
     // Remove a wildCard assignment when removing invalid moves from board
-    public void removeWildCard(){
+    public void removeWildCard() {
         letter = ' ';
         isWildCard = false;
     }
 
     // Calculate tile value based on letter
     // default is wildcard
-    public int calculateTileValue(char letter){
+    public int calculateTileValue(char letter) {
         int value;
-        switch (letter){
-            case 'A':
-            case 'E':
-            case 'I':
-            case 'O':
-            case 'U':
-            case 'L':
-            case 'N':
-            case 'S':
-            case 'T':
-            case 'R':
-                value = 1;
-                break;
-            case 'D':
-            case 'G':
-                value = 2;
-                break;
-            case 'B':
-            case 'C':
-            case 'M':
-            case 'P':
-                value = 3;
-                break;
-            case 'F':
-            case 'H':
-            case 'V':
-            case 'W':
-            case 'Y':
-                value = 4;
-                break;
-            case 'K':
-                value = 5;
-                break;
-            case 'J':
-            case 'X':
-                value = 8;
-                break;
-            case 'Q':
-            case 'Z':
-                value = 10;
-                break;
-            default:
+        switch (letter) {
+            case 'A', 'E', 'I', 'O', 'U', 'L', 'N', 'S', 'T', 'R' -> value = 1;
+            case 'D', 'G' -> value = 2;
+            case 'B', 'C', 'M', 'P' -> value = 3;
+            case 'F', 'H', 'V', 'W', 'Y' -> value = 4;
+            case 'K' -> value = 5;
+            case 'J', 'X' -> value = 8;
+            case 'Q', 'Z' -> value = 10;
+            default -> {
                 value = 3; //for WildCard
                 isWildCard = true;
-                break;
+            }
         }
         return value;
     }
@@ -140,35 +107,35 @@ public class ScrabbkleTile implements Tile{
         this.premiumLetterValue = premiumLetterValue;
     }
 
-    public void resetAboveTile(){
+    public void resetAboveTile() {
         aboveTile = null;
     }
 
-    public void resetBelowTile(){
+    public void resetBelowTile() {
         belowTile = null;
     }
 
-    public void resetLeftTile(){
+    public void resetLeftTile() {
         leftTile = null;
     }
 
-    public void resetRightTile(){
+    public void resetRightTile() {
         rightTile = null;
     }
 
-    public char getLetter(){
+    public char getLetter() {
         return this.letter;
     }
 
-    public int getValue(){
+    public int getValue() {
         return this.value;
     }
 
-    public String getPrintInTileRackFormat(){
+    public String getPrintInTileRackFormat() {
         return "[" + letter + value + "]";
     }
 
-    public String getPrintOnBoardFormat(){
+    public String getPrintOnBoardFormat() {
         return letter + String.valueOf(value);
     }
 
