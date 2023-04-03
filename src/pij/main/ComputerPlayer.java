@@ -90,6 +90,10 @@ public class ComputerPlayer extends ScrabbklePlayer {
                                     // Remove tiles from board
                                     removeTilesFromBoard(moveSquares);
                                 }
+                                if(validMove){
+                                    // If successful move, keep isSkip as false, else true to tell humanPlayer move was skipped
+                                    isSkip = false;
+                                }
                             }
                         }
                     }
@@ -100,10 +104,6 @@ public class ComputerPlayer extends ScrabbklePlayer {
         // Check all tiles going down
         // moveDirection = "d";
 
-        if(validMove){
-            isSkip = false;
-        }
-        // If successful move, keep isSkip as false, else true to tell humanPlayer move was skipped
 
         if(!isSkip){
             if(skipCount > 0){

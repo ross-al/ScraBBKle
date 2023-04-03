@@ -159,10 +159,21 @@ public class Main {
             }
         }
 
-        // Calculate scores and declare winner
+        // Calculate scores
 
         humanPlayerScore = humanPlayer.getPlayerScore();
         computerPlayerScore = computerPlayer.getPlayerScore();
+
+        // Remove remaining tile values from the current score
+
+        int remainingHumanTiles = humanPlayer.deductLeftOverTiles(humanPlayer.getTileRack());
+        int remainingComputerTiles = computerPlayer.deductLeftOverTiles(computerPlayer.getTileRack());
+
+        humanPlayerScore -= remainingHumanTiles;
+        computerPlayerScore -= remainingComputerTiles;
+
+        // Declare winner and end game
+
         System.out.println("Game Over!");
         System.out.println("The human player scored " + humanPlayerScore + " points.");
         System.out.println("The computer player scored " + computerPlayerScore + " points.");

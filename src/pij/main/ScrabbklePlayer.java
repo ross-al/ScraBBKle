@@ -342,42 +342,6 @@ public class ScrabbklePlayer implements Player{
     }
 
 
-
-
-    // Change connectsToExistingWord on valid tiles to true
-    public void connectToWord(int row, int col, String moveDirection){
-        // Create square to track position in linked list
-        ScrabbkleTile currentTile;
-        // If word direction is down
-        if (moveDirection.equals("d")) {
-            // Find the top-most tile in the word on the board
-            // First find if there is a tile on top of player's position and find top-most tile if so
-            // This will be the beginning of the word
-            currentTile = getBoard().getBoard()[row][col].getTile();
-            while (currentTile.getAboveTile() != null) {
-                currentTile = currentTile.getAboveTile();
-            }
-            while (currentTile != null) {
-                currentTile.setConnectsToExistingWord(true); // change flag to true
-                currentTile = currentTile.getBelowTile(); // move to the next tile to the tile below
-            }
-            // if word direction is right
-        } else {
-            // Find the left-most tile in the word on the board
-            // First find if there is a tile to the left of player's position and find left-most tile if so
-            // This will be the beginning of the word
-            currentTile = getBoard().getBoard()[row][col].getTile();
-            while (currentTile.getLeftTile() != null) {
-                currentTile = currentTile.getLeftTile();
-            }
-            while (currentTile != null) {
-                currentTile.setConnectsToExistingWord(true); //change flag to true
-                currentTile = currentTile.getRightTile(); // move to the next tile to the right
-            }
-        }
-    }
-
-
     // Check if word connects to at least one word on the board
     public boolean intersectsWord(ArrayList<int[]> moveSquares) {
         boolean intersectsWord = false;
@@ -674,6 +638,21 @@ public class ScrabbklePlayer implements Player{
         } else {
             return "right";
         }
+    }
+
+
+    // For any remaining tiles in the rack, deduct their values from the final score
+
+    public int deductLeftOverTiles(ArrayList<ScrabbkleTile> tileRack) {
+        int remainingTileValues = 0;
+        if(!tileRack.isEmpty()) {
+            for (ScrabbkleTile tile : tileRack) {
+                if (tile != null) {
+                    remainingTileValues += tile.getValue();
+                }
+            }
+        }
+        return remainingTileValues;
     }
 
 
