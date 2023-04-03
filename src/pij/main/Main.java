@@ -13,7 +13,7 @@ public class Main {
         // Create new empty board
         ScrabbkleBoard board = new ScrabbkleBoard();
 
-        // Ask player for board type choice
+        // Ask player for board type choice, either 'default board' or 'load own board'
         String boardChoice = null;
         boolean validBoardChoice = false;
         while (!validBoardChoice) {
@@ -51,10 +51,10 @@ public class Main {
         // Load input file into board
         board.convertToBoard(inputFile);
 
-        // Create wordlist based on provided wordlist
+        // Create wordlist based on provided word list
         ScrabbkleWordList wordList = new ScrabbkleWordList();
 
-        // Create tileBag and fill bag with tiles
+        // Create tile bag and fill bag with tiles
         ScrabbkleTileBag tileBag = new ScrabbkleTileBag();
         tileBag.fillTileBag();
 
@@ -63,10 +63,8 @@ public class Main {
         ComputerPlayer computerPlayer = new ComputerPlayer(board, wordList, tileBag);
 
         // Create score boards
-
         int humanPlayerScore;
         int computerPlayerScore;
-
 
         // Start game
         boolean gameOver = false;
@@ -78,9 +76,8 @@ public class Main {
         // Print empty line for console readability
         System.out.println();
 
-
         // Continue loop until game over
-        // Game continues until tileBag is empty, and one of the player racks is empty
+        // Game continues until tile bag is empty, and one of the player racks is empty
         while (!gameOver) {
 
             // Check if player racks are empty
@@ -96,7 +93,6 @@ public class Main {
                 // Print current board
                 board.printBoard();
 
-
                 // Refill player tile rack and print
                 humanPlayer.fillRack();
                 humanPlayer.printRack();
@@ -107,7 +103,6 @@ public class Main {
                 // Get updated scores
                 humanPlayerScore = humanPlayer.getPlayerScore();
                 computerPlayerScore = computerPlayer.getPlayerScore();
-
 
                 // Print scores and update board
                 System.out.println();
@@ -120,6 +115,8 @@ public class Main {
                 humanPlayer.isPlayerTurn = false;
                 computerPlayer.isPlayerTurn = true;
             }
+
+            // Start computer player turn
             while (computerPlayer.isPlayerTurn) {
                 computerPlayer.fillRack();
                 computerPlayer.playMove();
@@ -127,9 +124,6 @@ public class Main {
                 // System.out.print("The move is: " + computerPlayer.getMoveWord());
                 // System.out.print(" at position " + computerPlayer.getMovePosition() + ",");
                 // System.out.print(" direction: "+computerPlayer.getMoveDirection());
-
-                //print updated board after computer player move (????)
-                //board.printBoard();
 
                 // Get updated scores
                 humanPlayerScore = humanPlayer.getPlayerScore();
@@ -164,7 +158,7 @@ public class Main {
         humanPlayerScore = humanPlayer.getPlayerScore();
         computerPlayerScore = computerPlayer.getPlayerScore();
 
-        // Remove remaining tile values from the current score
+        // Deduct remaining tile values from the current score
 
         int remainingHumanTiles = humanPlayer.deductLeftOverTiles(humanPlayer.getTileRack());
         int remainingComputerTiles = computerPlayer.deductLeftOverTiles(computerPlayer.getTileRack());
