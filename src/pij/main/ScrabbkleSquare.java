@@ -1,14 +1,31 @@
 package pij.main;
 
+/**
+ *  A ScrabbkleSquare is a Square which we use to populate a board
+ *  Players place tiles on a square
+ */
 public class ScrabbkleSquare implements Square {
 
+    /** a tile that can be placed in a square*/
     private ScrabbkleTile scrabbkleTile;
+
+    /** the print label for a square, will change when tile placed */
     private String printLabel;
+
+    /** print label from input file, used to restore printLabel if tile removed */
     private final String filePrintLabel;
+
+    /** a premium letter value for scoring*/
     private int premiumLetterValue;
+
+    /** a premium word value for scoring */
     private int premiumWordValue;
 
 
+    /**
+     * Constructor
+     * @param printLabel print label from board input file
+     */
     public ScrabbkleSquare(String printLabel) {
         this.printLabel = printLabel; //String from input file
         this.filePrintLabel = this.printLabel; // used to remember original print label
@@ -18,7 +35,11 @@ public class ScrabbkleSquare implements Square {
     }
 
 
-    // Convert file format to print label
+    /**
+     * Convert file format to print label
+     * @param printLabel label used to print
+     * @return int value of print label
+     */
     public int convertPremiumLetter(String printLabel) {
         String sub = String.valueOf(1);
         int value;
@@ -37,7 +58,12 @@ public class ScrabbkleSquare implements Square {
     }
 
 
-    // Convert file format to print label
+
+    /**
+     * Convert file format to print label
+     * @param printLabel label used to print
+     * @return int value of print label
+     */
     public int convertPremiumWord(String printLabel) {
         String sub = String.valueOf(1);
         int value;
@@ -56,7 +82,10 @@ public class ScrabbkleSquare implements Square {
     }
 
 
-    // Remove a tile from a square when move is invalid
+
+    /**
+     * Remove a tile from a square when move is invalid
+     */
     public void removeTile() {
         // Remove tile from the Square
         scrabbkleTile = null;

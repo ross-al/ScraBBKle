@@ -1,5 +1,10 @@
 package pij.main;
 
+/**
+ * ScrabbkleBoard implements Board. Used during game to place tiles on board.
+ * ScrabbkleBoard creates a 2D array of ScrabbkleSquares as the board
+ */
+
 import org.jetbrains.annotations.VisibleForTesting;
 
 import java.io.*;
@@ -7,11 +12,21 @@ import java.util.Scanner;
 
 
 public class ScrabbkleBoard implements Board {
+
+    /** the size of the board, must be between 12-26*/
     private int boardSize;
+
+    /** 2D array of ScrabbkleSquares */
     private ScrabbkleSquare[][] board;
+
+    /** position of centre square for given board size*/
     private int[] centreSquare;
 
-    // Ask for player board type choice
+
+    /**
+     * Ask for player board type choice
+     * @return player input as string
+     */
     public String getBoardChoice() {
         System.out.println("Would you like to _l_oad a board or use the _d_efault board?");
         System.out.println("Please enter your choice (l/d):");
@@ -20,7 +35,11 @@ public class ScrabbkleBoard implements Board {
         return input.nextLine().toLowerCase();
     }
 
-    // Calculate input file
+    /**
+     * Calculate input file
+     * @param boardChoice user input for default or loaded board
+     * @return input file for board
+     */
     public File getInputFile(String boardChoice) {
         // All board files should be in ./resources:
         String defaultPath = "." + File.separator + "resources" + File.separator;
@@ -41,12 +60,21 @@ public class ScrabbkleBoard implements Board {
         return inputFile;
     }
 
-    // Check inputFile exists in resources folder
+
+    /**
+     * Check inputFile exists in resources folder
+     * @param inputFile file to check
+     * @return boolen
+     */
     public boolean inputFileExists(File inputFile) {
         return (inputFile.exists());
     }
 
-    // Calculate the board size by reading first line in file
+
+    /**
+     * Calculate the board size by reading first line in file
+     * @param inputFile file from which to read size on first line
+     */
     public void calculateBoardSize(File inputFile) {
         try (BufferedReader reader = new BufferedReader(new FileReader(inputFile))) {
             String text = reader.readLine();
@@ -63,13 +91,21 @@ public class ScrabbkleBoard implements Board {
         }
     }
 
-    // Check if loaded board meets size requirements
+
+    /**
+     * Check if loaded board meets size requirements
+     * @return boolean
+     */
     public boolean isValidSize() {
         return boardSize >= 12 && boardSize <= 26;
     }
 
 
-    // Convert the txt file into a board
+
+    /**
+     * Convert the txt file into a board
+     * @param inputFile file from which to load board
+     */
     public void convertToBoard(File inputFile) {
         int rows = 1 + boardSize;
         int columns = rows;
@@ -115,7 +151,10 @@ public class ScrabbkleBoard implements Board {
         centreSquare = calculateCentreSquare(boardSize);
     }
 
-    // To print updated board after every move
+
+    /**
+     * To print updated board after every move
+     */
     public void printBoard() {
         System.out.println();
         System.out.println("Your current board: ");
@@ -129,7 +168,11 @@ public class ScrabbkleBoard implements Board {
     }
 
 
-    // Calculate the centre square for human player's first move
+    /**
+     * Calculate the centre square for human player's first move
+     * @param boardSize size of given board
+     * @return int[] of centre square row & col positions
+     */
     public int[] calculateCentreSquare(int boardSize) {
         int row;
         int col;

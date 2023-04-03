@@ -1,15 +1,32 @@
 package pij.main;
 
+/**
+ * A HumanPlayer is a Player than needs to provide move inputs
+ * HumanPlayer always moves first
+ */
+
 import org.jetbrains.annotations.VisibleForTesting;
 
 import java.util.*;
 
 public class HumanPlayer extends ScrabbklePlayer {
+    /** a tile rack for storing a player's tiles */
     private ArrayList<ScrabbkleTile> tileRack;
+
+    /** boolean to determine if player has had first move or not */
     private boolean firstMove = true;
+
+    /** a player's score */
     private int score;
+
+    /** a player's skip count, must not go below 0 */
     private int skipCount;
 
+    /** constructor method
+     * @param board the board for the game
+     * @param wordList the dictionary used to check if word is valid
+     * @param tileBag the bag from which players draw tiles
+     */
     public HumanPlayer(ScrabbkleBoard board, ScrabbkleWordList wordList, ScrabbkleTileBag tileBag) {
         super(board, wordList, tileBag);
         tileRack = super.getTileRack();
@@ -17,7 +34,8 @@ public class HumanPlayer extends ScrabbklePlayer {
         skipCount = 0;
     }
 
-    // Game engine for making a human player move
+
+    /** Game engine for making a human player move */
     public void playMove() {
         String moveWord;
         String movePosition;
@@ -214,11 +232,12 @@ public class HumanPlayer extends ScrabbklePlayer {
             }
         }
     }
+
     // END OF HUMAN PLAYER GAME ENGINE
 
     // Helper methods for human player game engine:
 
-    // Get player input for move
+    /** Get player input for move */
     public String getPlayerMove() {
         System.out.println("Please enter your move with letter sequence, position, and");
         System.out.println("direction (d for down, r for right) separated by commas.");
@@ -228,19 +247,32 @@ public class HumanPlayer extends ScrabbklePlayer {
         return input.nextLine();
     }
 
-    // Two commas skip the player's move
+    /**
+     * Two commas skip the player's move
+     * @param word the move input string provided by player
+     * @return boolean
+     */
     public boolean isSkip(String word) {
         return word.equals(",,");
     }
 
 
-    // Split player's move by "," to get individual instructions
+    /**
+     * Split player's move by "," to get individual instructions
+     * @param word the move input string provided by player
+     * @return each move element in String[]
+     */
     public String[] interpretPlayerMove(String word) {
         return word.split(",");
     }
 
 
-    // Check if the centre square appears in any of the squares for a given move
+    /**
+     * Check if the centre square appears in any of the squares for a given move
+     * @param moveSquares a list of all the square indeces for a given move
+     * @param centreSquare the centre square for this board size
+     * @return boolean
+     */
     public boolean containsCentreSquare(ArrayList<int[]> moveSquares, int[] centreSquare) {
         boolean containsCentreSquare = false;
         for (int[] square : moveSquares) {
@@ -253,7 +285,13 @@ public class HumanPlayer extends ScrabbklePlayer {
     }
 
 
-    // Pass params to super method to calculate score
+    /**
+     * Pass params to super method to calculate score
+     * @param movePosition col and row string input, e.g. h7
+     * @param moveDirection direction to read word, e.g. down or right
+     * @param tileCounter number of tiles used in a move
+     * @return word score for given move
+     */
     public int calculateWordScore(String movePosition, String moveDirection, int tileCounter) {
         // Convert the 'cr' format provided into int for index positions
         int col = getPositionColumn(movePosition);

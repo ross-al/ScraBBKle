@@ -1,14 +1,26 @@
 package pij.main;
-
+/**
+ * A ComputerPlayer is a Player that has automated moves
+ */
 
 import java.util.ArrayList;
 
 public class ComputerPlayer extends ScrabbklePlayer {
+    /** a tile rack for storing a player's tiles */
     private ArrayList<ScrabbkleTile> tileRack;
+
+    /** a player's score */
     private int score;
+
+    /** a player's skip count, must not go below 0 */
     private int skipCount;
 
-    //Change ScrabbkleWordList to just WordList if we remove WordList interface?
+    /** constructor method
+     *
+     * @param board the board for the game
+     * @param wordList the dictionary used to check if word is valid
+     * @param tileBag the bag from which players draw tiles
+     */
     public ComputerPlayer(ScrabbkleBoard board, ScrabbkleWordList wordList, ScrabbkleTileBag tileBag) {
         super(board, wordList, tileBag);
         tileRack = super.getTileRack();
@@ -22,6 +34,9 @@ public class ComputerPlayer extends ScrabbklePlayer {
     // Place tile if so and end move
     // Else skip move
 
+    /**
+     *  The game engine for computer moves
+     */
     public void playMove() {
 
         // Both booleans set to true for testing
@@ -121,15 +136,23 @@ public class ComputerPlayer extends ScrabbklePlayer {
 
     // Helper methods for computer engine
 
-    // Calculate movePosition (e.g. 'h7') based on given int row and int col
-
+    /**
+     * Calculate movePosition (e.g. 'h7') based on given int row and int col
+     * @param row index for row in board
+     * @param col index for column in board
+     * @return String concat value of col and row, e.g. h7
+     */
     public String convertRowAndColToString(int row, int col) {
         char c = getColumnLetter(col);
         String r = String.valueOf(Integer.valueOf(row));
         return c + r;
     }
 
-    // Convert the int provided into a letter for board index position
+    /**
+     * Convert the int provided into a letter for board index position
+     * @param col int value to be converted to char
+     * @return char value of int
+     */
     public char getColumnLetter(int col) {
         return (char) ('a' + col - 1);
     }
