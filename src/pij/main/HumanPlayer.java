@@ -1,7 +1,5 @@
 package pij.main;
 
-import org.jetbrains.annotations.VisibleForTesting;
-
 import java.util.*;
 
 /**
@@ -312,7 +310,6 @@ public class HumanPlayer extends ScrabbklePlayer {
 
     // duplicate placeTile method of same signature is redundant but needed for testing humanPlayer
     // as cannot call methods in super in jUnit tests in HumanPlayerTest
-    @VisibleForTesting
     public void placeTile(ScrabbkleTile tile, int row, int col) {
         super.placeTile(tile, row, col);
     }

@@ -1,6 +1,5 @@
 package pij.main;
 
-import org.jetbrains.annotations.VisibleForTesting;
 import java.io.*;
 import java.util.Scanner;
 
@@ -75,7 +74,11 @@ public class ScrabbkleBoard implements Board {
      * @return boolen
      */
     public boolean inputFileExists(File inputFile) {
-        return (inputFile.exists());
+        try {
+            return (inputFile.exists());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
@@ -218,7 +221,6 @@ public class ScrabbkleBoard implements Board {
     }
 
     // used for JUnit testing only
-    @VisibleForTesting
     public void setBoardSize(int size) {
         this.boardSize = size;
     }
