@@ -1,5 +1,7 @@
 package pij.main;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +21,7 @@ public class ScrabbklePlayer implements Player{
         tileRack = new ArrayList<>();
     }
 
+
     // Fill the player's rack after every move
     public void fillRack(){
         if (!tileBag.isEmpty()) {
@@ -29,7 +32,6 @@ public class ScrabbklePlayer implements Player{
     }
 
 
-    @Override
     // Get a random tile from the tile bag and add to tile rack
     public void addTileToRack() {
         ScrabbkleTile myTile = tileBag.getRandomTile();
@@ -53,6 +55,8 @@ public class ScrabbklePlayer implements Player{
         System.out.println();
     }
 
+
+
     // Convert the 'column' letter provided into int for index position
     public int getPositionColumn(String movePosition) {
         char position = movePosition.charAt(0);
@@ -65,6 +69,7 @@ public class ScrabbklePlayer implements Player{
         return col;
     }
 
+
     // Convert the row number provided from string to int for index position
     public int getPositionRow(String movePosition) {
         String str = movePosition.substring(1);
@@ -72,39 +77,253 @@ public class ScrabbklePlayer implements Player{
     }
 
 
-    // Change connectsToExistingWord on valid tiles to true
-    public void connectToWord(String movePosition, String moveDirection){
-        // Calculate the player's intended word on board to check if in dictionary
+
+    // Check if the player's rack has all the necessary tiles, including duplicates and wildCards
+    public boolean hasAllTilesAvailable(String moveWord, ArrayList<ScrabbkleTile> tileRack) {
+        Map<Character, Integer> charCounts = new HashMap<>();
+        int wildcardCount = 0;
+        // Count the number of times each character appears in the moveWord
+        for (char c : moveWord.toCharArray()) {
+            if (Character.isLowerCase(c)) {
+                wildcardCount++;
+            } else {
+                charCounts.put(c, charCounts.getOrDefault(c, 0) + 1);
+            }
+        }
+        // Check if there are enough tiles for each regular letter
+        for (char c : charCounts.keySet()) {
+            int requiredCount = charCounts.get(c);
+            int tileRackCount = 0;
+            // Count the number of tiles in the tile rack
+            for (ScrabbkleTile tile : tileRack) {
+                if (tile.getLetter() == c) {
+                    tileRackCount++;
+                }
+            }
+            if (tileRackCount < requiredCount) {
+                return false;
+            }
+        }
+        // Check if there are enough tiles for the wildcards
+        if (wildcardCount > 0) {
+            int tileRackCount = 0;
+            for (ScrabbkleTile tile : tileRack) {
+                if (tile.getLetter() == ' ') {
+                    tileRackCount++;
+                }
+            }
+            if (tileRackCount < wildcardCount) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+    // Get all the positions for the squares in the move
+    public ArrayList<int[]> calculateMoveSquares(String moveWord, String movePosition, String moveDirection) {
+        // Create ArrayList of int[] to store row and column positions for each tile in move
+        ArrayList<int[]> moveSquares = new ArrayList<int[]>();
+        // Get position for first tile
+        int col = getPositionColumn(movePosition);
+        int row = getPositionRow(movePosition);
+        // If move is down
+        if (moveDirection.equals("d")) {
+            for (int i = 0; i < moveWord.length(); i++) {
+                if(positionIsInBounds(row,col)) {
+                    if (getBoard().getBoard()[row][col].getTile() != null) {
+                        row++;
+                        i--;
+                    } else {
+                        int[] positions = {row, col};
+                        moveSquares.add(positions);
+                        row++;
+                    }
+                }
+            }
+        }
+        // If move is right
+        for (int i = 0; i < moveWord.length(); i++) {
+            if(positionIsInBounds(row, col)) {
+                if (getBoard().getBoard()[row][col].getTile() != null) {
+                    col++;
+                    i--;
+                } else {
+                    int[] positions = {row, col};
+                    moveSquares.add(positions);
+                    col++;
+                }
+            }
+
+        }
+        return moveSquares;
+    }
+
+
+    // Check if individual positions for squares are within bounds
+    // Used for setting nextTile
+    public boolean positionIsInBounds(int row, int col) {
+        int boardSize = getBoard().getBoardSize();
+        // Bounds of board are 1,1 due to row and column labels
+        return row >= 1 && row <= boardSize && col >= 1 && col <= boardSize;
+    }
+
+
+    // Check if all squares in move are free
+    public boolean moveSquaresOccupied(ArrayList<int[]> moveSquares){
+        boolean moveSquaresOccupied = false;
+        for(int[] square : moveSquares){
+            int row = square[0];
+            int col = square[1];
+            if(getBoard().getBoard()[row][col].getTile() != null){
+                moveSquaresOccupied = true;
+            }
+        }
+        return moveSquaresOccupied;
+    }
+
+    // Check if the given move is within the bounds of the board
+    public boolean squaresAreInBounds(ArrayList<int[]> moveSquares) {
+        int boardSize = getBoard().getBoardSize();
+        for (int[] moveSquare : moveSquares) {
+            int row = moveSquare[0];
+            int col = moveSquare[1];
+            // Bounds of board are 1,1 due to row and column labels
+            if (row < 1 || row > boardSize || col < 1 || col > boardSize) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+    // Place tiles for given word on board
+    public void playWord(String moveWord, String movePosition, @NotNull String moveDirection) {
         // Convert the 'cr' format provided into int for index positions
         int col = getPositionColumn(movePosition);
         int row = getPositionRow(movePosition);
-        // Create square to track position in linked list
-        ScrabbkleTile currentTile;
-        // If word direction is down
+        char c;
+        // If move direction is down, find the next free row position to place tile
         if (moveDirection.equals("d")) {
-            // Find the top-most tile in the word on the board
-            // First find if there is a tile on top of player's position and find top-most tile if so
-            // This will be the beginning of the word
-            currentTile = getBoard().getBoard()[row][col].getTile();
-            while (currentTile.getAboveTile() != null) {
-                currentTile = currentTile.getAboveTile();
+            for (int i = 0; i < moveWord.length(); i++) {
+                if(positionIsInBounds(row, col)) {
+                    if (getBoard().getBoard()[row][col].getTile() != null) {
+                        row++;
+                        i--;
+                    } else {
+                        c = moveWord.charAt(i);
+                        if (!tileRack.isEmpty()) {
+                            ScrabbkleTile tile = getTileFromRack(c);
+                            placeTile(tile, row, col);
+                            row++;
+                        }
+                    }
+                }
             }
-            while (currentTile != null) {
-                currentTile.setConnectsToExistingWord(true); // change flag to true
-                currentTile = currentTile.getBelowTile(); // move to the next tile to the tile below
-            }
-            // if word direction is right
         } else {
-            // Find the left-most tile in the word on the board
-            // First find if there is a tile to the left of player's position and find left-most tile if so
-            // This will be the beginning of the word
-            currentTile = getBoard().getBoard()[row][col].getTile();
-            while (currentTile.getLeftTile() != null) {
-                currentTile = currentTile.getLeftTile();
+            // // If move direction is right, find the next free col position to place tile
+            for (int i = 0; i < moveWord.length(); i++) {
+                if(positionIsInBounds(row,col)) {
+                    if (getBoard().getBoard()[row][col].getTile() != null) {
+                        col++;
+                        i--;
+                    } else {
+                        if (!tileRack.isEmpty()) {
+                            c = moveWord.charAt(i);
+                            ScrabbkleTile tile = getTileFromRack(c);
+                            placeTile(tile, row, col);
+                            col++;
+                        }
+                    }
+                }
             }
-            while (currentTile != null) {
-                currentTile.setConnectsToExistingWord(true); //change flag to true
-                currentTile = currentTile.getRightTile(); // move to the next tile to the right
+        }
+    }
+
+
+    // Find the tile in the rack and return it, including wildcards
+    public ScrabbkleTile getTileFromRack(char c) {
+        ScrabbkleTile tile = null;
+        if (!tileRack.isEmpty()) {
+            // If character is lower case, it's a wildcard
+            // get wildCard
+            if (Character.isLowerCase(c)) {
+                for (ScrabbkleTile tileInRack : tileRack) {
+                    if (tileInRack.isWildCard()) {
+                        tile = tileInRack;
+                        // Assign the wildcard letter to the tile
+                        tile.assignWildCard(c);
+                    }
+                }
+            } else {
+                for (ScrabbkleTile tileInRack : tileRack) {
+                    if (tileInRack.getLetter() == c) {
+                        tile = tileInRack;
+                    }
+                }
+            }
+        } return tile;
+    }
+
+
+    // Place tiles on a board, set neighbouring tiles for placed tile
+    // add premium letter/word values to tile
+    @Override
+    public void placeTile(ScrabbkleTile tile, int row, int col) {
+        // Place the tile on the board
+        board.getBoard()[row][col].setTile(tile);
+
+        // Set its neighbouring tiles for linked lists
+        setNeighbouringTiles(tile,row,col);
+
+        // Assign any premium values of the square to the tile
+        int premiumWordValue = board.getBoard()[row][col].getPremiumWordValue();
+        board.getBoard()[row][col].getTile().setPremiumWordValue(premiumWordValue);
+
+        int premiumLetterValue = board.getBoard()[row][col].getPremiumLetterValue();
+        board.getBoard()[row][col].getTile().setPremiumLetterValue(premiumLetterValue);
+    }
+
+    // Set aboveTile, belowTile, leftTile and rightTile
+    public void setNeighbouringTiles(ScrabbkleTile tile, int row, int col) {
+        ScrabbkleTile currentTile = tile;
+        ScrabbkleTile aboveTile;
+        ScrabbkleTile belowTile;
+        ScrabbkleTile leftTile;
+        ScrabbkleTile rightTile;
+        if (currentTile!= null){
+            // Check if there is a tile above
+            // Set to aboveTile if so
+            if(positionIsInBounds(row-1,col)){
+                if (getBoard().getBoard()[row - 1][col].getTile() != null) {
+                    aboveTile = getBoard().getBoard()[row - 1][col].getTile();
+                    currentTile.setAboveTile(aboveTile);
+                    // Then set the aboveTile's belowTile to currentTile
+                    aboveTile.setBelowTile(currentTile);
+                }
+            } // belowTile
+            if(positionIsInBounds(row+1,col)){
+                if (getBoard().getBoard()[row + 1][col].getTile() != null) {
+                    belowTile = getBoard().getBoard()[row + 1][col].getTile();
+                    currentTile.setBelowTile(belowTile);
+                    belowTile.setAboveTile(currentTile);
+                }
+            }
+            // leftTile
+            if(positionIsInBounds(row,col-1)){
+                if (getBoard().getBoard()[row][col - 1].getTile() != null) {
+                    leftTile = getBoard().getBoard()[row][col - 1].getTile();
+                    currentTile.setLeftTile(leftTile);
+                    leftTile.setRightTile(currentTile);
+                }
+            }
+            // rightTile
+            if(positionIsInBounds(row,col+1)){
+                if (getBoard().getBoard()[row][col + 1].getTile() != null) {
+                    rightTile = getBoard().getBoard()[row][col + 1].getTile();
+                    currentTile.setRightTile(rightTile);
+                    rightTile.setLeftTile(currentTile);
+                }
             }
         }
     }
@@ -151,194 +370,9 @@ public class ScrabbklePlayer implements Player{
     }
 
 
-    // Get all the positions for the squares in the move
-    public ArrayList<int[]> calculateMoveSquares(String moveWord, String movePosition, String moveDirection) {
-        // Create ArrayList of int[] to store row and column positions for each tile in move
-        ArrayList<int[]> moveSquares = new ArrayList<int[]>();
-        // Get position for first tile
-        int col = getPositionColumn(movePosition);
-        int row = getPositionRow(movePosition);
-        // If move is down
-        if (moveDirection.equals("d")) {
-            for (int i = 0; i < moveWord.length(); i++) {
-                if(positionIsInBounds(row,col)) {
-                    if (getBoard().getBoard()[row][col].getTile() != null) {
-                        row++;
-                        i--;
-                    } else {
-                        int[] positions = {row, col};
-                        moveSquares.add(positions);
-                        row++;
-                    }
-                }
-            }
-        }
-        // If move is right
-        for (int i = 0; i < moveWord.length(); i++) {
-            if(positionIsInBounds(row, col)) {
-                if (getBoard().getBoard()[row][col].getTile() != null) {
-                    col++;
-                    i--;
-                } else {
-                    int[] positions = {row, col};
-                    moveSquares.add(positions);
-                    col++;
-                }
-            }
-
-        }
-        return moveSquares;
-    }
-
-
-    // Place tiles for given word on board
-    public void playWord(String moveWord, String movePosition, String moveDirection) {
-        // Convert the 'cr' format provided into int for index positions
-        int col = getPositionColumn(movePosition);
-        int row = getPositionRow(movePosition);
-        char c;
-        // If move direction is down, find the next free row position to place tile
-        if (moveDirection.equals("d")) {
-            for (int i = 0; i < moveWord.length(); i++) {
-                if(positionIsInBounds(row, col)) {
-                    if (getBoard().getBoard()[row][col].getTile() != null) {
-                        row++;
-                        i--;
-                    } else {
-                        c = moveWord.charAt(i);
-                        if (!tileRack.isEmpty()) {
-                            ScrabbkleTile tile = getTileFromRack(c);
-                            placeTile(tile, row, col);
-                            row++;
-                        }
-                    }
-                }
-            }
-        } else {
-            // // If move direction is right, find the next free col position to place tile
-            for (int i = 0; i < moveWord.length(); i++) {
-                if(positionIsInBounds(row,col)) {
-                    if (getBoard().getBoard()[row][col].getTile() != null) {
-                        col++;
-                        i--;
-                    } else {
-                        if (!tileRack.isEmpty()) {
-                            c = moveWord.charAt(i);
-                            ScrabbkleTile tile = getTileFromRack(c);
-                            placeTile(tile, row, col);
-                            col++;
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-
-    // Check if any words are adjacent to player word and reject if so
-    public boolean formsMultipleWords(ArrayList<int[]> moveSquares){
-        boolean hasAdjacentWord = false;
-            for (int[] movePositions : moveSquares) {
-                int row = movePositions[0];
-                int col = movePositions[1];
-                if(board.getBoard()[row][col].getTile() != null){
-                    ScrabbkleTile currentTile = board.getBoard()[row][col].getTile();
-                    if(currentTile.getLeftTile() != null){
-                        if(currentTile.getLeftTile().getAboveTile() != null){
-                            if(currentTile.getAboveTile() != null){
-                                hasAdjacentWord = true;
-                            }
-                        }
-                    }if(currentTile.getRightTile() != null){
-                        if(currentTile.getRightTile().getAboveTile() != null){
-                            if(currentTile.getAboveTile() != null){
-                                hasAdjacentWord = true;
-                            }
-                        }
-                    }if(currentTile.getLeftTile() != null){
-                        if(currentTile.getLeftTile().getBelowTile() != null){
-                            if(currentTile.getBelowTile() != null){
-                                hasAdjacentWord = true;
-                            }
-                        }
-                    }
-                    if(currentTile.getRightTile() != null){
-                        if(currentTile.getRightTile().getBelowTile() != null){
-                            if(currentTile.getBelowTile() != null){
-                                hasAdjacentWord = true;
-                            }
-                        }
-                    }
-                }
-            }
-        return hasAdjacentWord;
-    }
-
-
-    // Check if the given move is within the bounds of the board
-    public boolean squaresAreInBounds(ArrayList<int[]> moveSquares) {
-        int boardSize = getBoard().getBoardSize();
-        for (int[] moveSquare : moveSquares) {
-            int row = moveSquare[0];
-            int col = moveSquare[1];
-            // Bounds of board are 1,1 due to row and column labels
-            if (row < 1 || row > boardSize || col < 1 || col > boardSize) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    // Check if individual positions for squares are within bounds
-    // Used for setting nextTile
-    public boolean positionIsInBounds(int row, int col) {
-        int boardSize = getBoard().getBoardSize();
-        // Bounds of board are 1,1 due to row and column labels
-        return row >= 1 && row <= boardSize && col >= 1 && col <= boardSize;
-    }
-
-    // Set aboveTile, belowTile, leftTile and rightTile
-    public void setNeighbouringTiles(ScrabbkleTile tile, int row, int col) {
-        ScrabbkleTile currentTile = tile;
-        ScrabbkleTile aboveTile;
-        ScrabbkleTile belowTile;
-        ScrabbkleTile leftTile;
-        ScrabbkleTile rightTile;
-        if (currentTile!= null){
-            // Check if there is a tile above
-            // Set to aboveTile if so
-            if(positionIsInBounds(row-1,col)){
-                if (getBoard().getBoard()[row - 1][col].getTile() != null) {
-                    aboveTile = getBoard().getBoard()[row - 1][col].getTile();
-                    currentTile.setAboveTile(aboveTile);
-                    // Then set the aboveTile's belowTile to currentTile
-                    aboveTile.setBelowTile(currentTile);
-                }
-            } // belowTile
-            if(positionIsInBounds(row+1,col)){
-                if (getBoard().getBoard()[row + 1][col].getTile() != null) {
-                    belowTile = getBoard().getBoard()[row + 1][col].getTile();
-                    currentTile.setBelowTile(belowTile);
-                    belowTile.setAboveTile(currentTile);
-                }
-            }
-            // leftTile
-            if(positionIsInBounds(row,col-1)){
-                if (getBoard().getBoard()[row][col - 1].getTile() != null) {
-                    leftTile = getBoard().getBoard()[row][col - 1].getTile();
-                    currentTile.setLeftTile(leftTile);
-                    leftTile.setRightTile(currentTile);
-                }
-            }
-             // rightTile
-            if(positionIsInBounds(row,col+1)){
-                if (getBoard().getBoard()[row][col + 1].getTile() != null) {
-                    rightTile = getBoard().getBoard()[row][col + 1].getTile();
-                    currentTile.setRightTile(rightTile);
-                    rightTile.setLeftTile(currentTile);
-                }
-            }
-        }
+    // Check if word is in provided dictionary
+    public boolean isValidWord(String word) {
+        return getWordList().isWord(word);
     }
 
 
@@ -364,6 +398,7 @@ public class ScrabbklePlayer implements Player{
         return intersectsWord;
     }
 
+
     // Helper method to calculate adjacent squares
     public List<ScrabbkleSquare> getAdjacentTiles(int row, int col) {
         List<ScrabbkleSquare> adjacentSquares = new ArrayList<>();
@@ -382,24 +417,46 @@ public class ScrabbklePlayer implements Player{
         return adjacentSquares;
     }
 
-    // Check if all squares in move are free
-    public boolean moveSquaresOccupied(ArrayList<int[]> moveSquares){
-        boolean moveSquaresOccupied = false;
-        for(int[] square : moveSquares){
-            int row = square[0];
-            int col = square[1];
-            if(getBoard().getBoard()[row][col].getTile() != null){
-                moveSquaresOccupied = true;
+
+    // Check if any words are adjacent to player word and reject if so
+    public boolean formsMultipleWords(ArrayList<int[]> moveSquares){
+        boolean hasAdjacentWord = false;
+        for (int[] movePositions : moveSquares) {
+            int row = movePositions[0];
+            int col = movePositions[1];
+            if(board.getBoard()[row][col].getTile() != null){
+                ScrabbkleTile currentTile = board.getBoard()[row][col].getTile();
+                if(currentTile.getLeftTile() != null){
+                    if(currentTile.getLeftTile().getAboveTile() != null){
+                        if(currentTile.getAboveTile() != null){
+                            hasAdjacentWord = true;
+                        }
+                    }
+                }if(currentTile.getRightTile() != null){
+                    if(currentTile.getRightTile().getAboveTile() != null){
+                        if(currentTile.getAboveTile() != null){
+                            hasAdjacentWord = true;
+                        }
+                    }
+                }if(currentTile.getLeftTile() != null){
+                    if(currentTile.getLeftTile().getBelowTile() != null){
+                        if(currentTile.getBelowTile() != null){
+                            hasAdjacentWord = true;
+                        }
+                    }
+                }
+                if(currentTile.getRightTile() != null){
+                    if(currentTile.getRightTile().getBelowTile() != null){
+                        if(currentTile.getBelowTile() != null){
+                            hasAdjacentWord = true;
+                        }
+                    }
+                }
             }
         }
-        return moveSquaresOccupied;
+        return hasAdjacentWord;
     }
 
-    // Check if word is in provided dictionary
-    public boolean isValidWord(String word) {
-        return getWordList().isWord(word);
-        //return true; //for testing
-    }
 
     // Remove tiles from board and reset pointers, row and col values
     public void removeTilesFromBoard(ArrayList<int[]> moveSquares){
@@ -453,99 +510,6 @@ public class ScrabbklePlayer implements Player{
         tile.resetRightTile();
     }
 
-    // Check if the player's rack has all the necessary tiles, including duplicates and wildCards
-    public boolean hasAllTilesAvailable(String moveWord, ArrayList<ScrabbkleTile> tileRack) {
-        Map<Character, Integer> charCounts = new HashMap<>();
-        int wildcardCount = 0;
-        // Count the number of times each character appears in the moveWord
-        for (char c : moveWord.toCharArray()) {
-            if (Character.isLowerCase(c)) {
-                wildcardCount++;
-            } else {
-                charCounts.put(c, charCounts.getOrDefault(c, 0) + 1);
-            }
-        }
-        // Check if there are enough tiles for each regular letter
-        for (char c : charCounts.keySet()) {
-            int requiredCount = charCounts.get(c);
-            int tileRackCount = 0;
-            // Count the number of tiles in the tile rack
-            for (ScrabbkleTile tile : tileRack) {
-                if (tile.getLetter() == c) {
-                    tileRackCount++;
-                }
-            }
-            if (tileRackCount < requiredCount) {
-                return false;
-            }
-        }
-        // Check if there are enough tiles for the wildcards
-        if (wildcardCount > 0) {
-            int tileRackCount = 0;
-            for (ScrabbkleTile tile : tileRack) {
-                if (tile.getLetter() == ' ') {
-                    tileRackCount++;
-                }
-            }
-            if (tileRackCount < wildcardCount) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    // Find the tile in the rack and return it, including wildcards
-    public ScrabbkleTile getTileFromRack(char c) {
-        ScrabbkleTile tile = null;
-        if (!tileRack.isEmpty()) {
-            // If character is lower case, it's a wildcard
-            // get wildCard
-            if (Character.isLowerCase(c)) {
-                for (ScrabbkleTile tileInRack : tileRack) {
-                    if (tileInRack.isWildCard()) {
-                        tile = tileInRack;
-                        // Assign the wildcard letter to the tile
-                        tile.assignWildCard(c);
-                    }
-                }
-            } else {
-                for (ScrabbkleTile tileInRack : tileRack) {
-                    if (tileInRack.getLetter() == c) {
-                        tile = tileInRack;
-                    }
-                }
-            }
-        } return tile;
-    }
-
-    // Place tiles on a board, set neighbouring tiles for placed tile
-    // add premium letter/word values to tile
-    @Override
-    public void placeTile(ScrabbkleTile tile, int row, int col) {
-        // Place the tile on the board
-        board.getBoard()[row][col].setTile(tile);
-
-        // Set its neighbouring tiles for linked lists
-        setNeighbouringTiles(tile,row,col);
-
-        // Assign any premium values of the square to the tile
-        int premiumWordValue = board.getBoard()[row][col].getPremiumWordValue();
-        board.getBoard()[row][col].getTile().setPremiumWordValue(premiumWordValue);
-
-        int premiumLetterValue = board.getBoard()[row][col].getPremiumLetterValue();
-        board.getBoard()[row][col].getTile().setPremiumLetterValue(premiumLetterValue);
-    }
-
-    // Remove tiles from rack
-    public void removeTilesFromRack(String moveWord) {
-        ScrabbkleTile tile = null;
-        char c;
-        for(int i = 0; i < moveWord.length(); i++){
-            c = moveWord.charAt(i);
-            tile = getTileFromRack(c);
-            tileRack.remove(tile);
-        }
-    }
 
     // calculate word score for valid word
     @Override
@@ -601,8 +565,6 @@ public class ScrabbklePlayer implements Player{
     }
 
 
-
-
     // Calculate tile scores for letter values and premium letter values
     // Reset premium values to 1 once used
     public int calculateTileScores(ScrabbkleTile tile){
@@ -613,6 +575,7 @@ public class ScrabbklePlayer implements Player{
         return tileValue * premiumLetterValue;
     }
 
+
     // Calculate premium word values
     // Reset premium values to 1 once used
     public int calculatePremiumWordScore(ScrabbkleTile tile){
@@ -620,6 +583,56 @@ public class ScrabbklePlayer implements Player{
         // Reset premiumWordValue to default
         tile.setPremiumWordValue(1);
         return premiumWordValue;
+    }
+
+
+    // Remove tiles from rack
+    public void removeTilesFromRack(String moveWord) {
+        ScrabbkleTile tile = null;
+        char c;
+        for(int i = 0; i < moveWord.length(); i++){
+            c = moveWord.charAt(i);
+            tile = getTileFromRack(c);
+            tileRack.remove(tile);
+        }
+    }
+
+
+    // Change connectsToExistingWord on valid tiles to true
+    public void connectToWord(String movePosition, String moveDirection){
+        // Calculate the player's intended word on board to check if in dictionary
+        // Convert the 'cr' format provided into int for index positions
+        int col = getPositionColumn(movePosition);
+        int row = getPositionRow(movePosition);
+        // Create square to track position in linked list
+        ScrabbkleTile currentTile;
+        // If word direction is down
+        if (moveDirection.equals("d")) {
+            // Find the top-most tile in the word on the board
+            // First find if there is a tile on top of player's position and find top-most tile if so
+            // This will be the beginning of the word
+            currentTile = getBoard().getBoard()[row][col].getTile();
+            while (currentTile.getAboveTile() != null) {
+                currentTile = currentTile.getAboveTile();
+            }
+            while (currentTile != null) {
+                currentTile.setConnectsToExistingWord(true); // change flag to true
+                currentTile = currentTile.getBelowTile(); // move to the next tile to the tile below
+            }
+            // if word direction is right
+        } else {
+            // Find the left-most tile in the word on the board
+            // First find if there is a tile to the left of player's position and find left-most tile if so
+            // This will be the beginning of the word
+            currentTile = getBoard().getBoard()[row][col].getTile();
+            while (currentTile.getLeftTile() != null) {
+                currentTile = currentTile.getLeftTile();
+            }
+            while (currentTile != null) {
+                currentTile.setConnectsToExistingWord(true); //change flag to true
+                currentTile = currentTile.getRightTile(); // move to the next tile to the right
+            }
+        }
     }
 
 
@@ -642,7 +655,6 @@ public class ScrabbklePlayer implements Player{
 
 
     // For any remaining tiles in the rack, deduct their values from the final score
-
     public int deductLeftOverTiles(ArrayList<ScrabbkleTile> tileRack) {
         int remainingTileValues = 0;
         if(!tileRack.isEmpty()) {

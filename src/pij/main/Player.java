@@ -1,16 +1,16 @@
 package pij.main;
 
-//NEED JAVADOC!
 public interface Player {
 
     /**
      *
      */
 
-    void addTileToRack();
+    void playWord(String moveWord, String movePosition, String moveDirection);
+
+    void placeTile(ScrabbkleTile tile, int col, int row);
 
     int calculateWordScore(String moveDirection, int row, int col, int tiles);
 
-    void placeTile(ScrabbkleTile tile, int col, int row);
 
 }
