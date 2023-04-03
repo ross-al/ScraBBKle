@@ -49,8 +49,7 @@ public class ScrabbkleBoard implements Board {
     public File getInputFile(String boardChoice) {
         // All board files should be in ./resources:
         String defaultPath = "." + File.separator + "resources" + File.separator;
-        // Default file name:
-        // default file is "./resources/defaultBoard.txt";
+        // Default file is: "./resources/defaultBoard.txt";
         String fileName = defaultPath + "defaultBoard.txt";
         File inputFile = new File(fileName);
         String loadBoard = "l";
@@ -205,6 +204,40 @@ public class ScrabbkleBoard implements Board {
         return centreSquare;
     }
 
+    /**
+     * Print the centre square
+     * @param centreSquare int[] containing int row and col positions
+     * @return String value of centreSquare, e.g. 'h7'
+     */
+    public String printCentreSquare(int [] centreSquare){
+        int row = centreSquare[0];
+        int col = centreSquare[1];
+        return convertRowAndColToString(row, col);
+    }
+
+
+    /**
+     * Calculate movePosition (e.g. 'h7') based on given int row and int col
+     * @param row index for row in board
+     * @param col index for column in board
+     * @return String concat value of col and row, e.g. h7
+     */
+    public String convertRowAndColToString(int row, int col) {
+        char c = getColumnLetter(col);
+        String r = String.valueOf(Integer.valueOf(row));
+        return c + r;
+    }
+
+    /**
+     * Convert the int provided into a letter for board index position
+     *
+     * @param col int value to be converted to char
+     * @return char value of int
+     */
+    public char getColumnLetter(int col) {
+        return (char) ('a' + col - 1);
+    }
+
 
     // Getters
 
@@ -224,6 +257,8 @@ public class ScrabbkleBoard implements Board {
     public void setBoardSize(int size) {
         this.boardSize = size;
     }
+
+
 }
 
 //test files (all validated):

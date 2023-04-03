@@ -38,8 +38,10 @@ public class ComputerPlayer extends ScrabbklePlayer {
     }
 
     // Dumb computer
-    // Iterate through every tile in rack (ignore wildcards for now)
-    // Then iterate through every square on board and check if the added tile makes a valid word
+    // Keep a record of every occupied square in an arrayList<int[]> of positions
+    // Then iterate through every occupied square on board
+    // Iterate through every combination of tiles in rack (ignore wildcards for now)
+    // and check if the added tiles make a valid word
     // Place tile if so and end move
     // Else skip move
 

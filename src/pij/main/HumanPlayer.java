@@ -133,7 +133,9 @@ public class HumanPlayer extends ScrabbklePlayer {
                         }
                         if (!tileOnCentreSquare) {
                             System.out.println("This is not a valid move");
-                            System.out.println("Error: Your first move must contain the centre square.");
+                            String startSquare = getBoard().printCentreSquare(centreSquare);
+                            System.out.println("Error: Your first move must contain the centre square (" +startSquare + ")");
+
                         }
                         System.out.println();
                     }
