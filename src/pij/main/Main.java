@@ -11,7 +11,7 @@ public class Main {
     public void launch() {
 
         System.out.println();
-        System.out.println("GAME ON!!!");
+        System.out.println("GAME ON!");
         System.out.println();
 
         // Create new empty board

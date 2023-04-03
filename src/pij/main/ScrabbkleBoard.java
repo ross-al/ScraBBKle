@@ -169,7 +169,7 @@ public class ScrabbkleBoard implements Board {
      * To print updated board after every move
      */
     public void printBoard() {
-        System.out.println();
+        //System.out.println();
         System.out.println("Your current board: ");
         System.out.println();
         for (ScrabbkleSquare[] scrabbkleSquares : board) {
