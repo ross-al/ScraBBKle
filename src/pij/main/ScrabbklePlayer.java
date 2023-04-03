@@ -53,6 +53,187 @@ public class ScrabbklePlayer implements Player{
         System.out.println();
     }
 
+    // Convert the 'column' letter provided into int for index position
+    public int getPositionColumn(String movePosition) {
+        char position = movePosition.charAt(0);
+        int col = 0;
+        for (char c = 'a'; c <= 'z'; c++) {
+            if (position == c) {
+                col = c - 'a' + 1;
+            }
+        }
+        return col;
+    }
+
+    // Convert the row number provided from string to int for index position
+    public int getPositionRow(String movePosition) {
+        String str = movePosition.substring(1);
+        return Integer.parseInt(str);
+    }
+
+
+    // Change connectsToExistingWord on valid tiles to true
+    public void connectToWord(String movePosition, String moveDirection){
+        // Calculate the player's intended word on board to check if in dictionary
+        // Convert the 'cr' format provided into int for index positions
+        int col = getPositionColumn(movePosition);
+        int row = getPositionRow(movePosition);
+        // Create square to track position in linked list
+        ScrabbkleTile currentTile;
+        // If word direction is down
+        if (moveDirection.equals("d")) {
+            // Find the top-most tile in the word on the board
+            // First find if there is a tile on top of player's position and find top-most tile if so
+            // This will be the beginning of the word
+            currentTile = getBoard().getBoard()[row][col].getTile();
+            while (currentTile.getAboveTile() != null) {
+                currentTile = currentTile.getAboveTile();
+            }
+            while (currentTile != null) {
+                currentTile.setConnectsToExistingWord(true); // change flag to true
+                currentTile = currentTile.getBelowTile(); // move to the next tile to the tile below
+            }
+            // if word direction is right
+        } else {
+            // Find the left-most tile in the word on the board
+            // First find if there is a tile to the left of player's position and find left-most tile if so
+            // This will be the beginning of the word
+            currentTile = getBoard().getBoard()[row][col].getTile();
+            while (currentTile.getLeftTile() != null) {
+                currentTile = currentTile.getLeftTile();
+            }
+            while (currentTile != null) {
+                currentTile.setConnectsToExistingWord(true); //change flag to true
+                currentTile = currentTile.getRightTile(); // move to the next tile to the right
+            }
+        }
+    }
+
+
+    // Calculate the player's intended word on board to check if in dictionary
+    public String calculateFinalWord(String movePosition, String moveDirection) {
+        // Convert the 'cr' format provided into int for index positions
+        int col = getPositionColumn(movePosition);
+        int row = getPositionRow(movePosition);
+        // Create empty string for final word
+        String finalWord = "";
+        char c;
+        // Create square to track position in linked list
+        ScrabbkleTile currentTile;
+        // If word direction is down
+        if (moveDirection.equals("d")) {
+            // Find the top-most tile in the word on the board
+            // First find if there is a tile on top of player's position and find top-most tile if so
+            // This will be the beginning of the word
+            currentTile = getBoard().getBoard()[row][col].getTile();
+            while (currentTile.getAboveTile() != null) {
+                currentTile = currentTile.getAboveTile();
+            }
+            while (currentTile != null) {
+                finalWord += currentTile.getLetter(); // append the letter to the finalWord string
+                currentTile = currentTile.getBelowTile(); // move to the next tile to the tile below
+            }
+            // if word direction is right
+        } else {
+            // Find the left-most tile in the word on the board
+            // First find if there is a tile to the left of player's position and find left-most tile if so
+            // This will be the beginning of the word
+            currentTile = getBoard().getBoard()[row][col].getTile();
+            while (currentTile.getLeftTile() != null) {
+                currentTile = currentTile.getLeftTile();
+            }
+            while (currentTile != null) {
+                finalWord += currentTile.getLetter(); // append the letter to the finalWord string
+                currentTile = currentTile.getRightTile(); // move to the next tile to the right
+            }
+        }
+        return finalWord;
+    }
+
+
+    // Get all the positions for the squares in the move
+    public ArrayList<int[]> calculateMoveSquares(String moveWord, String movePosition, String moveDirection) {
+        // Create ArrayList of int[] to store row and column positions for each tile in move
+        ArrayList<int[]> moveSquares = new ArrayList<int[]>();
+        // Get position for first tile
+        int col = getPositionColumn(movePosition);
+        int row = getPositionRow(movePosition);
+        // If move is down
+        if (moveDirection.equals("d")) {
+            for (int i = 0; i < moveWord.length(); i++) {
+                if(positionIsInBounds(row,col)) {
+                    if (getBoard().getBoard()[row][col].getTile() != null) {
+                        row++;
+                        i--;
+                    } else {
+                        int[] positions = {row, col};
+                        moveSquares.add(positions);
+                        row++;
+                    }
+                }
+            }
+        }
+        // If move is right
+        for (int i = 0; i < moveWord.length(); i++) {
+            if(positionIsInBounds(row, col)) {
+                if (getBoard().getBoard()[row][col].getTile() != null) {
+                    col++;
+                    i--;
+                } else {
+                    int[] positions = {row, col};
+                    moveSquares.add(positions);
+                    col++;
+                }
+            }
+
+        }
+        return moveSquares;
+    }
+
+
+    // Place tiles for given word on board
+    public void playWord(String moveWord, String movePosition, String moveDirection) {
+        // Convert the 'cr' format provided into int for index positions
+        int col = getPositionColumn(movePosition);
+        int row = getPositionRow(movePosition);
+        char c;
+        // If move direction is down, find the next free row position to place tile
+        if (moveDirection.equals("d")) {
+            for (int i = 0; i < moveWord.length(); i++) {
+                if(positionIsInBounds(row, col)) {
+                    if (getBoard().getBoard()[row][col].getTile() != null) {
+                        row++;
+                        i--;
+                    } else {
+                        c = moveWord.charAt(i);
+                        if (!tileRack.isEmpty()) {
+                            ScrabbkleTile tile = getTileFromRack(c);
+                            placeTile(tile, row, col);
+                            row++;
+                        }
+                    }
+                }
+            }
+        } else {
+            // // If move direction is right, find the next free col position to place tile
+            for (int i = 0; i < moveWord.length(); i++) {
+                if(positionIsInBounds(row,col)) {
+                    if (getBoard().getBoard()[row][col].getTile() != null) {
+                        col++;
+                        i--;
+                    } else {
+                        if (!tileRack.isEmpty()) {
+                            c = moveWord.charAt(i);
+                            ScrabbkleTile tile = getTileFromRack(c);
+                            placeTile(tile, row, col);
+                            col++;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 
     // Check if any words are adjacent to player word and reject if so
     public boolean formsMultipleWords(ArrayList<int[]> moveSquares){
@@ -161,12 +342,10 @@ public class ScrabbklePlayer implements Player{
     }
 
 
+
+
     // Change connectsToExistingWord on valid tiles to true
-    public void connectToWord(String movePosition, String moveDirection){
-        // Calculate the player's intended word on board to check if in dictionary
-        // Convert the 'cr' format provided into int for index positions
-        int col = getPositionColumn(movePosition);
-        int row = getPositionRow(movePosition);
+    public void connectToWord(int row, int col, String moveDirection){
         // Create square to track position in linked list
         ScrabbkleTile currentTile;
         // If word direction is down
@@ -457,23 +636,7 @@ public class ScrabbklePlayer implements Player{
         return wordScore;
     }
 
-    // Convert the 'column' letter provided into int for index position
-    public int getPositionColumn(String movePosition) {
-        char position = movePosition.charAt(0);
-        int col = 0;
-        for (char c = 'a'; c <= 'z'; c++) {
-            if (position == c) {
-                col = c - 'a' + 1;
-            }
-        }
-        return col;
-    }
 
-    // Convert the row number provided from string to int for index position
-    public int getPositionRow(String movePosition) {
-        String str = movePosition.substring(1);
-        return Integer.parseInt(str);
-    }
 
 
     // Calculate tile scores for letter values and premium letter values
@@ -493,6 +656,24 @@ public class ScrabbklePlayer implements Player{
         // Reset premiumWordValue to default
         tile.setPremiumWordValue(1);
         return premiumWordValue;
+    }
+
+
+    // Print move summary, scores and updated board
+    public void printMoveSummary(String moveWord, String movePosition, String moveDirection) {
+        System.out.print("The move is: " + moveWord);
+        System.out.print(" at position " + movePosition + ",");
+        System.out.print(" direction: " + getMoveDirectionPrintFormat(moveDirection));
+    }
+
+
+    // Get print format for move direction for move summary in console
+    public String getMoveDirectionPrintFormat(String moveDirection) {
+        if (moveDirection.equals("d")) {
+            return "down";
+        } else {
+            return "right";
+        }
     }
 
 
