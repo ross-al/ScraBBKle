@@ -22,10 +22,11 @@ public class ScrabbkleBoard implements Board {
 
     // Calculate input file
     public File getInputFile(String boardChoice) {
-        // Default file name:
+        // All board files should be in ./resources:
         String defaultPath = "." + File.separator + "resources" + File.separator;
+        // Default file name:
+        // default file is "./resources/defaultBoard.txt";
         String fileName =  defaultPath + "defaultBoard.txt";
-        //String fileName = "./resources/defaultBoard.txt";
         File inputFile = new File(fileName);
         String loadBoard = "l";
         // If player selects to load a board, get new file name

@@ -127,12 +127,6 @@ class ScrabbklePlayerTest {
         assertEquals(expected, actual);
     }
 
-   /* @Test
-    void shouldReturnWildCard(){
-        ScrabbkleTile wildCard = new ScrabbkleTile(' ');
-        tileRack.add(wildCard);
-
-    }*/
 
     @Test
     void shouldReturnTrueIfAllTilesAvailableInRack(){

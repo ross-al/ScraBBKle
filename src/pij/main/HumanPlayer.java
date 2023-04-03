@@ -100,6 +100,9 @@ public class HumanPlayer extends ScrabbklePlayer {
                             // Print summary of player's move
                             printMoveSummary(moveWord, movePosition, moveDirection);
 
+                            // Update tile connectsToExistingWord boolean flag
+                            connectToWord(movePosition, moveDirection);
+
                             // Set validMove to true to break loop
                             // Set firstMove to false ready for next move
                             validMove = true;
@@ -159,6 +162,9 @@ public class HumanPlayer extends ScrabbklePlayer {
 
                             // Print summary of player's move
                             printMoveSummary(moveWord, movePosition, moveDirection);
+
+                            // Update tile connectsToExistingWord boolean flag
+                            connectToWord(movePosition, moveDirection);
 
                             // Reduce skipCount
 
@@ -287,25 +293,29 @@ public class HumanPlayer extends ScrabbklePlayer {
         // If move is down
         if (moveDirection.equals("d")) {
             for (int i = 0; i < moveWord.length(); i++) {
-                if (getBoard().getBoard()[row][col].getTile() != null) {
-                    row++;
-                    i--;
-                } else {
-                    int[] positions = {row, col};
-                    moveSquares.add(positions);
-                    row++;
+                if(positionIsInBounds(row,col)) {
+                    if (getBoard().getBoard()[row][col].getTile() != null) {
+                        row++;
+                        i--;
+                    } else {
+                        int[] positions = {row, col};
+                        moveSquares.add(positions);
+                        row++;
+                    }
                 }
             }
         }
         // If move is right
         for (int i = 0; i < moveWord.length(); i++) {
-            if (getBoard().getBoard()[row][col].getTile() != null) {
-                col++;
-                i--;
-            } else {
-                int[] positions = {row, col};
-                moveSquares.add(positions);
-                col++;
+            if(positionIsInBounds(row, col)) {
+                if (getBoard().getBoard()[row][col].getTile() != null) {
+                    col++;
+                    i--;
+                } else {
+                    int[] positions = {row, col};
+                    moveSquares.add(positions);
+                    col++;
+                }
             }
 
         }
@@ -313,23 +323,7 @@ public class HumanPlayer extends ScrabbklePlayer {
     }
 
 
-    // Convert the 'column' letter provided into int for index position
-    public int getPositionColumn(String movePosition) {
-        char position = movePosition.charAt(0);
-        int col = 0;
-        for (char c = 'a'; c <= 'z'; c++) {
-            if (position == c) {
-                col = c - 'a' + 1;
-            }
-        }
-        return col;
-    }
 
-    // Convert the row number provided from string to int for index position
-    public int getPositionRow(String movePosition) {
-        String str = movePosition.substring(1);
-        return Integer.parseInt(str);
-    }
 
 
     // Place tiles for given word on board
@@ -341,30 +335,34 @@ public class HumanPlayer extends ScrabbklePlayer {
         // If move direction is down, find the next free row position to place tile
         if (moveDirection.equals("d")) {
             for (int i = 0; i < moveWord.length(); i++) {
-                if (getBoard().getBoard()[row][col].getTile() != null) {
-                    row++;
-                    i--;
-                } else {
-                    c = moveWord.charAt(i);
-                    if (!tileRack.isEmpty()) {
-                        ScrabbkleTile tile = getTileFromRack(c);
-                        placeTile(tile, row, col);
+                if(positionIsInBounds(row, col)) {
+                    if (getBoard().getBoard()[row][col].getTile() != null) {
                         row++;
+                        i--;
+                    } else {
+                        c = moveWord.charAt(i);
+                        if (!tileRack.isEmpty()) {
+                            ScrabbkleTile tile = getTileFromRack(c);
+                            placeTile(tile, row, col);
+                            row++;
+                        }
                     }
                 }
             }
         } else {
             // // If move direction is right, find the next free col position to place tile
             for (int i = 0; i < moveWord.length(); i++) {
-                if (getBoard().getBoard()[row][col].getTile() != null) {
-                    col++;
-                    i--;
-                } else {
-                    if (!tileRack.isEmpty()) {
-                        c = moveWord.charAt(i);
-                        ScrabbkleTile tile = getTileFromRack(c);
-                        placeTile(tile, row, col);
+                if(positionIsInBounds(row,col)) {
+                    if (getBoard().getBoard()[row][col].getTile() != null) {
                         col++;
+                        i--;
+                    } else {
+                        if (!tileRack.isEmpty()) {
+                            c = moveWord.charAt(i);
+                            ScrabbkleTile tile = getTileFromRack(c);
+                            placeTile(tile, row, col);
+                            col++;
+                        }
                     }
                 }
             }
@@ -385,13 +383,13 @@ public class HumanPlayer extends ScrabbklePlayer {
     }
 
 
-    // Get print format for move direction for move summary in console
-    public String getMoveDirectionPrintFormat(String moveDirection) {
-        if (moveDirection.equals("d")) {
-            return "down";
-        } else {
-            return "right";
-        }
+
+    // Pass params to super method to calculate score
+    public int calculateWordScore(String movePosition, String moveDirection, int tileCounter) {
+        // Convert the 'cr' format provided into int for index positions
+        int col = getPositionColumn(movePosition);
+        int row = getPositionRow(movePosition);
+        return super.calculateWordScore(moveDirection, row, col, tileCounter);
     }
 
 
@@ -402,13 +400,16 @@ public class HumanPlayer extends ScrabbklePlayer {
         System.out.print(" direction: " + getMoveDirectionPrintFormat(moveDirection));
     }
 
-    // Pass params to super method to calculate score
-    public int calculateWordScore(String movePosition, String moveDirection, int tileCounter) {
-        // Convert the 'cr' format provided into int for index positions
-        int col = getPositionColumn(movePosition);
-        int row = getPositionRow(movePosition);
-        return super.calculateWordScore(moveDirection, row, col, tileCounter);
+
+    // Get print format for move direction for move summary in console
+    public String getMoveDirectionPrintFormat(String moveDirection) {
+        if (moveDirection.equals("d")) {
+            return "down";
+        } else {
+            return "right";
+        }
     }
+
 
 
     // Getters

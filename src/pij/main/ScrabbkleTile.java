@@ -10,6 +10,7 @@ public class ScrabbkleTile implements Tile{
     private ScrabbkleTile aboveTile;
     private ScrabbkleTile belowTile;
     private boolean isWildCard;
+    private boolean connectsToExistingWord;
 
 
     public ScrabbkleTile(char letter){
@@ -171,6 +172,13 @@ public class ScrabbkleTile implements Tile{
         return letter + String.valueOf(value);
     }
 
+    public boolean isConnectsToExistingWord() {
+        return connectsToExistingWord;
+    }
+
+    public void setConnectsToExistingWord(boolean connectsToExistingWord) {
+        this.connectsToExistingWord = connectsToExistingWord;
+    }
 }
 
 //tile values:

@@ -160,7 +160,45 @@ public class ScrabbklePlayer implements Player{
         }
     }
 
-    // not working
+
+    // Change connectsToExistingWord on valid tiles to true
+    public void connectToWord(String movePosition, String moveDirection){
+        // Calculate the player's intended word on board to check if in dictionary
+        // Convert the 'cr' format provided into int for index positions
+        int col = getPositionColumn(movePosition);
+        int row = getPositionRow(movePosition);
+        // Create square to track position in linked list
+        ScrabbkleTile currentTile;
+        // If word direction is down
+        if (moveDirection.equals("d")) {
+            // Find the top-most tile in the word on the board
+            // First find if there is a tile on top of player's position and find top-most tile if so
+            // This will be the beginning of the word
+            currentTile = getBoard().getBoard()[row][col].getTile();
+            while (currentTile.getAboveTile() != null) {
+                currentTile = currentTile.getAboveTile();
+            }
+            while (currentTile != null) {
+                currentTile.setConnectsToExistingWord(true); // change flag to true
+                currentTile = currentTile.getBelowTile(); // move to the next tile to the tile below
+            }
+            // if word direction is right
+        } else {
+            // Find the left-most tile in the word on the board
+            // First find if there is a tile to the left of player's position and find left-most tile if so
+            // This will be the beginning of the word
+            currentTile = getBoard().getBoard()[row][col].getTile();
+            while (currentTile.getLeftTile() != null) {
+                currentTile = currentTile.getLeftTile();
+            }
+            while (currentTile != null) {
+                currentTile.setConnectsToExistingWord(true); //change flag to true
+                currentTile = currentTile.getRightTile(); // move to the next tile to the right
+            }
+        }
+    }
+
+
     // Check if word connects to at least one word on the board
     public boolean intersectsWord(ArrayList<int[]> moveSquares) {
         boolean intersectsWord = false;
@@ -170,8 +208,10 @@ public class ScrabbklePlayer implements Player{
             List<ScrabbkleSquare> adjacentSquares = getAdjacentTiles(row, col);
             for (Square adjacentSquare : adjacentSquares) {
                 if (adjacentSquare.getTile() != null) {
-                    intersectsWord = true;
-                    break;
+                    if(adjacentSquare.getTile().isConnectsToExistingWord()) {
+                        intersectsWord = true;
+                        break;
+                    }
                 }
             }
             if (intersectsWord) {
@@ -415,6 +455,24 @@ public class ScrabbklePlayer implements Player{
             wordScore = wordScore + 70;
         }
         return wordScore;
+    }
+
+    // Convert the 'column' letter provided into int for index position
+    public int getPositionColumn(String movePosition) {
+        char position = movePosition.charAt(0);
+        int col = 0;
+        for (char c = 'a'; c <= 'z'; c++) {
+            if (position == c) {
+                col = c - 'a' + 1;
+            }
+        }
+        return col;
+    }
+
+    // Convert the row number provided from string to int for index position
+    public int getPositionRow(String movePosition) {
+        String str = movePosition.substring(1);
+        return Integer.parseInt(str);
     }
 
 
