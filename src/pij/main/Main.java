@@ -27,16 +27,16 @@ public class Main {
         File inputFile = null;
 
         // Create boolean to check if valid file
-        boolean validFile= false;
-        while(!validFile){
+        boolean validFile = false;
+        while (!validFile) {
             // Get input file to load selected board type
             inputFile = board.getInputFile(boardChoice);
             // Check if file exists
             boolean fileExists = board.inputFileExists(inputFile);
-            if(fileExists){
+            if (fileExists) {
                 // Calculate board size
                 board.calculateBoardSize(inputFile);
-                if(board.isValidSize()){
+                if (board.isValidSize()) {
                     validFile = true;
                 } else {
                     System.out.println("This is not a valid file.");

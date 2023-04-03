@@ -1,16 +1,26 @@
 package pij.main;
 
+/**
+ * A TileBag holds the tiles for a game
+ */
+
 public interface TileBag {
 
     /**
-     *
-     * @return
+     * Shuffles the tiles in the bag so player can draw randomised tiles
      */
-
-    int getSize();
-    boolean isEmpty();
     void shuffleBag();
+
+    /**
+     * Gets a tile from the bag
+     *
+     * @return returns a tile
+     */
     Tile getRandomTile();
+
+    /**
+     * Fills the bag with tiles
+     */
     void fillTileBag();
 
 }

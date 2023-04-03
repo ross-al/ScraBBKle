@@ -1,18 +1,68 @@
 package pij.main;
 
+/**
+ * ScrabbkleTile is a tile
+ * Players place tiles in a free square on a board
+ */
+
 public class ScrabbkleTile implements Tile {
+
+    /**
+     * letter of a tile
+     */
     private char letter;
+
+    /**
+     * value of the letter score
+     */
     private int value;
+
+    /**
+     * value of premium word score, can be between -9 and 99, score defaults to 1
+     */
     private int premiumWordValue;
+
+    /**
+     * value of premium letter score, can be between -9 and 99, score defaults to 1
+     */
     private int premiumLetterValue;
+
+    /**
+     * pointer for tile's left tile, can be null
+     */
     private ScrabbkleTile leftTile;
+
+    /**
+     * pointer for tile's right tile, can be null
+     */
     private ScrabbkleTile rightTile;
+
+    /**
+     * pointer for tile's above tile, can be null
+     */
     private ScrabbkleTile aboveTile;
+
+    /**
+     * pointer for tile's below tile, can be null
+     */
     private ScrabbkleTile belowTile;
+
+    /**
+     * flag to show if card is wildCard, i.e. no letter
+     */
     private boolean isWildCard;
+
+    /**
+     * flag to show tile forms part of a valid  word on a board
+     */
     private boolean connectsToExistingWord;
 
 
+    /**
+     * Contructor
+     *
+     * @param letter letter used to determine tile value
+     */
     public ScrabbkleTile(char letter) {
         this.letter = letter;
         this.value = calculateTileValue(letter);
@@ -20,20 +70,33 @@ public class ScrabbkleTile implements Tile {
         premiumLetterValue = 1;
     }
 
-    // Assign a lower case letter to a tile to make it a wildcard
+
+    /**
+     * Assign a lower case letter to a tile to make it a wildcard
+     *
+     * @param c lowercase character used to assign wildcard letter
+     */
     public void assignWildCard(char c) {
         this.letter = Character.toLowerCase(c);
         isWildCard = true;
     }
 
-    // Remove a wildCard assignment when removing invalid moves from board
+
+    /**
+     * Remove a wildCard assignment when removing invalid moves from board
+     */
     public void removeWildCard() {
         letter = ' ';
         isWildCard = false;
     }
 
-    // Calculate tile value based on letter
-    // default is wildcard
+    /**
+     * Calculate tile value based on letter
+     * default is wildcard
+     *
+     * @param letter letter used to calculate tile value, can be null which is a wildCard
+     * @return int value of tile based on letter
+     */
     public int calculateTileValue(char letter) {
         int value;
         switch (letter) {

@@ -4,9 +4,21 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 
+/**
+ * ScrabbkleTileBag is a TileBag that contains 100 tiles for the game
+ */
+
+
 public class ScrabbkleTileBag implements TileBag {
+
+    /**
+     * a list of all the tiles in a bag
+     */
     private ArrayList<ScrabbkleTile> scrabbkleTileBag;
 
+    /**
+     * Constructor
+     */
     public ScrabbkleTileBag() {
         scrabbkleTileBag = new ArrayList<>();
     }
@@ -20,18 +32,28 @@ public class ScrabbkleTileBag implements TileBag {
         return (!(getSize() > 0));
     }
 
-    // Shuffles the tile bag
+    /**
+     * Shuffles the tile bag
+     */
     public void shuffleBag() {
         Collections.shuffle(scrabbkleTileBag);
     }
 
-    // Returns a random tile from a shuffled bag
+
+    /**
+     * Returns a random tile from a shuffled bag
+     *
+     * @return a tile from the bag
+     */
     @Override
     public ScrabbkleTile getRandomTile() {
         shuffleBag();
         return scrabbkleTileBag.remove(0); //need to consider IndexOutOfBounds
     }
 
+    /**
+     * Fill the tile bag with 100 tiles
+     */
     public void fillTileBag() {
         for (int i = 0; i < 12; i++) {
             ScrabbkleTile scrabbkleTile = new ScrabbkleTile('E');

@@ -1,30 +1,36 @@
 package pij.main;
 
+import org.jetbrains.annotations.VisibleForTesting;
+import java.io.*;
+import java.util.Scanner;
+
 /**
  * ScrabbkleBoard implements Board. Used during game to place tiles on board.
  * ScrabbkleBoard creates a 2D array of ScrabbkleSquares as the board
  */
 
-import org.jetbrains.annotations.VisibleForTesting;
-
-import java.io.*;
-import java.util.Scanner;
-
 
 public class ScrabbkleBoard implements Board {
 
-    /** the size of the board, must be between 12-26*/
+    /**
+     * the size of the board, must be between 12-26
+     */
     private int boardSize;
 
-    /** 2D array of ScrabbkleSquares */
+    /**
+     * 2D array of ScrabbkleSquares
+     */
     private ScrabbkleSquare[][] board;
 
-    /** position of centre square for given board size*/
+    /**
+     * position of centre square for given board size
+     */
     private int[] centreSquare;
 
 
     /**
      * Ask for player board type choice
+     *
      * @return player input as string
      */
     public String getBoardChoice() {
@@ -37,6 +43,7 @@ public class ScrabbkleBoard implements Board {
 
     /**
      * Calculate input file
+     *
      * @param boardChoice user input for default or loaded board
      * @return input file for board
      */
@@ -63,6 +70,7 @@ public class ScrabbkleBoard implements Board {
 
     /**
      * Check inputFile exists in resources folder
+     *
      * @param inputFile file to check
      * @return boolen
      */
@@ -73,6 +81,7 @@ public class ScrabbkleBoard implements Board {
 
     /**
      * Calculate the board size by reading first line in file
+     *
      * @param inputFile file from which to read size on first line
      */
     public void calculateBoardSize(File inputFile) {
@@ -94,6 +103,7 @@ public class ScrabbkleBoard implements Board {
 
     /**
      * Check if loaded board meets size requirements
+     *
      * @return boolean
      */
     public boolean isValidSize() {
@@ -101,9 +111,9 @@ public class ScrabbkleBoard implements Board {
     }
 
 
-
     /**
      * Convert the txt file into a board
+     *
      * @param inputFile file from which to load board
      */
     public void convertToBoard(File inputFile) {
@@ -170,6 +180,7 @@ public class ScrabbkleBoard implements Board {
 
     /**
      * Calculate the centre square for human player's first move
+     *
      * @param boardSize size of given board
      * @return int[] of centre square row & col positions
      */

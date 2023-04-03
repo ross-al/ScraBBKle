@@ -1,13 +1,13 @@
 package pij.main;
 
+import org.jetbrains.annotations.VisibleForTesting;
+
+import java.util.*;
+
 /**
  * A HumanPlayer is a Player than needs to provide move inputs
  * HumanPlayer always moves first
  */
-
-import org.jetbrains.annotations.VisibleForTesting;
-
-import java.util.*;
 
 public class HumanPlayer extends ScrabbklePlayer {
     /** a tile rack for storing a player's tiles */

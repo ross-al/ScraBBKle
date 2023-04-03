@@ -1,38 +1,48 @@
 package pij.main;
 
-/**
-  * A ScrabbklePlayer is a Player that can get input from user, valid move, and play move
-  *
-  */
-
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * A ScrabbklePlayer is a Player that can get input from user, valid move, and play move
+ */
+
+
 public class ScrabbklePlayer implements Player {
 
-    /** boolean flag indicates if it is player's turn*/
+    /**
+     * boolean flag indicates if it is player's turn
+     */
     protected boolean isPlayerTurn;
 
-    /** a tile rack for storing a player's tiles */
+    /**
+     * a tile rack for storing a player's tiles
+     */
     private ArrayList<ScrabbkleTile> tileRack;
 
-    /** board on which to place tiles */
+    /**
+     * board on which to place tiles
+     */
     private ScrabbkleBoard board;
 
-    /** dictionary of all allowed words */
+    /**
+     * dictionary of all allowed words
+     */
     private final ScrabbkleWordList wordList;
 
-    /** the bag from which players draw tiles */
+    /**
+     * the bag from which players draw tiles
+     */
     private ScrabbkleTileBag tileBag;
 
     /**
      * Constructor method
-     * @param board the board for the game
+     *
+     * @param board    the board for the game
      * @param wordList the dictionary used to check if word is valid
-     * @param tileBag the bag from which players draw tiles
+     * @param tileBag  the bag from which players draw tiles
      */
     public ScrabbklePlayer(ScrabbkleBoard board, ScrabbkleWordList wordList, ScrabbkleTileBag tileBag) {
         this.board = board;
@@ -82,9 +92,9 @@ public class ScrabbklePlayer implements Player {
     }
 
 
-
     /**
      * Convert the 'column' letter provided into int for index position
+     *
      * @param movePosition col and row string input, e.g. h7
      * @return col as int
      */
@@ -100,9 +110,9 @@ public class ScrabbklePlayer implements Player {
     }
 
 
-
     /**
      * Convert the row number provided from string to int for index position
+     *
      * @param movePosition col and row string input, e.g. h7
      * @return return row as int
      */
@@ -114,9 +124,10 @@ public class ScrabbklePlayer implements Player {
 
     /**
      * Check if the player's rack has all the necessary tiles, including duplicates and wildCards
+     *
      * @param moveWord player's input word
      * @param tileRack player's tile rack from which to draw tiles
-     * @return boolean
+     * @return boolean true if all tiles available in rack
      */
     public boolean hasAllTilesAvailable(String moveWord, ArrayList<ScrabbkleTile> tileRack) {
         Map<Character, Integer> charCounts = new HashMap<>();
@@ -161,8 +172,9 @@ public class ScrabbklePlayer implements Player {
 
     /**
      * Get all the positions for the squares in the move
-     * @param moveWord player's input word
-     * @param movePosition col and row string input, e.g. h7
+     *
+     * @param moveWord      player's input word
+     * @param movePosition  col and row string input, e.g. h7
      * @param moveDirection direction to read word, down or right
      * @return positions of all squares in move
      */
@@ -207,9 +219,10 @@ public class ScrabbklePlayer implements Player {
 
     /**
      * Check if individual positions for squares are within bounds
+     *
      * @param row square row int
      * @param col square col int
-     * @return boolean
+     * @return boolean true if in bounds
      */
     public boolean positionIsInBounds(int row, int col) {
         int boardSize = getBoard().getBoardSize();
@@ -220,8 +233,9 @@ public class ScrabbklePlayer implements Player {
 
     /**
      * Check if all squares in move are free
+     *
      * @param moveSquares col and row string input, e.g. h7
-     * @return boolean
+     * @return boolean true if free
      */
     public boolean moveSquaresOccupied(ArrayList<int[]> moveSquares) {
         boolean moveSquaresOccupied = false;
@@ -238,8 +252,9 @@ public class ScrabbklePlayer implements Player {
 
     /**
      * Check if the given move is within the bounds of the board
+     *
      * @param moveSquares col and row string input, e.g. h7
-     * @return boolean
+     * @return boolean true if in bounds
      */
     public boolean squaresAreInBounds(ArrayList<int[]> moveSquares) {
         int boardSize = getBoard().getBoardSize();
@@ -255,11 +270,11 @@ public class ScrabbklePlayer implements Player {
     }
 
 
-
     /**
      * Place tiles for given word on board
-     * @param moveWord player's input word
-     * @param movePosition col and row string input, e.g. h7
+     *
+     * @param moveWord      player's input word
+     * @param movePosition  col and row string input, e.g. h7
      * @param moveDirection direction to read word, down or right
      */
     public void playWord(String moveWord, String movePosition, String moveDirection) {
@@ -307,8 +322,9 @@ public class ScrabbklePlayer implements Player {
 
     /**
      * Find the tile in the rack and return it, including wildcards
+     *
      * @param c character to search for in tile rack
-     * @return matching tile
+     * @return tile from rack that matches character
      */
     public ScrabbkleTile getTileFromRack(char c) {
         ScrabbkleTile tile = null;
@@ -335,13 +351,13 @@ public class ScrabbklePlayer implements Player {
     }
 
 
-
     /**
      * Place tiles on a board, set neighbouring tiles for placed tile
      * add premium letter/word values to tile
+     *
      * @param tile tile to place on board
-     * @param row row position to place tile
-     * @param col col position to place tile
+     * @param row  row position to place tile
+     * @param col  col position to place tile
      */
     @Override
     public void placeTile(ScrabbkleTile tile, int row, int col) {
@@ -362,9 +378,10 @@ public class ScrabbklePlayer implements Player {
 
     /**
      * Set aboveTile, belowTile, leftTile and rightTile
+     *
      * @param currentTile tile placed during move
-     * @param row row position to place tile
-     * @param col col position to place tile
+     * @param row         row position to place tile
+     * @param col         col position to place tile
      */
     public void setNeighbouringTiles(ScrabbkleTile currentTile, int row, int col) {
         ScrabbkleTile aboveTile;
@@ -411,7 +428,8 @@ public class ScrabbklePlayer implements Player {
 
     /**
      * Calculate the player's intended word on board to check if in dictionary
-     * @param movePosition col and row string input, e.g. h7
+     *
+     * @param movePosition  col and row string input, e.g. h7
      * @param moveDirection direction to read word, down or right
      * @return String of player's intended word
      */
@@ -454,22 +472,22 @@ public class ScrabbklePlayer implements Player {
     }
 
 
-
     /**
      * Check if word is in provided dictionary
+     *
      * @param word word to check in dictionary
-     * @return boolean
+     * @return boolean true if valid word
      */
     public boolean isValidWord(String word) {
         return getWordList().isWord(word);
     }
 
 
-
     /**
      * Check if word connects to at least one word on the board
+     *
      * @param moveSquares positions of all squares in given move
-     * @return boolean
+     * @return boolean true if intersects existing word on board
      */
     public boolean intersectsWord(ArrayList<int[]> moveSquares) {
         boolean intersectsWord = false;
@@ -477,7 +495,7 @@ public class ScrabbklePlayer implements Player {
             int row = moveSquare[0];
             int col = moveSquare[1];
             List<ScrabbkleSquare> adjacentSquares = getAdjacentTiles(row, col);
-            for (Square adjacentSquare : adjacentSquares) {
+            for (ScrabbkleSquare adjacentSquare : adjacentSquares) {
                 if (adjacentSquare.getTile() != null) {
                     if (adjacentSquare.getTile().isConnectsToExistingWord()) {
                         intersectsWord = true;
@@ -495,6 +513,7 @@ public class ScrabbklePlayer implements Player {
 
     /**
      * Helper method to calculate adjacent squares
+     *
      * @param row square row position
      * @param col square col position
      * @return List of adjacent squares
@@ -519,8 +538,9 @@ public class ScrabbklePlayer implements Player {
 
     /**
      * Check if any words are adjacent to player word and reject if so
+     *
      * @param moveSquares positions of all squares in given move
-     * @return boolean
+     * @return boolean true if move creates more than one word
      */
     public boolean formsMultipleWords(ArrayList<int[]> moveSquares) {
         boolean hasAdjacentWord = false;
@@ -563,9 +583,9 @@ public class ScrabbklePlayer implements Player {
     }
 
 
-
     /**
      * Remove tiles from board and reset pointers, row and col values
+     *
      * @param moveSquares positions of all squares in given move
      */
     public void removeTilesFromBoard(ArrayList<int[]> moveSquares) {
@@ -588,9 +608,9 @@ public class ScrabbklePlayer implements Player {
     }
 
 
-
     /**
      * Reset neighbouring tile when move is invalid
+     *
      * @param tile tile on which to remove all neighbouring tiles
      */
     public void removeNeighbouringTiles(ScrabbkleTile tile) {
@@ -624,13 +644,13 @@ public class ScrabbklePlayer implements Player {
     }
 
 
-
     /**
      * calculate word score for valid word
+     *
      * @param moveDirection either "d" for down or "r" for right
-     * @param row row position of square
-     * @param col col position of square
-     * @param tileCounter number of tiles used in move
+     * @param row           row position of square
+     * @param col           col position of square
+     * @param tileCounter   number of tiles used in move
      * @return int word score for move
      */
     @Override
@@ -689,6 +709,7 @@ public class ScrabbklePlayer implements Player {
     /**
      * Calculate tile scores for letter values and premium letter values
      * Reset premium values to 1 once used
+     *
      * @param tile tile to get values from
      * @return int score of tile
      */
@@ -701,11 +722,10 @@ public class ScrabbklePlayer implements Player {
     }
 
 
-
-
     /**
      * Calculate premium word values
      * Reset premium values to 1 once used
+     *
      * @param tile tile to get values from
      * @return int premium word value from tile
      */
@@ -717,9 +737,9 @@ public class ScrabbklePlayer implements Player {
     }
 
 
-
     /**
      * Remove tiles from rack
+     *
      * @param moveWord player's input word
      */
     public void removeTilesFromRack(String moveWord) {
@@ -733,10 +753,10 @@ public class ScrabbklePlayer implements Player {
     }
 
 
-
     /**
      * Change connectsToExistingWord on valid tiles to true
-     * @param movePosition col and row string input, e.g. h7
+     *
+     * @param movePosition  col and row string input, e.g. h7
      * @param moveDirection direction to read word, down or right
      */
     public void connectToWord(String movePosition, String moveDirection) {
@@ -776,11 +796,11 @@ public class ScrabbklePlayer implements Player {
     }
 
 
-
     /**
      * Print move summary, scores and updated board
-     * @param moveWord player's input word
-     * @param movePosition col and row string input, e.g. h7
+     *
+     * @param moveWord      player's input word
+     * @param movePosition  col and row string input, e.g. h7
      * @param moveDirection direction to read word, down or right
      */
     public void printMoveSummary(String moveWord, String movePosition, String moveDirection) {
@@ -790,9 +810,9 @@ public class ScrabbklePlayer implements Player {
     }
 
 
-
     /**
      * Get print format for move direction for move summary in console
+     *
      * @param moveDirection direction to read word, down or right
      * @return String print format for direction
      */
@@ -805,9 +825,9 @@ public class ScrabbklePlayer implements Player {
     }
 
 
-
     /**
      * For any remaining tiles in the rack, deduct their values from the final score
+     *
      * @param tileRack player's tile rack
      * @return int of points to deduct from final score
      */

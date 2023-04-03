@@ -1,20 +1,24 @@
 package pij.main;
+
 import java.io.File;
 
-//NEED JAVADOC!
+/**
+ * A Board is the structure for holding player pieces, such as tiles
+ */
 
 public interface Board {
 
-    String getBoardChoice();
-    File getInputFile(String boardChoice);
-    boolean inputFileExists(File inputFile);
-    void calculateBoardSize(File inputFile);
-    boolean isValidSize();
+    /**
+     * Converts a given input file into the desired board type
+     *
+     * @param inputFile the input file from which to load board layout
+     */
     void convertToBoard(File inputFile);
+
+    /**
+     * Print the board on the player's screen
+     */
     void printBoard();
-    ScrabbkleSquare[][] getBoard();
-    int[] calculateCentreSquare(int boardSize);
-    int getBoardSize();
-    int[] getCentreSquare();
+
 
 }
