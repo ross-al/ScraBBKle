@@ -23,7 +23,9 @@ public class ScrabbkleBoard implements Board {
     // Calculate input file
     public File getInputFile(String boardChoice) {
         // Default file name:
-        String fileName = "./resources/defaultBoard.txt";
+        String defaultPath = "." + File.separator + "resources" + File.separator;
+        String fileName =  defaultPath + "defaultBoard.txt";
+        //String fileName = "./resources/defaultBoard.txt";
         File inputFile = new File(fileName);
         String loadBoard = "l";
         // If player selects to load a board, get new file name
@@ -31,7 +33,8 @@ public class ScrabbkleBoard implements Board {
             System.out.println();
             System.out.println("Please enter the file name of the board: ");
             Scanner input = new Scanner(System.in);
-            String loadFileName = input.nextLine();
+            String userFileName = input.nextLine();
+            String loadFileName = defaultPath + userFileName;
             inputFile = new File(loadFileName);
         }
         return inputFile;

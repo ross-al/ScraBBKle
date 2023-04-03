@@ -48,8 +48,4 @@ public class ScrabbkleWordList implements WordList{
     }
 
 
-    public List<String> getWordList(){
-        return wordList;
-    }
-
 }

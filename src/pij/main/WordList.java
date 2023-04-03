@@ -11,5 +11,5 @@ public interface WordList {
 
     public List<String> convertToList();
     public boolean isWord(String word);
-    public List<String> getWordList();
+
 }
