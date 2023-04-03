@@ -37,13 +37,7 @@ public class ComputerPlayer extends ScrabbklePlayer {
         skipCount = 0;
     }
 
-    // Dumb computer
-    // Keep a record of every occupied square in an arrayList<int[]> of positions
-    // Then iterate through every occupied square on board
-    // Iterate through every combination of tiles in rack (ignore wildcards for now)
-    // and check if the added tiles make a valid word
-    // Place tile if so and end move
-    // Else skip move
+
 
     /**
      * The game engine for computer moves
@@ -51,7 +45,7 @@ public class ComputerPlayer extends ScrabbklePlayer {
     public void playMove() {
 
         // Both booleans set to true for testing
-        // Computer player will always skip
+        // Computer player will always skip during testing
 
         boolean isSkip = true;
         boolean validMove = true;
@@ -62,8 +56,15 @@ public class ComputerPlayer extends ScrabbklePlayer {
         ArrayList<int[]> moveSquares;
 
         // TOO SLOW!
-        // Need faster logic
-        // Use a trie
+        // Need faster logic:
+
+        // Dumb computer
+        // Keep a record of every occupied square in an arrayList<int[]> of positions
+        // Then iterate through every occupied square on board
+        // Iterate through every combination of tiles in rack (ignore wildcards for now)
+        // and check if the added tiles make a valid word
+        // Place tile if so and end move
+        // Else skip move
 
         for (ScrabbkleTile tile : tileRack) {
             while (!validMove) {

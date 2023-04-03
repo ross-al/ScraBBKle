@@ -10,7 +10,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ScrabbklePlayerTest {
     ScrabbkleBoard board;
-    ScrabbkleTile tileA, tileB, tileC, tileD, tileE;
     ScrabbklePlayer player;
     ArrayList<ScrabbkleTile> tileRack;
 

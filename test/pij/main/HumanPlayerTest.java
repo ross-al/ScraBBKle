@@ -322,8 +322,6 @@ class HumanPlayerTest {
 
     @Test
     void shouldReturnScoreOf3(){
-
-
         int actual = humanPlayer.getPlayerScore();
     }
 }

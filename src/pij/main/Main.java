@@ -52,7 +52,6 @@ public class Main {
             }
         }
 
-
         // Load input file into board
         board.convertToBoard(inputFile);
 
