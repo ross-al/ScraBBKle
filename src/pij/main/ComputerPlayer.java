@@ -184,9 +184,7 @@ public class ComputerPlayer extends ScrabbklePlayer {
 
             // Tell humanPlayer that computer player skipped move
             System.out.println();
-            System.out.println();
             System.out.println("The computer player skipped their turn");
-            System.out.println();
             // Increase skip count by 1
             skipCount++;
         }
