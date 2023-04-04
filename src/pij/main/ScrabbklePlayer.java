@@ -614,6 +614,10 @@ public class ScrabbklePlayer implements Player {
                 // Reset its premium values
                 tile.setPremiumLetterValue(1);
                 tile.setPremiumWordValue(1);
+                // Remove wildCard value
+                if(tile.isWildCard()){
+                    tile.removeWildCard();
+                }
                 // Remove tile from board
                 removeNeighbouringTiles(tile);
                 getBoard().getBoard()[row][col].removeTile();
@@ -824,6 +828,7 @@ public class ScrabbklePlayer implements Player {
      * @param moveDirection direction to read word, down or right
      */
     public void printMoveSummary(String moveWord, String movePosition, String moveDirection) {
+        System.out.println();
         System.out.print("The move is: " + moveWord);
         System.out.print(" at position " + movePosition + ",");
         System.out.print(" direction: " + getMoveDirectionPrintFormat(moveDirection));
