@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.util.List;
 
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -29,8 +30,17 @@ class ComputerPlayerTest {
     void shouldReturnRowAndColAsString(){
         int row = 7;
         int col = 8;
-        String actual = player.convertRowAndColToString(row,col);
+        String actual = board.convertRowAndColToString(row,col);
         String expected = "h7";
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void shouldReturnAllLetterCombinations(){
+        String word = "abc";
+        List<String> allCombinations = player.generateLetterCombinations(word);
+        String actual = allCombinations.toString();
+        String expected = "[a, ab, abc, ac, b, bc, c]";
         assertEquals(expected, actual);
     }
 

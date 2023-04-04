@@ -20,14 +20,16 @@ public class HumanPlayer extends ScrabbklePlayer {
     /** a player's skip count, must not go below 0 */
     private int skipCount;
 
-    /** constructor method
+    /**
+     * constructor method
      * @param board the board for the game
      * @param wordList the dictionary used to check if word is valid
      * @param tileBag the bag from which players draw tiles
      */
     public HumanPlayer(ScrabbkleBoard board, ScrabbkleWordList wordList, ScrabbkleTileBag tileBag) {
         super(board, wordList, tileBag);
-        tileRack = super.getTileRack();
+        //tileRack = super.getTileRack();
+        tileRack = new ArrayList<ScrabbkleTile>();
         score = 0;
         skipCount = 0;
     }
@@ -93,7 +95,7 @@ public class HumanPlayer extends ScrabbklePlayer {
                         // Place tiles on board
                         // Set int row and col for each placed tile
                         // Set neighbouring tiles (above, below, right, left) for each placed tile
-                        playWord(moveWord, movePosition, moveDirection);
+                        playWord(moveWord, movePosition, moveDirection, tileRack);
                         // Find the final word by iterating over linked tiles on board
                         finalWord = calculateFinalWord(movePosition, moveDirection);
 
@@ -103,7 +105,7 @@ public class HumanPlayer extends ScrabbklePlayer {
                         if (isValidWord) {
                             // If a valid move then:
                             // Remove tiles from rack
-                            removeTilesFromRack(moveWord);
+                            removeTilesFromRack(moveWord, tileRack);
 
                             // Count how many tiles in move
                             tileCounter = moveWord.length();
@@ -149,7 +151,7 @@ public class HumanPlayer extends ScrabbklePlayer {
                         // Place tiles on board
                         // Set int row and col for each placed tile
                         // Set neighbouring tiles (above, below, right, left) for each placed tile
-                        playWord(moveWord, movePosition, moveDirection);
+                        playWord(moveWord, movePosition, moveDirection, tileRack);
 
                         // Find the final word by iterating over linked tiles on board
                         finalWord = calculateFinalWord(movePosition, moveDirection);
@@ -168,7 +170,7 @@ public class HumanPlayer extends ScrabbklePlayer {
                         if (isValidWord && intersectsExistingWord && !formsMultipleWords) {
                             // If a valid move then:
                             // Remove tiles from rack
-                            removeTilesFromRack(moveWord);
+                            removeTilesFromRack(moveWord, tileRack);
 
                             // Count how many tiles in move
                             tileCounter = moveWord.length();
@@ -269,7 +271,7 @@ public class HumanPlayer extends ScrabbklePlayer {
 
     /**
      * Check if the centre square appears in any of the squares for a given move
-     * @param moveSquares a list of all the square indeces for a given move
+     * @param moveSquares a list of all the square indexes for a given move
      * @param centreSquare the centre square for this board size
      * @return boolean
      */
@@ -309,6 +311,9 @@ public class HumanPlayer extends ScrabbklePlayer {
         return score;
     }
 
+    public ArrayList<ScrabbkleTile> getTileRack(){
+        return tileRack;
+    }
 
     // duplicate placeTile method of same signature is redundant but needed for testing humanPlayer
     // as cannot call methods in super in jUnit tests in HumanPlayerTest

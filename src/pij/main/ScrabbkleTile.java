@@ -50,7 +50,7 @@ public class ScrabbkleTile implements Tile {
     /**
      * flag to show if card is wildCard, i.e. no letter
      */
-    private boolean isWildCard;
+    private boolean isWildCard = false;
 
     /**
      * flag to show tile forms part of a valid  word on a board

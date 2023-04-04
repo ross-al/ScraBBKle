@@ -1,5 +1,7 @@
 package pij.main;
 
+import java.util.ArrayList;
+
 /**
  * A Player can make moves in a game and score points to win
  */
@@ -13,7 +15,7 @@ public interface Player {
      * @param movePosition  position on which to place the first tile of the word
      * @param moveDirection the direction in which to read the word, i.e. down or right
      */
-    void playWord(String moveWord, String movePosition, String moveDirection);
+    void playWord(String moveWord, String movePosition, String moveDirection, ArrayList<ScrabbkleTile> tileRack);
 
     /**
      * Places a tile on the board

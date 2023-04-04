@@ -1,6 +1,7 @@
 package pij.main;
 
 import java.io.File;
+import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
@@ -74,9 +75,10 @@ public class Main {
         // Start game
         boolean gameOver = false;
 
+
         // Fill player tile racks to enter gameplay loop
-        humanPlayer.fillRack();
-        computerPlayer.fillRack();
+        humanPlayer.fillRack(humanPlayer.getTileRack());
+        computerPlayer.fillRack(computerPlayer.getTileRack());
 
         // Print empty line for console readability
         System.out.println();
@@ -99,8 +101,8 @@ public class Main {
                 board.printBoard();
 
                 // Refill player tile rack and print
-                humanPlayer.fillRack();
-                humanPlayer.printRack();
+                humanPlayer.fillRack(humanPlayer.getTileRack());
+                humanPlayer.printRack(humanPlayer.getTileRack());
 
                 // Get human player move input and make move
                 humanPlayer.playMove();
@@ -123,12 +125,9 @@ public class Main {
 
             // Start computer player turn
             while (computerPlayer.isPlayerTurn) {
-                computerPlayer.fillRack();
+                computerPlayer.fillRack(computerPlayer.getTileRack());
                 computerPlayer.playMove();
 
-                // System.out.print("The move is: " + computerPlayer.getMoveWord());
-                // System.out.print(" at position " + computerPlayer.getMovePosition() + ",");
-                // System.out.print(" direction: "+computerPlayer.getMoveDirection());
 
                 // Get updated scores
                 humanPlayerScore = humanPlayer.getPlayerScore();
