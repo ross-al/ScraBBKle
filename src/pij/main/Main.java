@@ -186,7 +186,7 @@ public class Main {
     }
 }
 
-//   Thanks for playing! Or trying to... sorry for the bugs! :)
+//   Thanks for playing! Or trying to... sorry about the bugs! :)
 //    ________  ________  ________  ________  ________  ________  ___  __    ___       _______
 //   |\   ____\|\   ____\|\   __  \|\   __  \|\   __  \|\   __  \|\  \|\  \ |\  \     |\  ___ \
 //   \ \  \___|\ \  \___|\ \  \|\  \ \  \|\  \ \  \|\ /\ \  \|\ /\ \  \/  /|\ \  \    \ \   __/|
