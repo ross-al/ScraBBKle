@@ -32,6 +32,7 @@ public class Main {
 
         // Create boolean to check if valid file
         boolean validFile = false;
+        // Create loop to get valid file
         while (!validFile) {
             // Get input file to load selected board type
             inputFile = board.getInputFile(boardChoice);

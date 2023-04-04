@@ -777,7 +777,9 @@ public class ScrabbklePlayer implements Player {
             }
             while (currentTile != null) {
                 currentTile.setConnectsToExistingWord(true); // change flag to true
+                board.setOccupiedSquare(row, col); //add this square to list of occupied squares,used for computer moves
                 currentTile = currentTile.getBelowTile(); // move to the next tile to the tile below
+
             }
             // if word direction is right
         } else {
@@ -790,6 +792,7 @@ public class ScrabbklePlayer implements Player {
             }
             while (currentTile != null) {
                 currentTile.setConnectsToExistingWord(true); //change flag to true
+                board.setOccupiedSquare(row, col); //add this square to list of occupied squares,
                 currentTile = currentTile.getRightTile(); // move to the next tile to the right
             }
         }

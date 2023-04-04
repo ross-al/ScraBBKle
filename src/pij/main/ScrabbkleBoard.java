@@ -1,6 +1,7 @@
 package pij.main;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -25,6 +26,21 @@ public class ScrabbkleBoard implements Board {
      * position of centre square for given board size
      */
     private int[] centreSquare;
+
+
+    /**
+     * positions of all the occupied squares on a board
+     * used for computer player moves
+     */
+    private ArrayList<int[]> occupiedSquares;
+
+
+    /**
+     * Contructor
+     */
+    public ScrabbkleBoard() {
+        occupiedSquares = new ArrayList<int[]>();
+    }
 
 
     /**
@@ -70,14 +86,10 @@ public class ScrabbkleBoard implements Board {
      * Check inputFile exists in resources folder
      *
      * @param inputFile file to check
-     * @return boolen
+     * @return boolean true if file exists
      */
     public boolean inputFileExists(File inputFile) {
-        try {
-            return (inputFile.exists());
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        return (inputFile.exists());
     }
 
 
@@ -85,6 +97,7 @@ public class ScrabbkleBoard implements Board {
      * Calculate the board size by reading first line in file
      *
      * @param inputFile file from which to read size on first line
+     *                  throws exception if file not found
      */
     public void calculateBoardSize(File inputFile) {
         try (BufferedReader reader = new BufferedReader(new FileReader(inputFile))) {
@@ -168,7 +181,6 @@ public class ScrabbkleBoard implements Board {
      * To print updated board after every move
      */
     public void printBoard() {
-        //System.out.println();
         System.out.println("Your current board: ");
         System.out.println();
         for (ScrabbkleSquare[] scrabbkleSquares : board) {
@@ -206,10 +218,11 @@ public class ScrabbkleBoard implements Board {
 
     /**
      * Print the centre square
+     *
      * @param centreSquare int[] containing int row and col positions
      * @return String value of centreSquare, e.g. 'h7'
      */
-    public String printCentreSquare(int [] centreSquare){
+    public String printCentreSquare(int[] centreSquare) {
         int row = centreSquare[0];
         int col = centreSquare[1];
         return convertRowAndColToString(row, col);
@@ -218,6 +231,7 @@ public class ScrabbkleBoard implements Board {
 
     /**
      * Calculate movePosition (e.g. 'h7') based on given int row and int col
+     *
      * @param row index for row in board
      * @param col index for column in board
      * @return String concat value of col and row, e.g. h7
@@ -236,6 +250,12 @@ public class ScrabbkleBoard implements Board {
      */
     public char getColumnLetter(int col) {
         return (char) ('a' + col - 1);
+    }
+
+
+    public void setOccupiedSquare(int row, int col) {
+        int[] positions = {row, col};
+        occupiedSquares.add(positions);
     }
 
 
@@ -259,6 +279,9 @@ public class ScrabbkleBoard implements Board {
     }
 
 
+    public ArrayList<int[]> getOccupiedSquares() {
+        return occupiedSquares;
+    }
 }
 
 //test files (all validated):

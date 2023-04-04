@@ -66,6 +66,23 @@ public class ComputerPlayer extends ScrabbklePlayer {
         // Place tile if so and end move
         // Else skip move
 
+        ArrayList<int[]> occupiedSquares = getBoard().getOccupiedSquares();
+        for( int[] square : occupiedSquares){
+            int row = square[0];
+            int col = square[1];
+            if(getBoard().getBoard()[row][col].getTile().getRightTile() != null){
+                //going right, place tile
+                //place all combinations of tile rack here
+                //if makes a valid word, play it and break loop
+                // setvalid word etc
+                //if doesn't, then remove tiles from board and repeat for next combination
+                // then check all going down
+            }
+        }
+
+
+
+
         for (ScrabbkleTile tile : tileRack) {
             while (!validMove) {
                 for (int i = 1; i < getBoard().getBoardSize(); i++) {
@@ -77,7 +94,7 @@ public class ComputerPlayer extends ScrabbklePlayer {
                         String moveWord = String.valueOf(tile.getLetter());
 
                         // Convert positions into string to use with existing methods
-                        movePosition = convertRowAndColToString(row, col);
+                        movePosition = getBoard().convertRowAndColToString(row, col);
 
                         // Calculate which squares the word will occupy (i.e. skip over occupied squares)
                         moveSquares = calculateMoveSquares(moveWord, movePosition, moveDirection);
@@ -148,28 +165,6 @@ public class ComputerPlayer extends ScrabbklePlayer {
 
     // Helper methods for computer engine
 
-    /**
-     * Calculate movePosition (e.g. 'h7') based on given int row and int col
-     *
-     * @param row index for row in board
-     * @param col index for column in board
-     * @return String concat value of col and row, e.g. h7
-     */
-    public String convertRowAndColToString(int row, int col) {
-        char c = getColumnLetter(col);
-        String r = String.valueOf(Integer.valueOf(row));
-        return c + r;
-    }
-
-    /**
-     * Convert the int provided into a letter for board index position
-     *
-     * @param col int value to be converted to char
-     * @return char value of int
-     */
-    public char getColumnLetter(int col) {
-        return (char) ('a' + col - 1);
-    }
 
 
     // Getters
