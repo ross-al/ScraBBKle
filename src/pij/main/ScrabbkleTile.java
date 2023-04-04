@@ -220,7 +220,3 @@ public class ScrabbkleTile implements Tile {
 //(8 points)- J, X.
 //(10 points)-Q, Z.
 //(3 points) Wildcard
-
-//testing
-//STARK = 9
-//STAR = 4

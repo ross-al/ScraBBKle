@@ -115,7 +115,7 @@ class HumanPlayerTest {
     void shouldReturnTileFromRackWithMatchingLetter(){
         ScrabbkleTile expected = new ScrabbkleTile('I');
         humanPlayer.getTileRack().add(expected);
-        ScrabbkleTile actual = humanPlayer.getTileFromRack('I');
+        ScrabbkleTile actual = humanPlayer.getTileFromRack('I', humanPlayer.getTileRack());
         assertEquals(expected,actual);
     }
 

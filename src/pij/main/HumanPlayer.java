@@ -8,34 +8,44 @@ import java.util.*;
  */
 
 public class HumanPlayer extends ScrabbklePlayer {
-    /** a tile rack for storing a player's tiles */
+    /**
+     * a tile rack for storing a player's tiles
+     */
     private ArrayList<ScrabbkleTile> tileRack;
 
-    /** boolean to determine if player has had first move or not */
+    /**
+     * boolean to determine if player has had first move or not
+     */
     private boolean firstMove = true;
 
-    /** a player's score */
+    /**
+     * a player's score
+     */
     private int score;
 
-    /** a player's skip count, must not go below 0 */
+    /**
+     * a player's skip count, must not go below 0
+     */
     private int skipCount;
 
     /**
      * constructor method
-     * @param board the board for the game
+     *
+     * @param board    the board for the game
      * @param wordList the dictionary used to check if word is valid
-     * @param tileBag the bag from which players draw tiles
+     * @param tileBag  the bag from which players draw tiles
      */
     public HumanPlayer(ScrabbkleBoard board, ScrabbkleWordList wordList, ScrabbkleTileBag tileBag) {
         super(board, wordList, tileBag);
-        //tileRack = super.getTileRack();
         tileRack = new ArrayList<ScrabbkleTile>();
         score = 0;
         skipCount = 0;
     }
 
 
-    /** Game engine for making a human player move */
+    /**
+     * Game engine for making a human player move
+     */
     public void playMove() {
         String moveWord;
         String movePosition;
@@ -136,7 +146,7 @@ public class HumanPlayer extends ScrabbklePlayer {
                         if (!tileOnCentreSquare) {
                             System.out.println("This is not a valid move");
                             String startSquare = getBoard().printCentreSquare(centreSquare);
-                            System.out.println("Error: Your first move must contain the centre square (" +startSquare + ")");
+                            System.out.println("Error: Your first move must contain the centre square (" + startSquare + ")");
 
                         }
                         System.out.println();
@@ -239,7 +249,9 @@ public class HumanPlayer extends ScrabbklePlayer {
 
     // Helper methods for human player game engine:
 
-    /** Get player input for move */
+    /**
+     * Get player input for move
+     */
     public String getPlayerMove() {
         System.out.println("Please enter your move with letter sequence, position, and");
         System.out.println("direction (d for down, r for right) separated by commas.");
@@ -251,6 +263,7 @@ public class HumanPlayer extends ScrabbklePlayer {
 
     /**
      * Two commas skip the player's move
+     *
      * @param word the move input string provided by player
      * @return boolean
      */
@@ -261,6 +274,7 @@ public class HumanPlayer extends ScrabbklePlayer {
 
     /**
      * Split player's move by "," to get individual instructions
+     *
      * @param word the move input string provided by player
      * @return each move element in String[]
      */
@@ -271,7 +285,8 @@ public class HumanPlayer extends ScrabbklePlayer {
 
     /**
      * Check if the centre square appears in any of the squares for a given move
-     * @param moveSquares a list of all the square indexes for a given move
+     *
+     * @param moveSquares  a list of all the square indexes for a given move
      * @param centreSquare the centre square for this board size
      * @return boolean
      */
@@ -289,9 +304,10 @@ public class HumanPlayer extends ScrabbklePlayer {
 
     /**
      * Pass params to super method to calculate score
-     * @param movePosition col and row string input, e.g. h7
+     *
+     * @param movePosition  col and row string input, e.g. h7
      * @param moveDirection direction to read word, e.g. down or right
-     * @param tileCounter number of tiles used in a move
+     * @param tileCounter   number of tiles used in a move
      * @return word score for given move
      */
     public int calculateWordScore(String movePosition, String moveDirection, int tileCounter) {
@@ -311,7 +327,7 @@ public class HumanPlayer extends ScrabbklePlayer {
         return score;
     }
 
-    public ArrayList<ScrabbkleTile> getTileRack(){
+    public ArrayList<ScrabbkleTile> getTileRack() {
         return tileRack;
     }
 

@@ -49,6 +49,8 @@ public class ScrabbklePlayer implements Player {
 
     /**
      * Fill the player's rack after every move
+     *
+     * @param tileRack a player's tile rack containing at most 7 tiles at a time
      */
     public void fillRack(ArrayList<ScrabbkleTile> tileRack) {
         if (!tileBag.isEmpty()) {
@@ -61,6 +63,8 @@ public class ScrabbklePlayer implements Player {
 
     /**
      * Get a random tile from the tile bag and add to tile rack
+     *
+     * @param tileRack a player's tile rack containing at most 7 tiles at a time
      */
     public void addTileToRack(ArrayList<ScrabbkleTile> tileRack) {
         ScrabbkleTile myTile = tileBag.getRandomTile();
@@ -70,6 +74,8 @@ public class ScrabbklePlayer implements Player {
 
     /**
      * Print the rack in tile format, e.g. [C3]
+     *
+     * @param tileRack a player's tile rack containing at most 7 tiles at a time
      */
     public void printRack(ArrayList<ScrabbkleTile> tileRack) {
         System.out.println();
@@ -271,6 +277,7 @@ public class ScrabbklePlayer implements Player {
      * @param moveWord      player's input word
      * @param movePosition  col and row string input, e.g. h7
      * @param moveDirection direction to read word, down or right
+     * @param tileRack      a player's tile rack containing at most 7 tiles at a time
      */
     public void playWord(String moveWord, String movePosition, String moveDirection, ArrayList<ScrabbkleTile> tileRack) {
         // Convert the 'cr' format provided into int for index positions
@@ -318,7 +325,8 @@ public class ScrabbklePlayer implements Player {
     /**
      * Find the tile in the rack and return it, including wildcards
      *
-     * @param c character to search for in tile rack
+     * @param c        character to search for in tile rack
+     * @param tileRack a player's tile rack containing at most 7 tiles at a time
      * @return tile from rack that matches character
      */
     public ScrabbkleTile getTileFromRack(char c, ArrayList<ScrabbkleTile> tileRack) {
@@ -373,7 +381,7 @@ public class ScrabbklePlayer implements Player {
      * @param row row position of square
      * @param col column position of square
      */
-    public void assignPremiumValues(ScrabbkleTile tile, int row, int col){
+    public void assignPremiumValues(ScrabbkleTile tile, int row, int col) {
         // Assign any premium values of the square to the tile
         int premiumWordValue = board.getBoard()[row][col].getPremiumWordValue();
         tile.setPremiumWordValue(premiumWordValue);
@@ -749,6 +757,7 @@ public class ScrabbklePlayer implements Player {
      * Remove tiles from rack
      *
      * @param moveWord player's input word
+     * @param tileRack a player's tile rack containing at most 7 tiles at a time
      */
     public void removeTilesFromRack(String moveWord, ArrayList<ScrabbkleTile> tileRack) {
         ScrabbkleTile tile;
@@ -856,13 +865,11 @@ public class ScrabbklePlayer implements Player {
 
 
     // Getters
+
     public ScrabbkleBoard getBoard() {
         return board;
     }
 
-    /*public ArrayList<ScrabbkleTile> getTileRack() {
-        return tileRack;
-    }*/
 
     public ScrabbkleWordList getWordList() {
         return wordList;

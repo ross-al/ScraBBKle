@@ -14,6 +14,7 @@ public interface Player {
      * @param moveWord      word to be played
      * @param movePosition  position on which to place the first tile of the word
      * @param moveDirection the direction in which to read the word, i.e. down or right
+     * @param tileRack      a player's tile rack containing at most 7 tiles at a time
      */
     void playWord(String moveWord, String movePosition, String moveDirection, ArrayList<ScrabbkleTile> tileRack);
 
