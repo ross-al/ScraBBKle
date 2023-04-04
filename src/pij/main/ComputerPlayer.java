@@ -101,9 +101,13 @@ public class ComputerPlayer extends ScrabbklePlayer {
                         String finalWord = calculateFinalWord(movePosition, moveDirection);
 
                         boolean isValidWord = isValidWord(finalWord);
+                        // Check if placed word connects to a word on the board
+                        boolean intersectsExistingWord = intersectsWord(moveSquares);
+                        // Check if placed tiles form more than one word (not allowed in Scrabbkle)
+                        boolean formsMultipleWords = formsMultipleWords(moveSquares);
 
                         // If the word is valid, break the outer loop
-                        if (isValidWord) {
+                        if (isValidWord && intersectsExistingWord && !formsMultipleWords) {
                             winningWord = moveWord;
                             winningPosition = movePosition;
                             winningDirection = moveDirection;
@@ -129,8 +133,10 @@ public class ComputerPlayer extends ScrabbklePlayer {
                                     finalWord = calculateFinalWord(movePosition, moveDirection);
 
                                     isValidWord = isValidWord(finalWord);
+                                    intersectsExistingWord = intersectsWord(moveSquares);
+                                    formsMultipleWords = formsMultipleWords(moveSquares);
 
-                                    if (isValidWord) {
+                                    if (isValidWord && intersectsExistingWord && !formsMultipleWords) {
                                         winningWord = moveWord;
                                         winningPosition = movePosition;
                                         winningDirection = moveDirection;
@@ -165,7 +171,7 @@ public class ComputerPlayer extends ScrabbklePlayer {
             score = score + wordScore;
 
             // Print summary of player's move
-            printMoveSummary(winningWord, winningPosition, winningDirection);
+            printMoveSummary(winningWord, winningPosition, winningDirection, "computer player");
 
             // Update tile connectsToExistingWord boolean flag
             connectToWord(winningPosition, winningDirection);

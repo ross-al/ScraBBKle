@@ -827,9 +827,9 @@ public class ScrabbklePlayer implements Player {
      * @param movePosition  col and row string input, e.g. h7
      * @param moveDirection direction to read word, down or right
      */
-    public void printMoveSummary(String moveWord, String movePosition, String moveDirection) {
+    public void printMoveSummary(String moveWord, String movePosition, String moveDirection, String player) {
         System.out.println();
-        System.out.print("The move is: " + moveWord);
+        System.out.print("The " + player + " move is: " + moveWord);
         System.out.print(" at position " + movePosition + ",");
         System.out.print(" direction: " + getMoveDirectionPrintFormat(moveDirection));
     }

@@ -124,7 +124,7 @@ public class HumanPlayer extends ScrabbklePlayer {
                             score = score + wordScore;
 
                             // Print summary of player's move
-                            printMoveSummary(moveWord, movePosition, moveDirection);
+                            printMoveSummary(moveWord, movePosition, moveDirection, "human player");
 
                             // Update tile connectsToExistingWord boolean flag
                             connectToWord(movePosition, moveDirection);
@@ -189,7 +189,7 @@ public class HumanPlayer extends ScrabbklePlayer {
                             score = score + wordScore;
 
                             // Print summary of player's move
-                            printMoveSummary(moveWord, movePosition, moveDirection);
+                            printMoveSummary(moveWord, movePosition, moveDirection, "human player");
 
                             // Update tile connectsToExistingWord boolean flag
                             connectToWord(movePosition, moveDirection);
