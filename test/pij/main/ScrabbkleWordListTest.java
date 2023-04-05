@@ -9,7 +9,7 @@ class ScrabbkleWordListTest {
     ScrabbkleWordList wordList;
 
     @BeforeEach
-    void buildUp(){
+    void buildUp() {
         wordList = new ScrabbkleWordList();
     }
 

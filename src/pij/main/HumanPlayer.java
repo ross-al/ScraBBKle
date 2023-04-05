@@ -37,7 +37,7 @@ public class HumanPlayer extends ScrabbklePlayer {
      */
     public HumanPlayer(ScrabbkleBoard board, ScrabbkleWordList wordList, ScrabbkleTileBag tileBag) {
         super(board, wordList, tileBag);
-        tileRack = new ArrayList<ScrabbkleTile>();
+        tileRack = new ArrayList<>();
         score = 0;
         skipCount = 0;
     }

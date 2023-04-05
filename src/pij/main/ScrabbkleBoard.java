@@ -1,7 +1,6 @@
 package pij.main;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -26,21 +25,6 @@ public class ScrabbkleBoard implements Board {
      * position of centre square for given board size
      */
     private int[] centreSquare;
-
-
-    /**
-     * positions of all the occupied squares on a board
-     * used for computer player moves
-     */
-    private ArrayList<int[]> occupiedSquares;
-
-
-    /**
-     * Contructor
-     */
-    public ScrabbkleBoard() {
-        occupiedSquares = new ArrayList<int[]>();
-    }
 
 
     /**
@@ -97,7 +81,7 @@ public class ScrabbkleBoard implements Board {
      * Calculate the board size by reading first line in file
      *
      * @param inputFile file from which to read size on first line
-     *                  throws exception if file not found
+     * throws exception if file not found
      */
     public void calculateBoardSize(File inputFile) {
         try (BufferedReader reader = new BufferedReader(new FileReader(inputFile))) {
@@ -119,7 +103,7 @@ public class ScrabbkleBoard implements Board {
     /**
      * Check if loaded board meets size requirements
      *
-     * @return boolean
+     * @return boolean true if between or equal to 12-26
      */
     public boolean isValidSize() {
         return boardSize >= 12 && boardSize <= 26;
@@ -253,11 +237,6 @@ public class ScrabbkleBoard implements Board {
     }
 
 
-    public void setOccupiedSquare(int row, int col) {
-        int[] positions = {row, col};
-        occupiedSquares.add(positions);
-    }
-
 
     // Getters
 
@@ -273,15 +252,12 @@ public class ScrabbkleBoard implements Board {
         return boardSize;
     }
 
+
     // used for JUnit testing only
     public void setBoardSize(int size) {
         this.boardSize = size;
     }
 
-
-    public ArrayList<int[]> getOccupiedSquares() {
-        return occupiedSquares;
-    }
 }
 
 //test files (all validated):

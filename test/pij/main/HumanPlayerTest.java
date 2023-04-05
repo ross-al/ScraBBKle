@@ -17,7 +17,7 @@ class HumanPlayerTest {
     ArrayList<ScrabbkleTile> tileRack;
 
     @BeforeEach
-    void buildUp(){
+    void buildUp() {
         board = new ScrabbkleBoard();
         board.setBoardSize(15);
         String fileName = "./resources/defaultBoard.txt";
@@ -30,7 +30,7 @@ class HumanPlayerTest {
         tileE2 = new ScrabbkleTile('E');
         wordList = new ScrabbkleWordList();
         tileBag = new ScrabbkleTileBag();
-        humanPlayer = new HumanPlayer(board,wordList,tileBag);
+        humanPlayer = new HumanPlayer(board, wordList, tileBag);
         tileRack = new ArrayList<>();
         tileRack.add(tileI);
         tileRack.add(tileT);
@@ -41,7 +41,7 @@ class HumanPlayerTest {
 
 
     @Test
-    void shouldReturnPositionColumnAsInt(){
+    void shouldReturnPositionColumnAsInt() {
         String movePosition = "h7";
         int actual = humanPlayer.getPositionColumn(movePosition);
         int expected = 8;
@@ -49,7 +49,7 @@ class HumanPlayerTest {
     }
 
     @Test
-    void shouldReturnPositionRowAsInt(){
+    void shouldReturnPositionRowAsInt() {
         String movePosition = "h7";
         int actual = humanPlayer.getPositionRow(movePosition);
         int expected = 7;
@@ -57,35 +57,15 @@ class HumanPlayerTest {
     }
 
 
-
     @Test
     void shouldReturnMoveSquaresGoingDown() {
         ArrayList<int[]> moveSquares = humanPlayer.calculateMoveSquares("STAR", "h7", "d");
         ArrayList<int[]> testSquares = new ArrayList<>() {
             {
-                add(0, new int[]{7,8});
-                add(1, new int[]{8,8});
-                add(2, new int[]{9,8});
-                add(3, new int[]{10,8});
-            }
-        };
-        int[] square = moveSquares.get(3);
-        int actual = square[1];
-
-        int[] test = testSquares.get(3);
-        int expected = test[1];
-     assertEquals(expected, actual);
-    }
-
-    @Test
-    void shouldReturnMoveSquaresGoingRight(){
-        ArrayList<int[]> moveSquares = humanPlayer.calculateMoveSquares("STAR", "h7", "r");
-        ArrayList<int[]> testSquares = new ArrayList<>() {
-            {
-                add(0, new int[]{7,8});
-                add(1, new int[]{7,9});
-                add(2, new int[]{7,10});
-                add(3, new int[]{7,11});
+                add(0, new int[]{7, 8});
+                add(1, new int[]{8, 8});
+                add(2, new int[]{9, 8});
+                add(3, new int[]{10, 8});
             }
         };
         int[] square = moveSquares.get(3);
@@ -97,31 +77,50 @@ class HumanPlayerTest {
     }
 
     @Test
-    void shouldReturnTrueIfCentreSquareIsInMoveSquares(){
+    void shouldReturnMoveSquaresGoingRight() {
+        ArrayList<int[]> moveSquares = humanPlayer.calculateMoveSquares("STAR", "h7", "r");
+        ArrayList<int[]> testSquares = new ArrayList<>() {
+            {
+                add(0, new int[]{7, 8});
+                add(1, new int[]{7, 9});
+                add(2, new int[]{7, 10});
+                add(3, new int[]{7, 11});
+            }
+        };
+        int[] square = moveSquares.get(3);
+        int actual = square[1];
+
+        int[] test = testSquares.get(3);
+        int expected = test[1];
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void shouldReturnTrueIfCentreSquareIsInMoveSquares() {
         ArrayList<int[]> moveSquares = humanPlayer.calculateMoveSquares("STAR", "h8", "d");
         int[] centreSquare = board.getCentreSquare();
-        assertTrue(humanPlayer.containsCentreSquare(moveSquares,centreSquare));
+        assertTrue(humanPlayer.containsCentreSquare(moveSquares, centreSquare));
     }
 
     @Test
-    void shouldReturnFalseIfCentreSquareIsNotInMoveSquares(){
+    void shouldReturnFalseIfCentreSquareIsNotInMoveSquares() {
         ArrayList<int[]> moveSquares = humanPlayer.calculateMoveSquares("STAR", "a1", "r");
         int[] centreSquare = board.getCentreSquare();
-        assertFalse(humanPlayer.containsCentreSquare(moveSquares,centreSquare));
+        assertFalse(humanPlayer.containsCentreSquare(moveSquares, centreSquare));
     }
 
 
     @Test
-    void shouldReturnTileFromRackWithMatchingLetter(){
+    void shouldReturnTileFromRackWithMatchingLetter() {
         ScrabbkleTile expected = new ScrabbkleTile('I');
         humanPlayer.getTileRack().add(expected);
         ScrabbkleTile actual = humanPlayer.getTileFromRack('I', humanPlayer.getTileRack());
-        assertEquals(expected,actual);
+        assertEquals(expected, actual);
     }
 
 
     @Test
-    void shouldReturnAboveTile(){
+    void shouldReturnAboveTile() {
         ScrabbkleTile tileQ = new ScrabbkleTile('Q');
         ScrabbkleTile tileZ = new ScrabbkleTile('Z');
         // Tile that was already on the board
@@ -134,12 +133,12 @@ class HumanPlayerTest {
     }
 
     @Test
-    void shouldReturnBelowTile(){
+    void shouldReturnBelowTile() {
         ScrabbkleTile tileJ = new ScrabbkleTile('J');
         ScrabbkleTile tileK = new ScrabbkleTile('K');
         // Tile that was already on the board
         //board.getBoard()[3][3].setTile(tileJ);
-        humanPlayer.placeTile(tileJ, 3,3);
+        humanPlayer.placeTile(tileJ, 3, 3);
         // Tile that player places above tile1 during a move
         humanPlayer.placeTile(tileK, 2, 3);
         ScrabbkleTile expected = tileJ;
@@ -148,7 +147,7 @@ class HumanPlayerTest {
     }
 
     @Test
-    void shouldReturnLeftTile(){
+    void shouldReturnLeftTile() {
         ScrabbkleTile tileM = new ScrabbkleTile('M');
         ScrabbkleTile tileP = new ScrabbkleTile('P');
         // Tile that was already on the board
@@ -161,7 +160,7 @@ class HumanPlayerTest {
     }
 
     @Test
-    void shouldReturnRightTile(){
+    void shouldReturnRightTile() {
         ScrabbkleTile tileB = new ScrabbkleTile('B');
         ScrabbkleTile tileH = new ScrabbkleTile('H');
         // Tile that was already on the board
@@ -185,7 +184,7 @@ class HumanPlayerTest {
         humanPlayer.placeTile(tileS, 7, 8);
         humanPlayer.placeTile(tileA, 9, 8);
         humanPlayer.placeTile(tileR, 10, 8);
-        String actual = humanPlayer.calculateFinalWord("h7","d");
+        String actual = humanPlayer.calculateFinalWord("h7", "d");
         String expected = "STAR";
         assertEquals(expected, actual);
     }
@@ -206,13 +205,13 @@ class HumanPlayerTest {
         humanPlayer.placeTile(tileL2, 8, 10);
         humanPlayer.placeTile(tileE, 8, 11);
 
-        String actual = humanPlayer.calculateFinalWord("f8","r");
+        String actual = humanPlayer.calculateFinalWord("f8", "r");
         String expected = "LITTLE";
         assertEquals(expected, actual);
     }
 
     @Test
-    void shouldReturnFinalWordGoingDownWithManuallySetNeighbourTiles(){
+    void shouldReturnFinalWordGoingDownWithManuallySetNeighbourTiles() {
         //tiles on board already at {8,7} and {8,8}
         board.getBoard()[8][8].setTile(tileT);
         // player placed tiles
@@ -241,7 +240,7 @@ class HumanPlayerTest {
         board.getBoard()[10][8].getTile().setAboveTile(tileA);
         //board.getBoard()[9][8].getTile().setBelowTile();
 
-        String actual = humanPlayer.calculateFinalWord("h7","d");
+        String actual = humanPlayer.calculateFinalWord("h7", "d");
         String expected = "STAR";
         assertEquals(expected, actual);
     }
@@ -289,14 +288,14 @@ class HumanPlayerTest {
         board.getBoard()[8][11].getTile().setLeftTile(tileT2);
         //board.getBoard()[8][11].getTile().setRightTile();
 
-        String actual = humanPlayer.calculateFinalWord("f8","r");
+        String actual = humanPlayer.calculateFinalWord("f8", "r");
         String expected = "LITTLE";
         assertEquals(expected, actual);
     }
 
 
     @Test
-    void shouldReturnFinalWordWhenOnlyPlacingOneTileAtBottomOfExistingWord(){
+    void shouldReturnFinalWordWhenOnlyPlacingOneTileAtBottomOfExistingWord() {
         //e.g. word on board: STAR
         //new word on board: STAR + S
 
@@ -315,13 +314,13 @@ class HumanPlayerTest {
         humanPlayer.placeTile(tileS2, 11, 8);
 
         // Place tile at bottom of word in position h11 {11,8}
-        String actual = humanPlayer.calculateFinalWord("h11","d");
+        String actual = humanPlayer.calculateFinalWord("h11", "d");
         String expected = "STARS";
         assertEquals(expected, actual);
     }
 
     @Test
-    void shouldReturnScoreOf3(){
+    void shouldReturnScoreOf3() {
         int actual = humanPlayer.getPlayerScore();
     }
 }

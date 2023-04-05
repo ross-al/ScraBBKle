@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * A ScrabbklePlayer is a Player that can get input from user, valid move, and play move
+ * A ScrabbklePlayer is a Player that can get input from user, validate move, and play move
  */
 
 
@@ -615,7 +615,7 @@ public class ScrabbklePlayer implements Player {
                 tile.setPremiumLetterValue(1);
                 tile.setPremiumWordValue(1);
                 // Remove wildCard value
-                if(tile.isWildCard()){
+                if (tile.isWildCard()) {
                     tile.removeWildCard();
                 }
                 // Remove tile from board
@@ -798,7 +798,6 @@ public class ScrabbklePlayer implements Player {
             }
             while (currentTile != null) {
                 currentTile.setConnectsToExistingWord(true); // change flag to true
-                board.setOccupiedSquare(row, col); //add this square to list of occupied squares,used for computer moves
                 currentTile = currentTile.getBelowTile(); // move to the next tile to the tile below
 
             }
@@ -813,7 +812,6 @@ public class ScrabbklePlayer implements Player {
             }
             while (currentTile != null) {
                 currentTile.setConnectsToExistingWord(true); //change flag to true
-                board.setOccupiedSquare(row, col); //add this square to list of occupied squares,
                 currentTile = currentTile.getRightTile(); // move to the next tile to the right
             }
         }

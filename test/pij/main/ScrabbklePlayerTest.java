@@ -26,7 +26,7 @@ class ScrabbklePlayerTest {
     }
 
     @Test
-    void shouldReturnWordScoreOf18(){
+    void shouldReturnWordScoreOf18() {
         ScrabbkleTile tileS = new ScrabbkleTile('S');
         ScrabbkleTile tileT = new ScrabbkleTile('T');
         ScrabbkleTile tileA = new ScrabbkleTile('A');
@@ -52,7 +52,7 @@ class ScrabbklePlayerTest {
 
 
     @Test
-    void shouldReturnWordScoreOf30(){
+    void shouldReturnWordScoreOf30() {
         ScrabbkleTile tileS = new ScrabbkleTile('S');
         ScrabbkleTile tileT = new ScrabbkleTile('T');
         ScrabbkleTile tileA = new ScrabbkleTile('A');
@@ -77,7 +77,7 @@ class ScrabbklePlayerTest {
     }
 
     @Test
-    void shouldReturnWordScoreOf100With7TileBonus(){
+    void shouldReturnWordScoreOf100With7TileBonus() {
         ScrabbkleTile tileS = new ScrabbkleTile('S');
         ScrabbkleTile tileT = new ScrabbkleTile('T');
         ScrabbkleTile tileA = new ScrabbkleTile('A');
@@ -128,13 +128,13 @@ class ScrabbklePlayerTest {
 
 
     @Test
-    void shouldReturnTrueIfAllTilesAvailableInRack(){
+    void shouldReturnTrueIfAllTilesAvailableInRack() {
         tileRack = new ArrayList<>();
         String moveWord = "BOOKKEEPING";
         ScrabbkleTile tileB = new ScrabbkleTile('B');
         ScrabbkleTile tileO = new ScrabbkleTile('O');
         ScrabbkleTile tileO2 = new ScrabbkleTile('O');
-        ScrabbkleTile tileK= new ScrabbkleTile('K');
+        ScrabbkleTile tileK = new ScrabbkleTile('K');
         ScrabbkleTile tileK2 = new ScrabbkleTile('K');
         ScrabbkleTile tileE = new ScrabbkleTile('E');
         ScrabbkleTile tileE2 = new ScrabbkleTile('E');
@@ -155,17 +155,17 @@ class ScrabbklePlayerTest {
         tileRack.add(tileN);
         tileRack.add(tileG);
 
-        assertTrue(player.hasAllTilesAvailable(moveWord,  tileRack));
+        assertTrue(player.hasAllTilesAvailable(moveWord, tileRack));
     }
 
     @Test
-    void shouldReturnFalseIfNotAllTilesAvailableInRack(){
+    void shouldReturnFalseIfNotAllTilesAvailableInRack() {
         tileRack = new ArrayList<>();
         String moveWord = "BOOKKEEPING";
         ScrabbkleTile tileB = new ScrabbkleTile('B');
         ScrabbkleTile tileO = new ScrabbkleTile('O');
         ScrabbkleTile tileO2 = new ScrabbkleTile('O');
-        ScrabbkleTile tileK= new ScrabbkleTile('K');
+        ScrabbkleTile tileK = new ScrabbkleTile('K');
         //ScrabbkleTile tileK2 = new ScrabbkleTile('K');
         ScrabbkleTile tileE = new ScrabbkleTile('E');
         ScrabbkleTile tileE2 = new ScrabbkleTile('E');
@@ -186,11 +186,11 @@ class ScrabbklePlayerTest {
         tileRack.add(tileN);
         tileRack.add(tileG);
 
-        assertFalse(player.hasAllTilesAvailable(moveWord,  tileRack));
+        assertFalse(player.hasAllTilesAvailable(moveWord, tileRack));
     }
 
     @Test
-    void shouldReturnTrueIfWildCardInRack(){
+    void shouldReturnTrueIfWildCardInRack() {
         tileRack = new ArrayList<>();
         String moveWord = " ";
         ScrabbkleTile wildCard = new ScrabbkleTile(' ');

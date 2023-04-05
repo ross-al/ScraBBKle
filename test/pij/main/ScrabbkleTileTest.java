@@ -9,7 +9,7 @@ class ScrabbkleTileTest {
     ScrabbkleTile tile;
 
     @BeforeEach
-    void buildUp(){
+    void buildUp() {
         tile = new ScrabbkleTile('A');
     }
 
@@ -17,38 +17,38 @@ class ScrabbkleTileTest {
     void shouldReturnIntValueOf1() {
         int expected = 1;
         int actual = tile.getValue();
-        assertEquals(expected,actual);
+        assertEquals(expected, actual);
     }
 
     @Test
     void shouldReturnPrintOnBoardLabelOfA1() {
         String expected = "A1";
         String actual = tile.getPrintOnBoardFormat();
-        assertEquals(expected,actual);
+        assertEquals(expected, actual);
     }
 
     @Test
     void shouldReturnPrintOnTileRackLabel() {
         String expected = "[A1]";
         String actual = tile.getPrintInTileRackFormat();
-        assertEquals(expected,actual);
+        assertEquals(expected, actual);
     }
 
     @Test
-    void shouldReturnTrueIfWildCard(){
+    void shouldReturnTrueIfWildCard() {
         ScrabbkleTile wildCard = new ScrabbkleTile(' ');
         assertTrue(wildCard.isWildCard());
     }
 
     @Test
-    void shouldReturnTrueIfWildCardRemovedFromTile(){
+    void shouldReturnTrueIfWildCardRemovedFromTile() {
         ScrabbkleTile wildCard = new ScrabbkleTile(' ');
         wildCard.removeWildCard();
         assertFalse(wildCard.isWildCard());
     }
 
     @Test
-    void shouldReturnTrueIfWildCardAssignedToTile(){
+    void shouldReturnTrueIfWildCardAssignedToTile() {
         ScrabbkleTile wildCard = new ScrabbkleTile(' ');
         wildCard.assignWildCard('u');
         char expected = 'u';

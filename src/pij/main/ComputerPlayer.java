@@ -35,7 +35,7 @@ public class ComputerPlayer extends ScrabbklePlayer {
      */
     public ComputerPlayer(ScrabbkleBoard board, ScrabbkleWordList wordList, ScrabbkleTileBag tileBag) {
         super(board, wordList, tileBag);
-        tileRack = new ArrayList<ScrabbkleTile>();
+        tileRack = new ArrayList<>();
         score = 0;
         skipCount = 0;
     }
@@ -46,12 +46,10 @@ public class ComputerPlayer extends ScrabbklePlayer {
      */
     public void playMove() {
 
-        boolean isSkip = false;
         boolean validMove = false;
 
         // Create a new arraylist to store row col positions for eligible squares.
-        // Eligible squares are free squares that must have either a non-null aboveTile, belowTile, leftTile or rightTile,
-        // so they can connect to existing valid words on the board.
+        // Eligible squares are free squares that are in bounds of the game
 
         ArrayList<int[]> eligibleSquares = findEligibleSquares();
 
@@ -191,52 +189,23 @@ public class ComputerPlayer extends ScrabbklePlayer {
 
     }
 
+
     // END OF COMPUTER PLAYER GAME ENGINE
 
+
     /**
-     * Get a list of all the occupied squares (i.e. squares that have tiles in a valid word on the board)
+     * Get a list of all the free squares (i.e. squares that have no tiles on the board)
      *
      * @return a list of all eligible squares that the computer player can try out
      */
     public ArrayList<int[]> findEligibleSquares() {
         ArrayList<int[]> possibleSquares = new ArrayList<>();
-        ArrayList<int[]> occupiedSquares = getBoard().getOccupiedSquares();
-        for (int[] square : occupiedSquares) {
-            int row = square[0];
-            int col = square[1];
-            // Then check if they have free neighbours and are in bounds.
-            // If so, check if possibleSquares already contains these positions
-            // If not, add to possibleSquares
-            ScrabbkleTile currentTile = getBoard().getBoard()[row][col].getTile();
-            if (positionIsInBounds(row - 1, col)) {
-                if (currentTile.getAboveTile() == null) {
-                    int[] positions = {row - 1, col};
-                    if (!possibleSquares.contains(positions)) {
-                        possibleSquares.add(positions);
-                    }
-                }
-            }
-            //Repeat for below, left and right neighbours
-            if (positionIsInBounds(row + 1, col)) {
-                if (currentTile.getBelowTile() == null) {
-                    int[] positions = {row + 1, col};
-                    if (!possibleSquares.contains(positions)) {
-                        possibleSquares.add(positions);
-                    }
-                }
-            }
-            if (positionIsInBounds(row, col - 1)) {
-                if (currentTile.getLeftTile() == null) {
-                    int[] positions = {row, col - 1};
-                    if (!possibleSquares.contains(positions)) {
-                        possibleSquares.add(positions);
-                    }
-                }
-            }
-            if (positionIsInBounds(row, col + 1)) {
-                if (currentTile.getRightTile() == null) {
-                    int[] positions = {row, col + 1};
-                    if (!possibleSquares.contains(positions)) {
+        for (int i = 1; i <= getBoard().getBoardSize(); i++) {
+            for (int j = 1; j <= getBoard().getBoardSize(); j++) {
+                if (positionIsInBounds(i, j)) {
+                    ScrabbkleSquare square = getBoard().getBoard()[i][j];
+                    if (square.getTile() == null) {
+                        int[] positions = {i, j};
                         possibleSquares.add(positions);
                     }
                 }
@@ -246,11 +215,10 @@ public class ComputerPlayer extends ScrabbklePlayer {
     }
 
 
-    // Add all non-wildCard letters to a string
-
     /**
      * Convert all tiles in the current rack into a string
      * Excluding wildCards
+     *
      * @return string of concatenated tile characters
      */
     public String tileRackToString() {
@@ -265,16 +233,13 @@ public class ComputerPlayer extends ScrabbklePlayer {
     }
 
 
-
-
-
     /**
      * Calculate all the combinations of letters for the tiles in the rack
-     * Uses recursion to find all letter combinations for given string
+     * Uses recursion to find letter combinations for given string
+     *
      * @param allLetters a string of characters
-     * @return a list of all possible character combinations
+     * @return a list of possible character combinations
      */
-
     //We exclude wildcards for now (later logic, we should iterate through each letter and assign to wildCard)
     public List<String> generateLetterCombinations(String allLetters) {
         List<String> combinations = new ArrayList<>();
@@ -313,6 +278,9 @@ public class ComputerPlayer extends ScrabbklePlayer {
     }
 
 }
+
+
+
 
 
 

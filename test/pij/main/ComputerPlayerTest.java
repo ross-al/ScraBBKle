@@ -27,16 +27,16 @@ class ComputerPlayerTest {
     }
 
     @Test
-    void shouldReturnRowAndColAsString(){
+    void shouldReturnRowAndColAsString() {
         int row = 7;
         int col = 8;
-        String actual = board.convertRowAndColToString(row,col);
+        String actual = board.convertRowAndColToString(row, col);
         String expected = "h7";
         assertEquals(expected, actual);
     }
 
     @Test
-    void shouldReturnAllLetterCombinations(){
+    void shouldReturnAllLetterCombinations() {
         String word = "abc";
         List<String> allCombinations = player.generateLetterCombinations(word);
         String actual = allCombinations.toString();

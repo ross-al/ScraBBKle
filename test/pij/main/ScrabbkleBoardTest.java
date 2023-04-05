@@ -11,7 +11,7 @@ class ScrabbkleBoardTest {
     ScrabbkleBoard board;
 
     @BeforeEach
-    void buildUp(){
+    void buildUp() {
         board = new ScrabbkleBoard();
         board.setBoardSize(15);
         String fileName = "./resources/defaultBoard.txt";
@@ -27,56 +27,56 @@ class ScrabbkleBoardTest {
     }
 
     @Test
-    void shouldReturnLetterOFromColumnLabels(){
+    void shouldReturnLetterOFromColumnLabels() {
         String expected = String.valueOf('o');
         String actual = board.getBoard()[0][15].getPrintLabel();
         assertEquals(expected, actual);
     }
 
     @Test
-    void shouldReturnInt1(){
+    void shouldReturnInt1() {
         int expected = 1;
         int actual = Integer.parseInt(board.getBoard()[1][0].getPrintLabel());
         assertEquals(expected, actual);
     }
 
     @Test
-    void shouldReturnInt15(){
+    void shouldReturnInt15() {
         int expected = 15;
         int actual = Integer.parseInt(board.getBoard()[15][0].getPrintLabel());
         assertEquals(expected, actual);
     }
 
     @Test
-    void shouldReturnPremiumLetterPrintLabel(){
+    void shouldReturnPremiumLetterPrintLabel() {
         String expected = "{3}";
         String actual = board.getBoard()[1][1].getPrintLabel();
         assertEquals(expected, actual);
     }
 
     @Test
-    void shouldReturnPremiumWordPrintLabel(){
+    void shouldReturnPremiumWordPrintLabel() {
         String expected = "(2)";
         String actual = board.getBoard()[1][4].getPrintLabel();
         assertEquals(expected, actual);
     }
 
     @Test
-    void shouldReturnPremiumLetterIntValue(){
+    void shouldReturnPremiumLetterIntValue() {
         int expected = 2;
         int actual = board.getBoard()[4][1].getPremiumLetterValue();
         assertEquals(expected, actual);
     }
 
     @Test
-    void shouldReturnPremiumWordIntValue(){
+    void shouldReturnPremiumWordIntValue() {
         int expected = 3;
         int actual = board.getBoard()[1][1].getPremiumWordValue();
         assertEquals(expected, actual);
     }
 
     @Test
-    void shouldReturnCentreSquareIfOddBoard(){
+    void shouldReturnCentreSquareIfOddBoard() {
         int expected = 8;
         int[] centreSquare = board.calculateCentreSquare(15);
         int actual = centreSquare[0];
@@ -84,7 +84,7 @@ class ScrabbkleBoardTest {
     }
 
     @Test
-    void shouldReturnCentreSquareIfEvenBoard(){
+    void shouldReturnCentreSquareIfEvenBoard() {
         int expected = 7;
         int[] centreSquare = board.calculateCentreSquare(14);
         int actual = centreSquare[0];
